@@ -6,7 +6,7 @@
     <title>Servicios Streaming</title>
     <style>
         /* ==========================================
-           1. ESTILOS GENERALES
+           1. ESTILOS GENERALES (Fondo y Cuerpo)
            ========================================== */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -28,7 +28,7 @@
         .header-icon { height: 60px; width: auto; }
 
         /* ==========================================
-           3. VENTANA EMERGENTE (MODAL)
+           3. VENTANA EMERGENTE (MODAL OPTIMIZADO)
            ========================================== */
         .overlay {
             position: fixed; top: 0; left: 0;
@@ -38,7 +38,7 @@
             z-index: 2000;
         }
         .modal-container {
-            position: relative; width: 85%; max-width: 320px;
+            position: relative; width: 85%; max-width: 320px; /* Medida pequeña para móvil */
             background: #1a1a1a; padding: 25px 15px 15px 15px;
             border-radius: 20px; text-align: center; border: 2px solid #b388ff;
         }
@@ -51,7 +51,7 @@
         .modal-video { width: 100%; height: auto; border-radius: 10px; margin-top: 10px; display: block; }
         .unmute-btn {
             margin-top: 15px; background: #444; color: white;
-            border: 1.5px solid #b388ff; padding: 12px 20px;
+            border: 1.5px solid #b388ff; padding: 12px 20px; /* Botón grande */
             border-radius: 10px; cursor: pointer; font-size: 1rem;
             font-weight: bold; width: 100%;
         }
@@ -89,33 +89,17 @@
         .card:hover .buy-btn { background: white; color: black; }
 
         /* ==========================================
-           6. PIE DE PÁGINA (FOOTER) - NUEVO
+           6. PIE DE PÁGINA (FOOTER)
            ========================================== */
-        footer {
-            width: 100%; background-color: #1a1a1a; padding: 40px 0 20px 0;
-            margin-top: 40px; border-top: 1px solid #333;
-        }
-        .footer-content {
-            max-width: 1100px; margin: 0 auto; width: 90%;
-            display: flex; justify-content: space-between; align-items: flex-start;
-            flex-wrap: wrap; gap: 30px;
-        }
-        /* Columna Izquierda: Logo y Descripción */
+        footer { width: 100%; background-color: #1a1a1a; padding: 40px 0 20px 0; margin-top: 40px; border-top: 1px solid #333; }
+        .footer-content { max-width: 1100px; margin: 0 auto; width: 90%; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 30px; }
         .footer-about { flex: 1; min-width: 280px; display: flex; align-items: center; gap: 20px; }
         .footer-logo { height: 50px; width: auto; }
         .footer-text { font-size: 0.9rem; line-height: 1.6; color: #ccc; margin: 0; }
-
-        /* Columna Derecha: Métodos de Pago */
         .footer-payments { flex: 0 1 300px; text-align: center; }
         .footer-payments h3 { font-size: 1.1rem; margin-bottom: 15px; color: #b388ff; }
         .payment-img { width: 100%; max-width: 250px; height: auto; border-radius: 8px; }
-
-        /* Línea y Copyright */
-        .footer-bottom {
-            width: 90%; max-width: 1100px; margin: 30px auto 0 auto;
-            border-top: 1px solid #333; padding-top: 20px; text-align: center;
-            font-size: 0.85rem; color: #777;
-        }
+        .footer-bottom { width: 90%; max-width: 1100px; margin: 30px auto 0 auto; border-top: 1px solid #333; padding-top: 20px; text-align: center; font-size: 0.85rem; color: #777; }
 
         /* --- AJUSTES PARA CELULAR --- */
         @media (max-width: 600px) {
@@ -150,26 +134,33 @@
     <div class="container">
         <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Netflix." target="_blank"><img src="Netflix.jpg"><div class="info"><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div></a></div>
         <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Disney." target="_blank"><img src="Disney.jpg"><div class="info"><span class="price">S/ 14.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        </div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Max." target="_blank"><img src="Max.jpg"><div class="info"><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Paramount." target="_blank"><img src="Paramount.jpg"><div class="info"><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20PrimeVideo." target="_blank"><img src="Primevideo.jpg"><div class="info"><span class="price">S/ 10.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Vix." target="_blank"><img src="Vix.jpg"><div class="info"><span class="price">S/ 10.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Crunchyroll." target="_blank"><img src="Crunchyroll.jpg"><div class="info"><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20DirectvGO" target="_blank"><img src="DGO.jpg"><div class="info"><span class="price">S/ 35.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20MovistarPlay" target="_blank"><img src="Movistar.jpg"><div class="info"><span class="price">S/ 25.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20FlujoTV" target="_blank"><img src="Flujotv.jpg"><div class="info"><span class="price">S/ 20.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20IPTV" target="_blank"><img src="IPTV.jpg"><div class="info"><span class="price">S/ 20.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20Canva" target="_blank"><img src="Canva.jpg"><div class="info"><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20Spotify" target="_blank"><img src="Spotify.jpg"><div class="info"><span class="price">S/ 13.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20TeleLatino" target="_blank"><img src="Telelatino.jpg"><div class="info"><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div></a></div>
+        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20YoutubePremium" target="_blank"><img src="Youtube.jpg"><div class="info"><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div></a></div>
+    </div>
 
     <footer>
         <div class="footer-content">
             <div class="footer-about">
                 <img src="icono.png" alt="MistiPlay Logo" class="footer-logo">
-                <p class="footer-text">
-                    MistiPlay ofrece un servicio de streaming de calidad, podrás disfrutar con tus amigos y familia, películas, series, animes, música, documentales, tv en vivo y mucho más.
-                </p>
+                <p class="footer-text">MistiPlay ofrece un servicio de streaming de calidad, podrás disfrutar con tus amigos y familia, películas, series, animes, música, documentales, tv en vivo y mucho más.</p>
             </div>
-
             <div class="footer-payments">
                 <h3>Métodos de pago</h3>
                 <img src="metodosdepago.png" alt="Métodos de Pago" class="payment-img">
             </div>
         </div>
-
-        <div class="footer-bottom">
-            © 2025 MistiPlay. Todos los derechos reservados.
-        </div>
+        <div class="footer-bottom">© 2025 MistiPlay. Todos los derechos reservados.</div>
     </footer>
 
     <script>
