@@ -6,7 +6,7 @@
     <title>Servicios Streaming</title>
     <style>
         /* ==========================================
-           1. ESTILOS GENERALES (Fondo y Cuerpo)
+           1. ESTILOS GENERALES
            ========================================== */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -17,7 +17,7 @@
         }
 
         /* ==========================================
-           2. BARRA SUPERIOR (Donde está el icono)
+           2. BARRA SUPERIOR (HEADER)
            ========================================== */
         header { 
             width: 100%; background-color: #1a1a1a; padding: 10px 0; 
@@ -28,74 +28,37 @@
         .header-icon { height: 60px; width: auto; }
 
         /* ==========================================
-           3. VENTANA EMERGENTE (MODAL OPTIMIZADO)
+           3. VENTANA EMERGENTE (MODAL)
            ========================================== */
         .overlay {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.95);
             display: flex; justify-content: center; align-items: center;
             z-index: 2000;
         }
-
         .modal-container {
-            position: relative;
-            width: 85%; /* Un poco más estrecho para dejar márgenes */
-            max-width: 320px; /* ESPECIFICACIÓN: Contenedor más pequeño para celulares */
-            background: #1a1a1a;
-            padding: 25px 15px 15px 15px;
-            border-radius: 20px;
-            text-align: center;
-            border: 2px solid #b388ff;
+            position: relative; width: 85%; max-width: 320px;
+            background: #1a1a1a; padding: 25px 15px 15px 15px;
+            border-radius: 20px; text-align: center; border: 2px solid #b388ff;
         }
-
-        /* Botón cerrar superior (Rojo y accesible) */
         .close-modal {
-            position: absolute;
-            top: -15px; right: -10px;
-            background: #ff4d4d;
-            color: white; border: 2px solid white;
-            padding: 8px 15px; border-radius: 10px;
-            cursor: pointer; font-weight: bold;
-            font-size: 14px;
-            z-index: 2010;
+            position: absolute; top: -15px; right: -10px;
+            background: #ff4d4d; color: white; border: 2px solid white;
+            padding: 8px 15px; border-radius: 10px; cursor: pointer;
+            font-weight: bold; font-size: 14px; z-index: 2010;
         }
-
-        /* Video */
-        .modal-video {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-top: 10px;
-            display: block;
-        }
-
-        /* ESPECIFICACIÓN: Botón Activar Sonido más grande */
+        .modal-video { width: 100%; height: auto; border-radius: 10px; margin-top: 10px; display: block; }
         .unmute-btn {
-            margin-top: 15px;
-            background: #444;
-            color: white;
-            border: 1.5px solid #b388ff;
-            padding: 12px 20px; /* Más grande para el dedo */
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem; /* Fuente más legible */
-            font-weight: bold;
-            width: 100%; /* Ocupa el ancho para facilitar el clic */
+            margin-top: 15px; background: #444; color: white;
+            border: 1.5px solid #b388ff; padding: 12px 20px;
+            border-radius: 10px; cursor: pointer; font-size: 1rem;
+            font-weight: bold; width: 100%;
         }
-
-        /* Botón más información */
         .more-info-btn {
-            display: inline-block;
-            margin-top: 15px;
-            background-color: #b388ff;
-            color: white;
-            padding: 12px 20px;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: bold;
-            width: 90%;
+            display: inline-block; margin-top: 15px; background-color: #b388ff;
+            color: white; padding: 12px 20px; text-decoration: none;
+            border-radius: 30px; font-weight: bold; width: 90%;
         }
 
         /* ==========================================
@@ -109,11 +72,9 @@
            5. DISEÑO DE LAS TARJETAS (Servicios)
            ========================================== */
         .container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
             gap: 20px; max-width: 1200px; width: 90%; padding: 20px 0 60px 0; 
         }
-
         .card { 
             background: #161616; border-radius: 20px; overflow: hidden; 
             box-shadow: 0 8px 15px rgba(0,0,0,0.5); transition: transform 0.3s ease; 
@@ -127,9 +88,40 @@
         .buy-btn { display: block; background: transparent; border: 1.5px solid white; color: white; padding: 7px 0; border-radius: 20px; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; transition: all 0.3s ease; }
         .card:hover .buy-btn { background: white; color: black; }
 
+        /* ==========================================
+           6. PIE DE PÁGINA (FOOTER) - NUEVO
+           ========================================== */
+        footer {
+            width: 100%; background-color: #1a1a1a; padding: 40px 0 20px 0;
+            margin-top: 40px; border-top: 1px solid #333;
+        }
+        .footer-content {
+            max-width: 1100px; margin: 0 auto; width: 90%;
+            display: flex; justify-content: space-between; align-items: flex-start;
+            flex-wrap: wrap; gap: 30px;
+        }
+        /* Columna Izquierda: Logo y Descripción */
+        .footer-about { flex: 1; min-width: 280px; display: flex; align-items: center; gap: 20px; }
+        .footer-logo { height: 50px; width: auto; }
+        .footer-text { font-size: 0.9rem; line-height: 1.6; color: #ccc; margin: 0; }
+
+        /* Columna Derecha: Métodos de Pago */
+        .footer-payments { flex: 0 1 300px; text-align: center; }
+        .footer-payments h3 { font-size: 1.1rem; margin-bottom: 15px; color: #b388ff; }
+        .payment-img { width: 100%; max-width: 250px; height: auto; border-radius: 8px; }
+
+        /* Línea y Copyright */
+        .footer-bottom {
+            width: 90%; max-width: 1100px; margin: 30px auto 0 auto;
+            border-top: 1px solid #333; padding-top: 20px; text-align: center;
+            font-size: 0.85rem; color: #777;
+        }
+
+        /* --- AJUSTES PARA CELULAR --- */
         @media (max-width: 600px) {
             .container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .subtitle-text { font-size: 1rem; }
+            .footer-content { flex-direction: column; align-items: center; text-align: center; }
+            .footer-about { flex-direction: column; }
         }
     </style>
 </head>
@@ -138,13 +130,10 @@
     <div class="overlay" id="videoModal">
         <div class="modal-container">
             <button class="close-modal" onclick="cerrarModal()">Cerrar X</button>
-            
             <video class="modal-video" id="videoPlayer" autoplay muted loop playsinline>
                 <source src="video.mp4" type="video/mp4">
             </video>
-
             <button class="unmute-btn" id="audioBtn" onclick="alternarSonido()">🔊 Activar Sonido</button>
-
             <a href="https://wa.me/51923666291?text=Deseo%20mas%20información%20de%20MaxPlayer" class="more-info-btn" target="_blank">Más información</a>
         </div>
     </div>
@@ -161,36 +150,40 @@
     <div class="container">
         <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Netflix." target="_blank"><img src="Netflix.jpg"><div class="info"><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div></a></div>
         <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Disney." target="_blank"><img src="Disney.jpg"><div class="info"><span class="price">S/ 14.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Max." target="_blank"><img src="Max.jpg"><div class="info"><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Paramount." target="_blank"><img src="Paramount.jpg"><div class="info"><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20PrimeVideo." target="_blank"><img src="Primevideo.jpg"><div class="info"><span class="price">S/ 10.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Vix." target="_blank"><img src="Vix.jpg"><div class="info"><span class="price">S/ 10.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Deseo%20comprar%20un%20perfil%20de%20Crunchyroll." target="_blank"><img src="Crunchyroll.jpg"><div class="info"><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20DirectvGO" target="_blank"><img src="DGO.jpg"><div class="info"><span class="price">S/ 35.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20MovistarPlay" target="_blank"><img src="Movistar.jpg"><div class="info"><span class="price">S/ 25.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20FlujoTV" target="_blank"><img src="Flujotv.jpg"><div class="info"><span class="price">S/ 20.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20TeleLatino" target="_blank"><img src="Telelatino.jpg"><div class="info"><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20IPTV" target="_blank"><img src="IPTV.jpg"><div class="info"><span class="price">S/ 20.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20Canva" target="_blank"><img src="Canva.jpg"><div class="info"><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20Spotify" target="_blank"><img src="Spotify.jpg"><div class="info"><span class="price">S/ 13.00</span><div class="buy-btn">Comprar</div></div></a></div>
-        <div class="card"><a href="https://wa.me/51923666291?text=Quiero%20comprar%20una%20cuenta%20YoutubePremium" target="_blank"><img src="Youtube.jpg"><div class="info"><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div></a></div>
-    </div>
+        </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <img src="icono.png" alt="MistiPlay Logo" class="footer-logo">
+                <p class="footer-text">
+                    MistiPlay ofrece un servicio de streaming de calidad, podrás disfrutar con tus amigos y familia, películas, series, animes, música, documentales, tv en vivo y mucho más.
+                </p>
+            </div>
+
+            <div class="footer-payments">
+                <h3>Métodos de pago</h3>
+                <img src="metodosdepago.png" alt="Métodos de Pago" class="payment-img">
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © 2025 MistiPlay. Todos los derechos reservados.
+        </div>
+    </footer>
 
     <script>
         function cerrarModal() {
             document.getElementById('videoModal').style.display = 'none';
             document.getElementById('videoPlayer').pause();
         }
-
         function alternarSonido() {
             var video = document.getElementById('videoPlayer');
             var btn = document.getElementById('audioBtn');
             if (video.muted) {
-                video.muted = false;
-                btn.innerHTML = "🔇 Silenciar";
+                video.muted = false; btn.innerHTML = "🔇 Silenciar";
             } else {
-                video.muted = true;
-                btn.innerHTML = "🔊 Activar Sonido";
+                video.muted = true; btn.innerHTML = "🔊 Activar Sonido";
             }
         }
     </script>
