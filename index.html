@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicios Streaming</title>
+    <title>MistiPlay - Servicios Streaming</title>
     <style>
         /* ==========================================
            1. ESTILOS GENERALES
            ========================================== */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #0b0b0b; 
+            background-color: #0b0b0b; /* Color de fondo de la web */
             color: white; 
             margin: 0; padding: 0; 
             display: flex; flex-direction: column; align-items: center; 
@@ -28,7 +28,7 @@
         .header-icon { height: 60px; width: auto; }
 
         /* ==========================================
-           3. VENTANA EMERGENTE (MODAL OPTIMIZADO)
+           3. VENTANA EMERGENTE (MODAL DE VIDEO)
            ========================================== */
         .overlay {
             position: fixed; top: 0; left: 0;
@@ -38,7 +38,9 @@
             z-index: 2000;
         }
         .modal-container {
-            position: relative; width: 85%; max-width: 320px;
+            position: relative; 
+            width: 85%; 
+            max-width: 320px; /* ESPECIFICACIÓN: Tamaño reducido para mejor visualización en móvil */
             background: #1a1a1a; padding: 25px 15px 15px 15px;
             border-radius: 20px; text-align: center; border: 2px solid #b388ff;
         }
@@ -49,6 +51,8 @@
             font-weight: bold; font-size: 14px; z-index: 2010;
         }
         .modal-video { width: 100%; height: auto; border-radius: 10px; margin-top: 10px; display: block; }
+        
+        /* BOTÓN DE SONIDO GRANDE */
         .unmute-btn {
             margin-top: 15px; background: #444; color: white;
             border: 1.5px solid #b388ff; padding: 12px 20px;
@@ -69,7 +73,7 @@
         .subtitle-text { color: #b388ff; font-size: 1.2rem; font-weight: bold; margin-top: 10px; letter-spacing: 1px; }
 
         /* ==========================================
-           5. DISEÑO DE LAS TARJETAS (Servicios)
+           5. DISEÑO DE LAS TARJETAS (SERVICIOS)
            ========================================== */
         .container { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
@@ -89,7 +93,7 @@
         .card:hover .buy-btn { background: white; color: black; }
 
         /* ==========================================
-           6. PIE DE PÁGINA (FOOTER OPTIMIZADO)
+           6. PIE DE PÁGINA (FOOTER)
            ========================================== */
         footer { 
             width: 100%; background-color: #1a1a1a; padding: 40px 0 20px 0; 
@@ -99,32 +103,29 @@
             max-width: 1200px; margin: 0 auto; width: 95%; 
             display: flex; 
             justify-content: space-between; 
-            align-items: center; /* ESPECIFICACIÓN: Alinea todo al centro verticalmente */
+            align-items: center; /* ALINEACIÓN VERTICAL CORREGIDA */
             flex-wrap: wrap; gap: 30px; 
         }
         
-        /* Contenedor de Logo y Texto */
-        .footer-about { 
-            flex: 2; /* Toma más espacio para el texto */
-            min-width: 300px; 
-            display: flex; 
-            align-items: center; 
-            gap: 20px; 
-        }
+        /* Logo y Texto descriptivo */
+        .footer-about { flex: 2; min-width: 300px; display: flex; align-items: center; gap: 20px; }
         .footer-logo { height: 60px; width: auto; }
         .footer-text { font-size: 0.95rem; line-height: 1.5; color: #ccc; margin: 0; }
 
-        /* Contenedor de Métodos de Pago */
+        /* Métodos de Pago */
         .footer-payments { 
-            flex: 1; 
-            min-width: 250px; 
-            text-align: right; /* Alinea contenido a la derecha en PC */
-            display: flex; 
-            flex-direction: column; 
-            align-items: flex-end; /* Alinea el título y la imagen a la derecha */
+            flex: 1; min-width: 250px; 
+            text-align: right; 
+            display: flex; flex-direction: column; align-items: flex-end; 
         }
         .footer-payments h3 { font-size: 1.1rem; margin: 0 0 10px 0; color: #b388ff; }
-        .payment-img { width: 100%; max-width: 300px; height: auto; border-radius: 5px; }
+        
+        /* TAMAÑO DE IMAGEN DE PAGOS */
+        .payment-img { 
+            width: 100%; 
+            max-width: 150px; /* CAMBIAR ESTE VALOR para ajustar el tamaño de los logos de pago */
+            height: auto; border-radius: 5px; 
+        }
 
         .footer-bottom { 
             width: 90%; max-width: 1200px; margin: 30px auto 0 auto; 
@@ -132,7 +133,7 @@
             text-align: center; font-size: 0.85rem; color: #777; 
         }
 
-        /* --- AJUSTES PARA CELULAR --- */
+        /* --- RESPONSIVO --- */
         @media (max-width: 850px) {
             .footer-content { flex-direction: column; align-items: center; text-align: center; }
             .footer-about { flex-direction: column; text-align: center; }
