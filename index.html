@@ -5,152 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MistiPlay - Streaming</title>
     <style>
-        /* --- 1. FONDO DE LA PÁGINA (IMAGEN) --- */
+        /* --- 1. FONDO DE LA PÁGINA --- */
         body { 
-            font-family: 'Segoe UI', sans-serif; 
-            margin: 0; 
+            font-family: 'Segoe UI', sans-serif; margin: 0; 
             display: flex; flex-direction: column; align-items: center;
-            /* EDITABLE: El valor 0.1 controla la oscuridad del velo sobre la imagen */
             background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('fondo.jpg'); 
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed; 
-            background-repeat: no-repeat; 
-            background-color: black; 
+            background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; background-color: black; 
         }
 
-        /* --- 2. ENCABEZADO (DEGRADADO Y POSICIÓN) --- */
+        /* --- 2. ENCABEZADO (HEADER) --- */
         header { 
             width: 100%; 
-            /* EDITABLE: Cambia los códigos hexadecimales (#) para variar los colores del degradado */
             background: linear-gradient(90deg, #8b5cf6 0%, #a78bfa 30%, #93c5fd 70%, #60a5fa 100%);
-            padding: 15px 0; 
-            display: flex; 
-            justify-content: flex-start; /* Alinea el icono a la izquierda */
-            position: sticky; top: 0; z-index: 1000; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            padding: 15px 0; display: flex; justify-content: flex-start; 
+            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .header-icon { 
-            height: 60px; /* EDITABLE: Altura del icono de la cabecera */
-            width: auto; 
-            margin-left: 5%; /* EDITABLE: Distancia desde el borde izquierdo */
-        }
+        .header-icon { height: 60px; width: auto; margin-left: 5%; } /* EDITABLE: Tamaño icono y posición */
 
-        /* --- 3. MODAL DE VIDEO (VENTANA EMERGENTE) --- */
+        /* --- 3. MODAL DE VIDEO --- */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 2000; }
-        .modal-container { 
-            position: relative; 
-            width: 75%; /* EDITABLE: Ancho de la ventana en móviles */
-            max-width: 320px; /* EDITABLE: Ancho máximo para mantener formato vertical */
-            background: #1a1a1a; 
-            padding: 25px 15px; 
-            border-radius: 20px; 
-            text-align: center; 
-            border: 2px solid #b388ff; 
-        }
+        .modal-container { position: relative; width: 75%; max-width: 320px; background: #1a1a1a; padding: 25px 15px; border-radius: 20px; text-align: center; border: 2px solid #b388ff; }
         .modal-video { width: 100%; border-radius: 10px; display: block; }
 
-        /* --- 4. ANIMACIÓN Y TÍTULO PRINCIPAL --- */
-        /* DEFINICIÓN DEL EFECTO DESVANECIDO (Fade In) */
+        /* --- 4. TÍTULO Y ANIMACIÓN --- */
         @keyframes fadeInEffect {
-            from { opacity: 0; transform: translateY(-20px); } /* Inicio: invisible y arriba */
-            to { opacity: 1; transform: translateY(0); }      /* Fin: visible y en su lugar */
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .title-container { 
-            width: 100%; 
-            padding: 20px 0; 
-            text-align: center; 
-            /* EDITABLE: '2s' es la velocidad. Cambia a '1s' para que sea más rápido */
-            animation: fadeInEffect 2s ease-out; 
+            width: 100%; padding: 20px 0; text-align: center; 
+            opacity: 0; /* Empieza invisible hasta que JavaScript active la clase */
         }
-        .main-title-img { 
-            width: 90%; 
-            max-width: 350px; /* EDITABLE: Tamaño máximo del logo central */
-            height: auto; 
+        
+        /* Esta clase se activará al cerrar el video */
+        .animate-title {
+            animation: fadeInEffect 2s ease-out forwards; /* EDITABLE: '2s' es la velocidad del desvanecido */
         }
 
-        /* --- 5. TARJETAS DE SERVICIOS (GRID) --- */
-        .container { 
-            display: grid; 
-            /* EDITABLE: '200px' define el ancho de cada tarjeta; ajusta cuántas entran por fila */
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-            gap: 20px; 
-            max-width: 1200px; width: 90%; padding: 20px 0 60px 0; 
-        }
-        .card { 
-            background: rgba(22, 22, 22, 0.8); /* EDITABLE: 0.8 controla la transparencia de la tarjeta */
-            backdrop-filter: blur(8px); /* EDITABLE: Intensidad del desenfoque tras la tarjeta */
-            border-radius: 20px; 
-            overflow: hidden; 
-            border: 1px solid #333; 
-            transition: 0.3s; 
-            text-align: center; cursor: pointer; 
-        }
+        .main-title-img { width: 90%; max-width: 350px; height: auto; } /* EDITABLE: Tamaño logo central */
+
+        /* --- 5. TARJETAS DE SERVICIOS --- */
+        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; max-width: 1200px; width: 90%; padding: 20px 0 60px 0; }
+        .card { background: rgba(22, 22, 22, 0.8); backdrop-filter: blur(8px); border-radius: 20px; overflow: hidden; border: 1px solid #333; transition: 0.3s; text-align: center; cursor: pointer; }
         .card:hover { transform: translateY(-10px); background: rgba(30, 30, 30, 0.9); }
         .card img { width: 100%; display: block; }
         
-        /* ESTILO DEL NOMBRE DEL SERVICIO */
-        .service-name { 
-            display: block; 
-            font-size: 1.1rem; /* EDITABLE: Tamaño de fuente del nombre */
-            font-weight: 600; 
-            color: #b388ff; /* EDITABLE: Color del nombre del servicio */
-            margin-top: 15px; 
-        }
-
-        /* ESTILO DEL PRECIO */
-        .price { 
-            font-size: 1.3rem; /* EDITABLE: Tamaño de fuente del precio */
-            font-weight: bold; 
-            padding: 5px 15px 15px 15px; 
-            display: block; 
-            color: white; 
-        }
-
-        /* BOTÓN DE COMPRA */
-        .buy-btn { 
-            display: block; 
-            margin: 0 15px 15px; 
-            border: 1.5px solid white; 
-            color: white; 
-            padding: 7px 0; 
-            border-radius: 20px; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            font-size: 0.85rem; 
-        }
+        .service-name { display: block; font-size: 1.1rem; font-weight: 600; color: #b388ff; margin-top: 15px; } /* EDITABLE: Estilo nombre servicio */
+        .price { font-size: 1.3rem; font-weight: bold; padding: 5px 15px 15px 15px; display: block; color: white; } /* EDITABLE: Estilo precio */
+        .buy-btn { display: block; margin: 0 15px 15px; border: 1.5px solid white; color: white; padding: 7px 0; border-radius: 20px; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; }
 
         /* --- 6. PIE DE PÁGINA (FOOTER) --- */
-        footer { 
-            width: 100%; 
-            background-color: rgba(26, 26, 26, 0.95); 
-            padding: 10px 0 5px; /* EDITABLE: Margen interno del footer */
-            border-top: 1px solid #333; 
-            margin-top: 40px; 
-        }
-        .footer-content { 
-            max-width: 1200px; margin: 0 auto; width: 95%; 
-            display: flex; justify-content: space-between; align-items: center; 
-            flex-wrap: wrap; gap: 30px; 
-        }
-        .footer-logo { height: 60px; width: auto; } /* EDITABLE: Tamaño logo footer */
+        footer { width: 100%; background-color: rgba(26, 26, 26, 0.95); padding: 10px 0 5px; border-top: 1px solid #333; margin-top: 40px; }
+        .footer-content { max-width: 1200px; margin: 0 auto; width: 95%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px; }
+        .footer-logo { height: 60px; width: auto; }
         .footer-text { font-size: 0.95rem; line-height: 1.5; color: #ccc; margin: 0; flex: 2; min-width: 300px; }
         .footer-payments { flex: 1; text-align: right; display: flex; flex-direction: column; align-items: flex-end; min-width: 250px; }
-        .payment-img { width: 100%; max-width: 150px; height: auto; } /* EDITABLE: Tamaño imagen bancos */
-        
-        .footer-bottom { 
-            text-align: center; border-top: 1px solid #333; 
-            margin-top: 10px; /* EDITABLE: Espacio arriba de la línea de copyright */
-            padding-top: 10px; /* EDITABLE: Espacio abajo de la línea de copyright */
-            color: #777; font-size: 0.85rem; width: 100%; 
-        }
+        .payment-img { width: 100%; max-width: 150px; height: auto; }
+        .footer-bottom { text-align: center; border-top: 1px solid #333; margin-top: 10px; padding-top: 10px; color: #777; font-size: 0.85rem; width: 100%; }
 
-        /* AJUSTES PARA MÓVILES */
         @media (max-width: 600px) {
             .container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .footer-content { flex-direction: column; text-align: center; }
-            header { justify-content: center; } /* Centra el logo en móviles */
+            header { justify-content: center; }
             .header-icon { margin-left: 0; }
         }
     </style>
@@ -166,11 +83,9 @@
         </div>
     </div>
 
-    <header>
-        <img src="icono.png" class="header-icon" alt="MistiPlay Icono">
-    </header>
+    <header><img src="icono.png" class="header-icon" alt="MistiPlay Icono"></header>
 
-    <div class="title-container">
+    <div class="title-container" id="mainTitle">
         <img src="titulo.png" class="main-title-img">
     </div>
 
@@ -211,12 +126,20 @@
 
     <script>
         function irWA(s) {
-            // EDITABLE: Cambia el número entre comillas por tu número de WhatsApp
             const n = "51923666291";
             const m = encodeURIComponent("Hola MistiPlay, deseo comprar un perfil de " + s);
             window.open("https://wa.me/" + n + "?text=" + m, '_blank');
         }
-        function cerrarModal() { document.getElementById('videoModal').style.display='none'; document.getElementById('videoPlayer').pause(); }
+
+        // FUNCIÓN MODIFICADA: Al cerrar el video, activa la animación del título
+        function cerrarModal() { 
+            document.getElementById('videoModal').style.display = 'none'; 
+            document.getElementById('videoPlayer').pause(); 
+            
+            // Añade la clase de animación al título
+            document.getElementById('mainTitle').classList.add('animate-title');
+        }
+
         function alternarSonido() {
             var v=document.getElementById('videoPlayer'), b=document.getElementById('audioBtn');
             if(v.muted){ v.muted=false; b.innerHTML="🔇 Silenciar"; } else { v.muted=true; b.innerHTML="🔊 Activar Sonido"; }
