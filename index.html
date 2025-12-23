@@ -10,62 +10,66 @@
             font-family: 'Segoe UI', sans-serif; 
             margin: 0; 
             display: flex; flex-direction: column; align-items: center;
-            
-            /* EDITABLE: Cambia 'fondo.jpg' por el nombre de tu imagen */
             background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('fondo.jpg'); 
-            
-            /* EDITABLE: Ajustes de la imagen para que no se repita y cubra todo */
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed; /* Mantiene la imagen quieta al hacer scroll */
-            background-repeat: no-repeat;
-            background-color: black; /* Color de respaldo */
+            background-size: cover; background-position: center; background-attachment: fixed; 
+            background-repeat: no-repeat; background-color: black; 
         }
 
-        /* --- 2. ENCABEZADO (HEADER) --- */
+        /* --- 2. ENCABEZADO (CON DEGRADADO Y ALINEACIÓN IZQUIERDA) --- */
         header { 
-            width: 100%; background-color: rgba(26, 26, 26, 0.9); 
-            padding: 10px 0; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; 
+            width: 100%; 
+            /* EDITABLE: Degradado de fondo (morado a azul claro según tu imagen) */
+            background: linear-gradient(90deg, #8b5cf6 0%, #a78bfa 30%, #93c5fd 70%, #60a5fa 100%);
+            padding: 15px 0; 
+            display: flex; 
+            justify-content: flex-start; /* EDITABLE: Alinea el contenido a la IZQUIERDA */
+            position: sticky; top: 0; z-index: 1000; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .header-icon { height: 60px; width: auto; } /* EDITABLE: Tamaño icono arriba */
+        .header-icon { 
+            height: 50px; /* EDITABLE: Tamaño del icono */
+            width: auto; 
+            margin-left: 5%; /* EDITABLE: Espacio desde el borde izquierdo */
+        }
 
         /* --- 3. MODAL DE VIDEO (VENTANA EMERGENTE) --- */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 2000; }
-        .modal-container { 
-            position: relative; width: 85%; max-width: 320px; 
-            background: #1a1a1a; padding: 25px 15px; border-radius: 20px; text-align: center; border: 2px solid #b388ff; 
-        }
+        .modal-container { position: relative; width: 85%; max-width: 320px; background: #1a1a1a; padding: 25px 15px; border-radius: 20px; text-align: center; border: 2px solid #b388ff; }
         .modal-video { width: 100%; border-radius: 10px; display: block; }
 
         /* --- 4. TÍTULO PRINCIPAL --- */
         .title-container { width: 100%; padding: 20px 0; text-align: center; }
-        .main-title-img { width: 90%; max-width: 350px; height: auto; } /* EDITABLE: Tamaño logo central */
+        .main-title-img { width: 90%; max-width: 350px; height: auto; }
 
         /* --- 5. TARJETAS DE SERVICIOS --- */
         .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; max-width: 1200px; width: 90%; padding: 20px 0 60px 0; }
-        .card { 
-            background: rgba(22, 22, 22, 0.8); /* Fondo semi-transparente para que se vea el fondo atrás */
-            backdrop-filter: blur(8px); /* Efecto de desenfoque detrás de la tarjeta */
-            border-radius: 20px; overflow: hidden; border: 1px solid #333; transition: 0.3s; text-align: center; cursor: pointer; 
-        }
+        .card { background: rgba(22, 22, 22, 0.8); backdrop-filter: blur(8px); border-radius: 20px; overflow: hidden; border: 1px solid #333; transition: 0.3s; text-align: center; cursor: pointer; }
         .card:hover { transform: translateY(-10px); background: rgba(30, 30, 30, 0.9); }
         .card img { width: 100%; display: block; }
         .price { font-size: 1.3rem; font-weight: bold; padding: 15px; display: block; color: white; }
         .buy-btn { display: block; margin: 0 15px 15px; border: 1.5px solid white; color: white; padding: 7px 0; border-radius: 20px; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; }
 
-        /* --- 6. PIE DE PÁGINA (FOOTER) --- */
-        footer { width: 100%; background-color: rgba(26, 26, 26, 0.95); padding: 10px 0 10px; border-top: 1px solid #333; margin-top: 40px; }
+        /* --- 6. PIE DE PÁGINA (FOOTER COMPACTO) --- */
+        footer { width: 100%; background-color: rgba(26, 26, 26, 0.95); padding: 10px 0 5px; border-top: 1px solid #333; margin-top: 40px; }
         .footer-content { max-width: 1200px; margin: 0 auto; width: 95%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px; }
-        .footer-logo { height: 60px; width: auto; } /* EDITABLE: Tamaño logo footer */
+        .footer-logo { height: 60px; width: auto; }
         .footer-text { font-size: 0.95rem; line-height: 1.5; color: #ccc; margin: 0; flex: 2; min-width: 300px; }
         .footer-payments { flex: 1; text-align: right; display: flex; flex-direction: column; align-items: flex-end; min-width: 250px; }
-        .payment-img { width: 100%; max-width: 150px; height: auto; } /* EDITABLE: Tamaño imagen bancos */
-        .footer-bottom { text-align: center; border-top: 1px solid #333; margin-top: 10px; padding-top: 10px; color: #777; font-size: 0.85rem; width: 100%; }
+        .payment-img { width: 100%; max-width: 150px; height: auto; }
+        
+        .footer-bottom { 
+            text-align: center; border-top: 1px solid #333; 
+            margin-top: 10px; /* Reducido para que la línea esté más arriba */
+            padding-top: 10px; /* Reducido para compactar el texto */
+            color: #777; font-size: 0.85rem; width: 100%; 
+        }
 
         @media (max-width: 600px) {
             .container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .footer-content { flex-direction: column; text-align: center; }
             .footer-payments { align-items: center; }
+            header { justify-content: center; } /* En móvil el icono se centra para mejor vista */
+            .header-icon { margin-left: 0; }
         }
     </style>
 </head>
@@ -80,7 +84,9 @@
         </div>
     </div>
 
-    <header><img src="icono.png" class="header-icon"></header>
+    <header>
+        <img src="icono.png" class="header-icon" alt="MistiPlay Icono">
+    </header>
 
     <div class="title-container">
         <img src="titulo.png" class="main-title-img">
@@ -127,7 +133,7 @@
         function cerrarModal() { document.getElementById('videoModal').style.display='none'; document.getElementById('videoPlayer').pause(); }
         function alternarSonido() {
             var v=document.getElementById('videoPlayer'), b=document.getElementById('audioBtn');
-            if(v.muted){ v.muted=false; b.innerHTML="制 Silenciar"; } else { v.muted=true; b.innerHTML="🔊 Activar Sonido"; }
+            if(v.muted){ v.muted=false; b.innerHTML="🔇 Silenciar"; } else { v.muted=true; b.innerHTML="🔊 Activar Sonido"; }
         }
     </script>
 </body>
