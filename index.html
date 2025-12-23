@@ -5,63 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MistiPlay - Streaming</title>
     <style>
-        /* --- 1. VIDEO DE FONDO (BACKGRUND VIDEO) --- */
-        #bg-video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            z-index: -1; /* Lo envía al fondo de todo */
-            object-fit: cover; /* Asegura que cubra toda la pantalla sin deformarse */
-            filter: brightness(80%); /* EDITABLE: Oscurece el video de fondo para que se lea bien el texto */
-        }
-
-        /* --- 2. CONFIGURACIÓN GENERAL --- */
+        /* --- 1. CONFIGURACIÓN DE LA IMAGEN DE FONDO --- */
         body { 
             font-family: 'Segoe UI', sans-serif; 
-            margin: 0; display: flex; flex-direction: column; align-items: center;
-            background-color: black; /* Color de respaldo si el video no carga */
+            margin: 0; 
+            display: flex; flex-direction: column; align-items: center;
+            
+            /* EDITABLE: Cambia 'fondo.jpg' por el nombre de tu imagen */
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('fondo.jpg'); 
+            
+            /* EDITABLE: Ajustes de la imagen para que no se repita y cubra todo */
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed; /* Mantiene la imagen quieta al hacer scroll */
+            background-repeat: no-repeat;
+            background-color: black; /* Color de respaldo */
         }
 
-        /* --- 3. ENCABEZADO (HEADER) --- */
+        /* --- 2. ENCABEZADO (HEADER) --- */
         header { 
-            width: 100%; background-color: rgba(26, 26, 26, 0.8); /* Transparente para ver el video */
+            width: 100%; background-color: rgba(26, 26, 26, 0.9); 
             padding: 10px 0; display: flex; justify-content: center; position: sticky; top: 0; z-index: 1000; 
         }
         .header-icon { height: 60px; width: auto; } /* EDITABLE: Tamaño icono arriba */
 
-        /* --- 4. MODAL DE VIDEO (VENTANA EMERGENTE) --- */
+        /* --- 3. MODAL DE VIDEO (VENTANA EMERGENTE) --- */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 2000; }
         .modal-container { 
-            position: relative; width: 85%; max-width: 320px; /* EDITABLE: Ancho video vertical */
+            position: relative; width: 85%; max-width: 320px; 
             background: #1a1a1a; padding: 25px 15px; border-radius: 20px; text-align: center; border: 2px solid #b388ff; 
         }
         .modal-video { width: 100%; border-radius: 10px; display: block; }
 
-        /* --- 5. TÍTULO PRINCIPAL --- */
+        /* --- 4. TÍTULO PRINCIPAL --- */
         .title-container { width: 100%; padding: 20px 0; text-align: center; }
         .main-title-img { width: 90%; max-width: 350px; height: auto; } /* EDITABLE: Tamaño logo central */
 
-        /* --- 6. TARJETAS DE SERVICIOS --- */
+        /* --- 5. TARJETAS DE SERVICIOS --- */
         .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; max-width: 1200px; width: 90%; padding: 20px 0 60px 0; }
         .card { 
-            background: rgba(22, 22, 22, 0.7); /* Fondo semi-transparente para ver el video atrás */
-            backdrop-filter: blur(5px); /* Efecto de desenfoque en la tarjeta */
+            background: rgba(22, 22, 22, 0.8); /* Fondo semi-transparente para que se vea el fondo atrás */
+            backdrop-filter: blur(8px); /* Efecto de desenfoque detrás de la tarjeta */
             border-radius: 20px; overflow: hidden; border: 1px solid #333; transition: 0.3s; text-align: center; cursor: pointer; 
         }
-        .card:hover { transform: translateY(-10px); background: rgba(22, 22, 22, 0.9); }
+        .card:hover { transform: translateY(-10px); background: rgba(30, 30, 30, 0.9); }
         .card img { width: 100%; display: block; }
         .price { font-size: 1.3rem; font-weight: bold; padding: 15px; display: block; color: white; }
         .buy-btn { display: block; margin: 0 15px 15px; border: 1.5px solid white; color: white; padding: 7px 0; border-radius: 20px; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; }
 
-        /* --- 7. PIE DE PÁGINA (FOOTER) --- */
-        footer { width: 100%; background-color: rgba(26, 26, 26, 0.9); padding: 40px 0 20px; border-top: 1px solid #333; margin-top: 40px; }
+        /* --- 6. PIE DE PÁGINA (FOOTER) --- */
+        footer { width: 100%; background-color: rgba(26, 26, 26, 0.95); padding: 40px 0 20px; border-top: 1px solid #333; margin-top: 40px; }
         .footer-content { max-width: 1200px; margin: 0 auto; width: 95%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px; }
-        .footer-logo { height: 60px; width: auto; }
+        .footer-logo { height: 60px; width: auto; } /* EDITABLE: Tamaño logo footer */
         .footer-text { font-size: 0.95rem; line-height: 1.5; color: #ccc; margin: 0; flex: 2; min-width: 300px; }
         .footer-payments { flex: 1; text-align: right; display: flex; flex-direction: column; align-items: flex-end; min-width: 250px; }
-        .payment-img { width: 100%; max-width: 150px; height: auto; } /* EDITABLE: Tamaño logos bancos */
+        .payment-img { width: 100%; max-width: 150px; height: auto; } /* EDITABLE: Tamaño imagen bancos */
         .footer-bottom { text-align: center; border-top: 1px solid #333; margin-top: 30px; padding-top: 20px; color: #777; font-size: 0.85rem; width: 100%; }
 
         @media (max-width: 600px) {
@@ -72,10 +70,6 @@
     </style>
 </head>
 <body>
-
-    <video autoplay muted loop playsinline id="bg-video">
-        <source src="fondo.mp4" type="video/mp4">
-    </video>
 
     <div class="overlay" id="videoModal">
         <div class="modal-container">
@@ -133,7 +127,7 @@
         function cerrarModal() { document.getElementById('videoModal').style.display='none'; document.getElementById('videoPlayer').pause(); }
         function alternarSonido() {
             var v=document.getElementById('videoPlayer'), b=document.getElementById('audioBtn');
-            if(v.muted){ v.muted=false; b.innerHTML="🔇 Silenciar"; } else { v.muted=true; b.innerHTML="🔊 Activar Sonido"; }
+            if(v.muted){ v.muted=false; b.innerHTML="制 Silenciar"; } else { v.muted=true; b.innerHTML="🔊 Activar Sonido"; }
         }
     </script>
 </body>
