@@ -58,7 +58,6 @@
         .full-width-section { width: 100%; overflow: hidden; background-color: #000; position: relative; }
         .hero-img { width: 100%; height: auto; display: block; max-width: 2560px; margin: 0 auto; }
 
-        /* Carrusel Renombrado (Evita bloqueos) */
         .promo-slider { width: 100%; overflow: hidden; background-color: #000; position: relative; height: 400px; }
         .promo-track { display: flex; height: 100%; transition: transform 0.8s ease-in-out; width: 200%; transform: translateX(-50%); }
         .promo-slide { width: 50%; height: 100%; position: relative; }
@@ -78,17 +77,25 @@
         .btn-blue { background-color: var(--primary-blue); }
         .btn-red { background-color: #dc3545; }
 
-        /* --- 4. SERVICIOS --- */
+        /* --- 4. SERVICIOS Y ANIMACIÓN --- */
         .main-container { max-width: 1300px; margin: 30px auto; width: 95%; box-sizing: border-box; }
         .services-box { background-color: var(--card-container-bg); border-radius: 20px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
         .section-title { font-size: 1.5rem; font-weight: 800; color: #1e293b; text-transform: uppercase; margin-bottom: 10px; display: block; }
         .section-divider { border: none; height: 2px; background-color: #cbd5e1; width: 100%; margin-bottom: 30px; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
 
-        .card { background-color: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #2a475e; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; }
-        .card:hover { transform: translateY(-8px); border-color: var(--primary-blue); }
+        /* Tarjeta con Animación Reforzada */
+        .card { 
+            background-color: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #2a475e; 
+            cursor: pointer; transition: transform 0.4s ease, border-color 0.3s ease, opacity 0.5s ease; 
+            display: flex; flex-direction: column;
+            opacity: 0; transform: translateY(30px); /* Estado inicial */
+        }
+        .card.is-visible { opacity: 1; transform: translateY(0); } /* Estado final */
+        .card:hover { transform: translateY(-8px) !important; border-color: var(--primary-blue); }
         .card.agotado { opacity: 0.7; cursor: not-allowed; }
-        .card-img-container { width: 100%; aspect-ratio: 1601 / 1656; overflow: hidden; background: #000; }
+        
+        .card-img-container { width: 100%; aspect-ratio: 1601/1656; overflow: hidden; background: #000; }
         .card-img { width: 100%; height: 100%; object-fit: contain; display: block; }
         .card-body { padding: 18px; background-color: #0f1720; color: white; }
         .status-badge { font-size: 0.65rem; padding: 4px 10px; border-radius: 4px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
@@ -96,17 +103,19 @@
         .status-agotado { background-color: #dc3545; }
         .service-name { font-weight: 700; margin-bottom: 15px; display: block; font-size: 1.1rem; }
         .purchase-area { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1e293b; padding-top: 12px; }
-        .price-box { display: flex; flex-direction: column; }
         .price-value { color: var(--primary-blue); font-weight: 800; font-size: 1.2rem; }
         .buy-btn { background-color: var(--primary-blue); color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.8rem; font-weight: 900; text-transform: uppercase; }
 
-        /* --- 5. WSP Y FOOTER --- */
+        /* --- 5. WHATSAPP FLOTANTE --- */
         .wsp-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; align-items: center; }
         .wsp-tooltip { background-color: #111827; color: white; padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; margin-right: 15px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; }
-        .wsp-btn { width: 60px; height: 60px; display: block; }
+        .wsp-btn { width: 60px; height: 60px; display: block; transition: 0.3s; }
+        .wsp-btn img { width: 100%; height: 100%; display: block; }
         .wsp-container:hover .wsp-tooltip { opacity: 1; visibility: visible; }
+        .wsp-btn:hover { transform: scale(1.1); }
+
         footer { background-color: var(--header-footer-bg); padding: 40px 0; text-align: center; border-top: 2px solid var(--primary-blue); }
-        .payment-img { height: 30px; width: auto; margin: 0 auto 25px auto; display: block; }
+        .payment-img { height: 30px; width: auto; margin: 0 auto 20px auto; display: block; }
 
         @media (max-width: 768px) {
             .navbar { height: 60px; padding: 0 15px; justify-content: space-between; }
@@ -123,6 +132,7 @@
             .buy-btn { padding: 6px 10px; font-size: 0.7rem; }
             .info-btn-promo { padding: 8px 15px; font-size: 0.7rem; bottom: 10px; right: 10px; }
             .wsp-btn { width: 50px; height: 50px; }
+            .wsp-tooltip { display: none; }
         }
     </style>
 </head>
@@ -196,7 +206,7 @@
     <div class="wsp-container">
         <div class="wsp-tooltip">Chatea con nosotros</div>
         <a href="https://wa.me/51923666291?text=%C2%A1Hola%20Mistiplay!" target="_blank" class="wsp-btn">
-            <img src="wsp.png" alt="WA">
+            <img src="wsp.png" alt="WhatsApp">
         </a>
     </div>
 
@@ -238,9 +248,11 @@
         function render() {
             const grid = document.getElementById('grid-productos');
             grid.innerHTML = '';
-            servicios.forEach(s => {
+            
+            // Creamos las tarjetas
+            servicios.forEach((s) => {
                 const status = typeof stockData !== 'undefined' ? (stockData[s.n] || 'disponible') : 'disponible';
-                grid.insertAdjacentHTML('beforeend', `
+                const cardHtml = `
                     <div class="card ${status==='agotado'?'agotado':''}" ${status==='agotado' ? '' : `onclick="window.open('https://wa.me/51923666291?text=Hola Mistiplay, deseo ${s.n}', '_blank')"`}>
                         <div class="card-img-container"><img src="${s.i}" class="card-img"></div>
                         <div class="card-body">
@@ -251,12 +263,25 @@
                                 <div class="buy-btn">COMPRAR</div>
                             </div>
                         </div>
-                    </div>`);
+                    </div>`;
+                grid.insertAdjacentHTML('beforeend', cardHtml);
+            });
+
+            // Lógica de Animación Escalonada Reforzada
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('is-visible');
+                }, index * 100); // 100ms de retraso entre cada una
             });
         }
+
         document.getElementById('search').addEventListener('input', e => {
             const q = e.target.value.toLowerCase();
-            document.querySelectorAll('.card').forEach(c => c.style.display = c.querySelector('.service-name').innerText.toLowerCase().includes(q) ? 'flex' : 'none');
+            document.querySelectorAll('.card').forEach(c => {
+                const visible = c.querySelector('.service-name').innerText.toLowerCase().includes(q);
+                c.style.display = visible ? 'flex' : 'none';
+            });
         });
         render();
     </script>
