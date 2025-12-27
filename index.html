@@ -6,6 +6,7 @@
     <title>Mistiplay - Tienda Digital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* --- CONFIGURACIÓN DE COLORES (Variables) --- */
         :root {
             --primary-blue: #2596be; 
             --bg-page: #d1d5db;
@@ -26,10 +27,10 @@
             min-height: 100vh;
         }
 
-        /* --- 1. CABECERA --- */
+        /* --- 1. CABECERA (NAVBAR) --- */
         .navbar {
             background-color: var(--header-footer-bg);
-            height: 65px;
+            height: 65px; /* Altura de la barra en PC */
             display: flex;
             align-items: center;
             padding: 0 25px;
@@ -39,59 +40,67 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
         .nav-left { display: flex; align-items: center; }
-        .main-icon { height: 40px; width: auto; }
+        .main-icon { height: 40px; width: auto; } /* Tamaño del logo */
         .v-separator { color: #333; font-size: 1.5rem; margin: 0 15px; }
         .tab-item { color: white; text-decoration: none; font-weight: 700; font-size: 0.95rem; position: relative; padding: 20px 0; }
+        
+        /* Línea azul debajo del texto "Tienda" */
         .tab-item::after { content: ""; position: absolute; bottom: 5px; left: 0; width: 100%; height: 3px; background-color: var(--primary-blue); }
+        
         .nav-spacer { flex-grow: 1; }
         .nav-right { display: flex; align-items: center; }
         .social-links { display: flex; gap: 12px; margin-right: 20px; }
         .social-circle { width: 38px; height: 38px; background-color: #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; }
-        .social-circle:hover { background-color: var(--primary-blue); }
+        .social-circle:hover { background-color: var(--primary-blue); } /* Color al pasar el mouse por redes sociales */
+
         .search-box { position: relative; width: 280px; display: flex; align-items: center; }
         .search-input { width: 100%; background-color: #1a1a1a; border: 1px solid #333; border-radius: 25px; padding: 10px 45px 10px 20px; color: white; outline: none; }
         .search-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #ffffff; cursor: pointer; }
+        
         .currency-selector { background-color: white; color: black; display: flex; align-items: center; padding: 5px 12px; border-radius: 5px; font-weight: 800; font-size: 0.8rem; gap: 8px; }
         .flag { width: 20px; height: 14px; background: linear-gradient(90deg, #d91023 33%, #fff 33%, #fff 66%, #d91023 66%); border: 1px solid #ccc; }
 
-        /* --- 2. SECCIONES ANCHO COMPLETO --- */
+        /* --- 2. SECCIONES ANCHO COMPLETO (PORTADA Y PROMOS) --- */
         .full-width-section { width: 100%; overflow: hidden; background-color: #000; position: relative; }
         .hero-img { width: 100%; height: auto; display: block; max-width: 2560px; margin: 0 auto; }
 
-        .promo-slider { width: 100%; overflow: hidden; background-color: #000; position: relative; height: 400px; }
+        /* Ajustes del Slider */
+        .promo-slider { width: 100%; overflow: hidden; background-color: #000; position: relative; height: 450px; } /* Cambiar 400px para altura de banners en PC */
         .promo-track { display: flex; height: 100%; transition: transform 0.8s ease-in-out; width: 200%; transform: translateX(-50%); }
         .promo-slide { width: 50%; height: 100%; position: relative; }
         .promo-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+        /* Flechas del Slider */
         .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10; }
         .arrow-prev { left: 15px; } .arrow-next { right: 15px; }
+        
+        /* Botón verde "Más información" sobre el banner */
         .info-btn-promo { position: absolute; bottom: 20px; right: 20px; background-color: var(--primary-green); color: white; padding: 12px 24px; border-radius: 6px; font-size: 0.85rem; font-weight: 900; cursor: pointer; border: none; text-transform: uppercase; z-index: 11; }
 
-        /* --- 3. MODAL DE VIDEO --- */
+        /* --- 3. MODAL DE VIDEO (OVERLAY) --- */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 3000; }
         .modal-container { position: relative; width: 75%; max-width: 320px; background: #1a1a1a; padding: 25px 15px; border-radius: 20px; text-align: center; border: 2px solid #b388ff; }
         .modal-video { width: 100%; border-radius: 10px; display: block; margin-bottom: 20px; }
         .modal-buttons { display: flex; flex-direction: column; gap: 10px; }
         .btn-modal { display: flex; align-items: center; justify-content: center; gap: 10px; color: white; padding: 12px; border-radius: 8px; font-weight: 800; border: none; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; }
-        .btn-green { background-color: var(--primary-green); }
-        .btn-blue { background-color: var(--primary-blue); }
-        .btn-red { background-color: #dc3545; }
 
-        /* --- 4. SERVICIOS Y ANIMACIÓN --- */
+        /* --- 4. CONTENEDOR DE SERVICIOS --- */
         .main-container { max-width: 1300px; margin: 30px auto; width: 95%; box-sizing: border-box; }
         .services-box { background-color: var(--card-container-bg); border-radius: 20px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
         .section-title { font-size: 1.5rem; font-weight: 800; color: #1e293b; text-transform: uppercase; margin-bottom: 10px; display: block; }
         .section-divider { border: none; height: 2px; background-color: #cbd5e1; width: 100%; margin-bottom: 30px; }
+        
+        /* Cuadrícula de productos: minmax(240px...) controla cuántas tarjetas caben por fila */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
 
-        /* Tarjeta con Animación Reforzada */
+        /* --- 5. TARJETAS (CARDS) --- */
         .card { 
             background-color: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #2a475e; 
             cursor: pointer; transition: transform 0.4s ease, border-color 0.3s ease, opacity 0.5s ease; 
             display: flex; flex-direction: column;
-            opacity: 0; transform: translateY(30px); /* Estado inicial */
+            opacity: 0; transform: translateY(30px); /* Para el efecto de subida al cargar */
         }
-        .card.is-visible { opacity: 1; transform: translateY(0); } /* Estado final */
+        .card.is-visible { opacity: 1; transform: translateY(0); } /* Se activa con JS */
         .card:hover { transform: translateY(-8px) !important; border-color: var(--primary-blue); }
         .card.agotado { opacity: 0.7; cursor: not-allowed; }
         
@@ -99,40 +108,49 @@
         .card-img { width: 100%; height: 100%; object-fit: contain; display: block; }
         .card-body { padding: 18px; background-color: #0f1720; color: white; }
         .status-badge { font-size: 0.65rem; padding: 4px 10px; border-radius: 4px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
-        .status-disponible { background-color: #28a745; }
-        .status-agotado { background-color: #dc3545; }
-        .service-name { font-weight: 700; margin-bottom: 15px; display: block; font-size: 1.1rem; }
+        
         .purchase-area { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1e293b; padding-top: 12px; }
         .price-value { color: var(--primary-blue); font-weight: 800; font-size: 1.2rem; }
         .buy-btn { background-color: var(--primary-blue); color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.8rem; font-weight: 900; text-transform: uppercase; }
 
-        /* --- 5. WHATSAPP FLOTANTE --- */
+        /* --- 6. WHATSAPP FLOTANTE --- */
         .wsp-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; align-items: center; }
         .wsp-tooltip { background-color: #111827; color: white; padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; margin-right: 15px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; }
         .wsp-btn { width: 60px; height: 60px; display: block; transition: 0.3s; }
         .wsp-btn img { width: 100%; height: 100%; display: block; }
         .wsp-container:hover .wsp-tooltip { opacity: 1; visibility: visible; }
-        .wsp-btn:hover { transform: scale(1.1); }
 
+        /* --- 7. FOOTER Y REDES MÓVIL --- */
         footer { background-color: var(--header-footer-bg); padding: 40px 0; text-align: center; border-top: 2px solid var(--primary-blue); }
         .payment-img { height: 30px; width: auto; margin: 0 auto 20px auto; display: block; }
+        
+        /* Contenedor de redes en el footer (oculto en PC) */
+        .footer-socials-mobile { display: none; gap: 20px; justify-content: center; margin-bottom: 25px; }
+        .footer-socials-mobile a { color: white; font-size: 1.8rem; text-decoration: none; }
 
+        /* =========================================
+           8. RESPONSIVE (MÓVIL)
+           ========================================= */
         @media (max-width: 768px) {
             .navbar { height: 60px; padding: 0 15px; justify-content: space-between; }
+            /* Ocultamos elementos de PC para dejar solo logo y buscador */
             .v-separator, .tab-item, .nav-spacer, .social-links, .currency-selector { display: none !important; }
             .nav-right { width: 70%; display: flex; justify-content: flex-end; }
             .search-box { width: 100%; max-width: 220px; }
-            .promo-slider { height: 320px; }
+            
+            .promo-slider { height: 320px; } /* Altura de banners en celular */
             .main-container { margin: 15px auto; width: 98%; }
             .services-box { padding: 15px; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } /* 2 productos por fila en móvil */
+            
+            /* Mostramos las redes sociales al final en el footer solo en móvil */
+            .footer-socials-mobile { display: flex; }
+            
             .card-body { padding: 10px; }
             .service-name { font-size: 0.9rem; }
             .price-value { font-size: 1rem; }
             .buy-btn { padding: 6px 10px; font-size: 0.7rem; }
-            .info-btn-promo { padding: 8px 15px; font-size: 0.7rem; bottom: 10px; right: 10px; }
             .wsp-btn { width: 50px; height: 50px; }
-            .wsp-tooltip { display: none; }
         }
     </style>
 </head>
@@ -211,28 +229,42 @@
     </div>
 
     <footer>
+        <div class="footer-socials-mobile">
+            <a href="https://facebook.com/mistiplaygo" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/mistiplaygo" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://tiktok.com/@mistiplay" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
         <img src="metodosdepago.png" class="payment-img">
         <p style="color:#64748b; font-size:0.85rem;">© 2025 MistiPlay. Todos los derechos reservados.</p>
     </footer>
 
     <script src="stock.js"></script>
     <script>
+        /* --- Lógica del Carrusel --- */
         let currentSlide = 1;
         const track = document.getElementById('promo-track');
-        function moveSlide(dir) { currentSlide = (currentSlide + dir + 2) % 2; track.style.transform = `translateX(-${currentSlide * 50}%)`; }
-        setInterval(() => moveSlide(1), 10000);
+        function moveSlide(dir) { 
+            currentSlide = (currentSlide + dir + 2) % 2; 
+            track.style.transform = `translateX(-${currentSlide * 50}%)`; 
+        }
+        setInterval(() => moveSlide(1), 10000); // Tiempo de cambio (10 segundos)
 
+        /* --- Lógica del Video y Sonido --- */
         const modal = document.getElementById('videoModal');
         const video = document.getElementById('modalVideo');
         const muteIcon = document.getElementById('muteIcon');
         function openModal() { modal.style.display = 'flex'; video.play(); }
         function closeModal() { modal.style.display = 'none'; video.pause(); video.currentTime = 0; }
+        
         function toggleMute() {
             video.muted = !video.muted;
+            // Cambia el icono de volumen
             muteIcon.className = video.muted ? "fas fa-volume-mute" : "fas fa-volume-up";
+            // Cambia el texto del botón
             document.querySelector('#unmuteBtn span').innerText = video.muted ? "Activar Sonido" : "Desactivar Sonido";
         }
 
+        /* --- Listado de Servicios --- */
         const servicios = [
             {n: 'Netflix', p: '15.00', i: 'Netflix.jpg'}, {n: 'Disney+', p: '14.00', i: 'Disney.jpg'},
             {n: 'HBO Max', p: '8.00', i: 'Max.jpg'}, {n: 'Paramount+', p: '8.00', i: 'Paramount.jpg'},
@@ -245,11 +277,11 @@
             {n: 'Spotify', p: '13.00', i: 'Spotify.jpg'}, {n: 'Youtube Premium', p: '15.00', i: 'Youtube.jpg'}
         ];
 
+        /* --- Generación de Tarjetas y Animación --- */
         function render() {
             const grid = document.getElementById('grid-productos');
             grid.innerHTML = '';
             
-            // Creamos las tarjetas
             servicios.forEach((s) => {
                 const status = typeof stockData !== 'undefined' ? (stockData[s.n] || 'disponible') : 'disponible';
                 const cardHtml = `
@@ -267,15 +299,16 @@
                 grid.insertAdjacentHTML('beforeend', cardHtml);
             });
 
-            // Lógica de Animación Escalonada Reforzada
+            // Lógica de Animación Escalonada
             const cards = document.querySelectorAll('.card');
             cards.forEach((card, index) => {
                 setTimeout(() => {
                     card.classList.add('is-visible');
-                }, index * 100); // 100ms de retraso entre cada una
+                }, index * 100); // Retraso de 100ms entre cada tarjeta para que suban en cascada
             });
         }
 
+        /* --- Buscador en tiempo real --- */
         document.getElementById('search').addEventListener('input', e => {
             const q = e.target.value.toLowerCase();
             document.querySelectorAll('.card').forEach(c => {
@@ -283,6 +316,7 @@
                 c.style.display = visible ? 'flex' : 'none';
             });
         });
+
         render();
     </script>
 </body>
