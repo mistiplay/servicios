@@ -7,16 +7,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* =========================================
-           1. VARIABLES DE DISEÑO (Colores principales)
+           1. VARIABLES DE COLOR (Cambia esto para cambiar el tema)
            ========================================= */
         :root {
-            --primary-blue: #2596be;     /* Color de acento (Botones Compra, bordes) */
-            --bg-page: #d1d5db;          /* Fondo gris claro de toda la página */
-            --header-footer-bg: #111827; /* Negro azulado de Navbar y Footer */
-            --card-container-bg: #e2e8f0;/* Fondo del recuadro grande de productos */
-            --card-bg: #1f2937;          /* Fondo oscuro de cada tarjeta */
-            --text-white: #ffffff;
-            --primary-green: #28a745;    /* Verde para WhatsApp y botones de acción */
+            --primary-blue: #2596be;     /* Color de acento (Botones y bordes) */
+            --bg-page: #d1d5db;          /* Color de fondo de la web */
+            --header-footer-bg: #111827; /* Fondo oscuro de barras */
+            --card-container-bg: #e2e8f0;/* Fondo del recuadro de productos */
+            --card-bg: #1f2937;          /* Fondo oscuro de las tarjetas */
+            --primary-green: #28a745;    /* Verde para WhatsApp */
+            --error-red: #dc3545;       /* Rojo para el botón Cerrar */
         }
 
         body {
@@ -32,7 +32,7 @@
         /* --- 1. CABECERA (NAVBAR) --- */
         .navbar {
             background-color: var(--header-footer-bg);
-            height: 65px; /* Altura fija en PC */
+            height: 65px; /* Altura en PC */
             display: flex;
             align-items: center;
             padding: 0 25px;
@@ -41,7 +41,8 @@
             z-index: 1000;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .main-icon { height: 40px; width: auto; } /* Tamaño del logo principal */
+        .nav-left { display: flex; align-items: center; }
+        .main-icon { height: 40px; width: auto; } /* Tamaño del logo */
         .v-separator { color: #333; font-size: 1.5rem; margin: 0 15px; }
         .tab-item { 
             color: white; 
@@ -51,12 +52,16 @@
             position: relative; 
             padding: 20px 0; 
         }
-        /* Línea azul decorativa debajo de "Tienda" */
+        /* Línea azul bajo "Tienda" */
         .tab-item::after { content: ""; position: absolute; bottom: 5px; left: 0; width: 100%; height: 3px; background-color: var(--primary-blue); }
         
         .nav-spacer { flex-grow: 1; }
+        .nav-right { display: flex; align-items: center; }
+        
+        .social-links { display: flex; gap: 12px; margin-right: 20px; }
+        .social-circle { width: 38px; height: 38px; background-color: #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: 0.3s; }
+        .social-circle:hover { background-color: var(--primary-blue); }
 
-        /* Estilos del Buscador */
         .search-box { position: relative; width: 280px; display: flex; align-items: center; }
         .search-input {
             width: 100%;
@@ -68,8 +73,7 @@
             outline: none;
         }
         .search-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #ffffff; cursor: pointer; }
-
-        /* Selector de Moneda */
+        
         .currency-selector { background-color: white; color: black; display: flex; align-items: center; padding: 5px 12px; border-radius: 5px; font-weight: 800; font-size: 0.8rem; gap: 8px; }
         .flag { width: 20px; height: 14px; background: linear-gradient(90deg, #d91023 33%, #fff 33%, #fff 66%, #d91023 66%); border: 1px solid #ccc; }
 
@@ -77,39 +81,30 @@
         .full-width-section { width: 100%; overflow: hidden; background-color: #000; position: relative; }
         .hero-img { width: 100%; height: auto; display: block; max-width: 2560px; margin: 0 auto; }
 
-        /* Carrusel / Slider de Promociones */
-        .promo-slider { width: 100%; overflow: hidden; background-color: #000; position: relative; height: 400px; } /* Cambiar 400px para altura en PC */
+        /* Slider / Carrusel */
+        .promo-slider { width: 100%; overflow: hidden; background-color: #000; position: relative; height: 400px; } /* Cambia 400px para la altura del banner */
         .promo-track { display: flex; height: 100%; transition: transform 0.8s ease-in-out; width: 200%; transform: translateX(-50%); }
         .promo-slide { width: 50%; height: 100%; position: relative; }
         .promo-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        /* Flechas del carrusel */
         .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10; }
         .arrow-prev { left: 15px; } .arrow-next { right: 15px; }
         
-        /* Botón verde de información en el carrusel */
         .info-btn-promo { position: absolute; bottom: 20px; right: 20px; background-color: var(--primary-green); color: white; padding: 12px 24px; border-radius: 6px; font-size: 0.85rem; font-weight: 900; cursor: pointer; border: none; text-transform: uppercase; z-index: 11; }
 
-        /* --- 3. MODAL DE VIDEO (ESTRUCTURA DE BOTONES CORREGIDA) --- */
+        /* --- 3. MODAL DE VIDEO (OVERLAY) --- */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 3000; }
-        .modal-container { 
-            position: relative; width: 75%; max-width: 320px; 
-            background: #1a1a1a; padding: 25px 15px; border-radius: 20px; 
-            text-align: center; border: 2px solid #b388ff; 
-        }
+        .modal-container { position: relative; width: 75%; max-width: 320px; background: #1a1a1a; padding: 25px 15px; border-radius: 20px; text-align: center; border: 2px solid #b388ff; }
         .modal-video { width: 100%; border-radius: 10px; display: block; margin-bottom: 20px; }
-        .modal-buttons { display: flex; flex-direction: column; gap: 10px; }
         
-        /* Estilos base de botones del modal */
-        .btn-modal { 
-            display: flex; align-items: center; justify-content: center; gap: 10px; 
-            color: white; padding: 12px; border-radius: 8px; font-weight: 800; 
-            border: none; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; 
-        }
-        /* Colores específicos de botones del vídeo */
-        .btn-blue  { background-color: var(--primary-blue); } /* Activar Sonido */
-        .btn-green { background-color: var(--primary-green); } /* Más Información */
-        .btn-red   { background-color: #dc3545; }             /* Cerrar */
+        /* Botones del Video (Corregidos) */
+        .modal-buttons { display: flex; flex-direction: column; gap: 10px; }
+        .btn-modal { display: flex; align-items: center; justify-content: center; gap: 10px; color: white; padding: 12px; border-radius: 8px; font-weight: 800; border: none; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; }
+        
+        /* Colores específicos de botones */
+        .btn-blue { background-color: var(--primary-blue); }   /* Botón Sonido */
+        .btn-green { background-color: var(--primary-green); } /* Botón WhatsApp */
+        .btn-red { background-color: var(--error-red); }      /* Botón Cerrar */
 
         /* --- 4. CONTENEDOR DE PRODUCTOS --- */
         .main-container { max-width: 1300px; margin: 30px auto; width: 95%; box-sizing: border-box; }
@@ -117,30 +112,26 @@
         .section-title { font-size: 1.5rem; font-weight: 800; color: #1e293b; text-transform: uppercase; margin-bottom: 10px; display: block; }
         .section-divider { border: none; height: 2px; background-color: #cbd5e1; width: 100%; margin-bottom: 30px; }
         
-        /* Grilla: auto-fill decide cuántos productos entran según el ancho */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
 
-        /* Estilos de la Tarjeta (Card) con Animación */
+        /* Tarjeta de Producto con Animación */
         .card { 
             background-color: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #2a475e; 
             cursor: pointer; transition: transform 0.4s ease, border-color 0.3s ease, opacity 0.5s ease; 
             display: flex; flex-direction: column;
-            /* Estos valores permiten el efecto de subida al cargar */
-            opacity: 0; transform: translateY(30px); 
+            opacity: 0; transform: translateY(30px); /* Para el efecto de subida */
         }
-        .card.is-visible { opacity: 1; transform: translateY(0); } /* Estado final tras cargar */
+        .card.is-visible { opacity: 1; transform: translateY(0); }
         .card:hover { transform: translateY(-8px) !important; border-color: var(--primary-blue); }
         .card.agotado { opacity: 0.7; cursor: not-allowed; }
-
+        
         .card-img-container { width: 100%; aspect-ratio: 1601/1656; overflow: hidden; background: #000; }
         .card-img { width: 100%; height: 100%; object-fit: contain; display: block; }
         .card-body { padding: 18px; background-color: #0f1720; color: white; }
-        
-        /* Badge de Stock (Disponible/Agotado) */
         .status-badge { font-size: 0.65rem; padding: 4px 10px; border-radius: 4px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
         .status-disponible { background-color: #28a745; }
         .status-agotado { background-color: #dc3545; }
-
+        
         .purchase-area { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1e293b; padding-top: 12px; }
         .price-value { color: var(--primary-blue); font-weight: 800; font-size: 1.2rem; }
         .buy-btn { background-color: var(--primary-blue); color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.8rem; font-weight: 900; text-transform: uppercase; }
@@ -151,29 +142,29 @@
         .wsp-btn { width: 60px; height: 60px; display: block; transition: 0.3s; }
         .wsp-btn img { width: 100%; height: 100%; display: block; }
         .wsp-container:hover .wsp-tooltip { opacity: 1; visibility: visible; }
+        .wsp-btn:hover { transform: scale(1.1); }
 
-        /* --- 6. FOOTER Y REDES MÓVIL --- */
+        /* --- 6. PIE DE PÁGINA (FOOTER) --- */
         footer { background-color: var(--header-footer-bg); padding: 40px 0; text-align: center; border-top: 2px solid var(--primary-blue); }
         .payment-img { height: 30px; width: auto; margin: 0 auto 20px auto; display: block; }
         
-        /* Contenedor de redes para móvil (oculto en PC) */
+        /* Redes Sociales en Footer (Solo Móvil) */
         .footer-socials-mobile { display: none; gap: 20px; justify-content: center; margin-bottom: 25px; }
-        .footer-socials-mobile a { color: white; font-size: 1.8rem; }
+        .footer-socials-mobile a { color: white; font-size: 1.8rem; text-decoration: none; }
 
-        /* --- 7. MÓVIL (AJUSTES EXCLUSIVOS) --- */
+        /* --- 7. AJUSTES RESPONSIVE (MÓVIL) --- */
         @media (max-width: 768px) {
             .navbar { height: 60px; padding: 0 15px; justify-content: space-between; }
-            /* Dejar solo Logo y Buscador */
             .v-separator, .tab-item, .nav-spacer, .social-links, .currency-selector { display: none !important; }
             .nav-right { width: 70%; display: flex; justify-content: flex-end; }
             .search-box { width: 100%; max-width: 220px; }
             
-            .promo-slider { height: 320px; } /* Altura reducida en móvil */
+            .promo-slider { height: 320px; } /* Altura en celular */
             .main-container { margin: 15px auto; width: 98%; }
             .services-box { padding: 15px; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } /* 2 Columnas fijas */
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } /* 2 columnas fijas */
             
-            .footer-socials-mobile { display: flex; } /* Mostrar redes en el pie de página */
+            .footer-socials-mobile { display: flex; } /* Aparecen redes sociales abajo */
             
             .card-body { padding: 10px; }
             .service-name { font-size: 0.9rem; }
@@ -181,6 +172,7 @@
             .buy-btn { padding: 6px 10px; font-size: 0.7rem; }
             .info-btn-promo { padding: 8px 15px; font-size: 0.7rem; bottom: 10px; right: 10px; }
             .wsp-btn { width: 50px; height: 50px; }
+            .wsp-tooltip { display: none; }
         }
     </style>
 </head>
@@ -195,9 +187,9 @@
         <div class="nav-spacer"></div>
         <div class="nav-right">
             <div class="social-links">
-                <a href="https://facebook.com/mistiplaygo" target="_blank" style="color:white; margin-right:12px;"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://instagram.com/mistiplaygo" target="_blank" style="color:white; margin-right:12px;"><i class="fab fa-instagram"></i></a>
-                <a href="https://tiktok.com/@mistiplay" target="_blank" style="color:white;"><i class="fab fa-tiktok"></i></a>
+                <a href="https://facebook.com/mistiplaygo" target="_blank" class="social-circle"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com/mistiplaygo" target="_blank" class="social-circle"><i class="fab fa-instagram"></i></a>
+                <a href="https://tiktok.com/@mistiplay" target="_blank" class="social-circle"><i class="fab fa-tiktok"></i></a>
             </div>
             <div class="search-box">
                 <input id="search" type="text" class="search-input" placeholder="Buscar productos...">
@@ -276,45 +268,68 @@
 
     <script src="stock.js"></script>
     <script>
-        /* --- Lógica del carrusel: cambia cada 10 seg. --- */
+        /* =========================================
+           LÓGICA DEL CARRUSEL
+           ========================================= */
         let currentSlide = 1;
         const track = document.getElementById('promo-track');
-        function moveSlide(dir) { currentSlide = (currentSlide + dir + 2) % 2; track.style.transform = `translateX(-${currentSlide * 50}%)`; }
-        setInterval(() => moveSlide(1), 10000);
+        function moveSlide(dir) { 
+            currentSlide = (currentSlide + dir + 2) % 2; 
+            track.style.transform = `translateX(-${currentSlide * 50}%)`; 
+        }
+        setInterval(() => moveSlide(1), 10000); // Cambio automático cada 10 segundos
 
-        /* --- Lógica del Modal (Video y Sonido) --- */
+        /* =========================================
+           LÓGICA DEL VIDEO (MODAL)
+           ========================================= */
         const modal = document.getElementById('videoModal');
         const video = document.getElementById('modalVideo');
         const muteIcon = document.getElementById('muteIcon');
+        
         function openModal() { modal.style.display = 'flex'; video.play(); }
         function closeModal() { modal.style.display = 'none'; video.pause(); video.currentTime = 0; }
         
         function toggleMute() {
             video.muted = !video.muted;
+            // Cambia el icono y el texto dinámicamente
             muteIcon.className = video.muted ? "fas fa-volume-mute" : "fas fa-volume-up";
             document.querySelector('#unmuteBtn span').innerText = video.muted ? "Activar Sonido" : "Desactivar Sonido";
         }
 
-        /* --- Listado de Servicios (Asegúrate que stock.js esté cargado) --- */
+        /* =========================================
+           LISTADO DE SERVICIOS (Enumerado para fácil edición)
+           ========================================= */
         const servicios = [
-            {n: 'Netflix', p: '15.00', i: 'Netflix.jpg'}, {n: 'Disney+', p: '14.00', i: 'Disney.jpg'},
-            {n: 'HBO Max', p: '8.00', i: 'Max.jpg'}, {n: 'Paramount+', p: '8.00', i: 'Paramount.jpg'},
-            {n: 'Prime Video', p: '10.00', i: 'Primevideo.jpg'}, {n: 'Vix Premium', p: '10.00', i: 'Vix.jpg'},
-            {n: 'Crunchyroll', p: '8.00', i: 'Crunchyroll.jpg'}, {n: 'Apple TV+', p: '15.00', i: 'Apple.jpg'},
-            {n: 'Directv GO', p: '35.00', i: 'DGO.jpg'}, {n: 'Movistar TV', p: '25.00', i: 'Movistar.jpg'},
-            {n: 'Tele Latino', p: '15.00', i: 'Telelatino.jpg'}, {n: 'Flujo TV', p: '20.00', i: 'Flujotv.jpg'},
-            {n: 'IPTV Player', p: '20.00', i: 'IPTV.jpg'}, {n: 'Canva Pro', p: '8.00', i: 'Canva.jpg'},
-            {n: 'CapCut Pro', p: '15.00', i: 'Capcut.jpg'}, {n: 'ChatGPT Plus', p: '15.00', i: 'Chat.jpg'},
-            {n: 'Spotify', p: '13.00', i: 'Spotify.jpg'}, {n: 'Youtube Premium', p: '15.00', i: 'Youtube.jpg'}
+            {n: 'Netflix', p: '15.00', i: 'Netflix.jpg'},           // 1. Netflix
+            {n: 'Disney+', p: '14.00', i: 'Disney.jpg'},            // 2. Disney+
+            {n: 'HBO Max', p: '8.00', i: 'Max.jpg'},               // 3. Max
+            {n: 'Paramount+', p: '8.00', i: 'Paramount.jpg'},       // 4. Paramount+
+            {n: 'Prime Video', p: '10.00', i: 'Primevideo.jpg'},    // 5. Amazon Prime
+            {n: 'Vix Premium', p: '10.00', i: 'Vix.jpg'},           // 6. Vix
+            {n: 'Crunchyroll', p: '8.00', i: 'Crunchyroll.jpg'},    // 7. Crunchyroll
+            {n: 'Apple TV+', p: '15.00', i: 'Apple.jpg'},           // 8. Apple TV
+            {n: 'Directv GO', p: '35.00', i: 'DGO.jpg'},            // 9. Directv
+            {n: 'Movistar TV', p: '25.00', i: 'Movistar.jpg'},      // 10. Movistar
+            {n: 'Tele Latino', p: '15.00', i: 'Telelatino.jpg'},    // 11. Telelatino
+            {n: 'Flujo TV', p: '15.00', i: 'Flujotv.jpg'},          // 12. Flujo TV
+            {n: 'MaxPlayer', p: '20.00', i: 'Maxplayer.jpg'},          // 13. IPTV
+            {n: 'Canva Pro', p: '8.00', i: 'Canva.jpg'},            // 14. Canva
+            {n: 'CapCut Pro', p: '15.00', i: 'Capcut.jpg'},         // 15. CapCut
+            {n: 'ChatGPT Plus', p: '15.00', i: 'Chat.jpg'},         // 16. ChatGPT
+            {n: 'Spotify', p: '13.00', i: 'Spotify.jpg'},           // 17. Spotify
+            {n: 'Youtube Premium', p: '15.00', i: 'Youtube.jpg'}    // 18. Youtube
         ];
 
-        /* --- Renderizado con Animación Escalonada (Cascada) --- */
+        /* =========================================
+           RENDERIZADO Y ANIMACIÓN ESCALONADA
+           ========================================= */
         function render() {
             const grid = document.getElementById('grid-productos');
             grid.innerHTML = '';
+            
             servicios.forEach((s) => {
                 const status = typeof stockData !== 'undefined' ? (stockData[s.n] || 'disponible') : 'disponible';
-                grid.insertAdjacentHTML('beforeend', `
+                const cardHtml = `
                     <div class="card ${status==='agotado'?'agotado':''}" ${status==='agotado' ? '' : `onclick="window.open('https://wa.me/51923666291?text=Hola Mistiplay, deseo ${s.n}', '_blank')"`}>
                         <div class="card-img-container"><img src="${s.i}" class="card-img"></div>
                         <div class="card-body">
@@ -325,11 +340,17 @@
                                 <div class="buy-btn">COMPRAR</div>
                             </div>
                         </div>
-                    </div>`);
+                    </div>`;
+                grid.insertAdjacentHTML('beforeend', cardHtml);
             });
-            // Activar visibilidad una por una (100ms de retraso)
+
+            // Activar animación escalonada (una por una)
             const cards = document.querySelectorAll('.card');
-            cards.forEach((c, i) => setTimeout(() => c.classList.add('is-visible'), i * 100));
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('is-visible');
+                }, index * 100); // 100ms de retraso entre cada una
+            });
         }
 
         /* --- Buscador en tiempo real --- */
@@ -340,6 +361,7 @@
                 c.style.display = visible ? 'flex' : 'none';
             });
         });
+
         render();
     </script>
 </body>
