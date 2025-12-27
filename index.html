@@ -3,169 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MistiPlay - Streaming</title>
+    <title>Mistiplay - Tienda Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- 1. FONDO DE LA PÁGINA (IMAGEN) --- */
-        body { 
-            font-family: 'Segoe UI', sans-serif; margin: 0; 
-            display: flex; flex-direction: column; align-items: center;
-            /* EDITABLE: El primer valor 0.1 controla la oscuridad del fondo. url('fondo.jpg') es tu imagen de fondo principal. */
-            background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('fondo.jpg'); 
-            background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; background-color: black; 
+        /* --- CONFIGURACIÓN DE COLORES --- */
+        :root {
+            --primary-blue: #2596be; 
+            --bg-page: #d1d5db;
+            --header-footer-bg: #111827;
+            --card-container-bg: #e2e8f0;
+            --card-bg: #1f2937;
+            --text-white: #ffffff;
+            --primary-green: #28a745;
         }
 
-        /* --- 2. ENCABEZADO (HEADER) --- */
-        header { 
-            width: 100%; 
-            /* EDITABLE: Degradado de la barra superior. Cambia los códigos # para variar los colores. */
-            background: linear-gradient(90deg, #401370 0%, #5ce1e6 100%);
-            padding: 15px 0; display: flex; justify-content: flex-start; 
-            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .header-icon { 
-            height: 60px; /* EDITABLE: Tamaño del logo en la barra superior */
-            width: auto; margin-left: 5%; 
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-page);
+            color: #111827;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        /* --- 3. MODAL DE VIDEO (VENTANA EMERGENTE) --- */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 2000; }
+        /* --- 1. CABECERA --- */
+        .navbar {
+            background-color: var(--header-footer-bg);
+            height: 65px;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .nav-left { display: flex; align-items: center; }
+        .main-icon { height: 40px; width: auto; }
+        .v-separator { color: #333; font-size: 1.5rem; font-weight: 200; margin: 0 15px; }
+
+        .tab-item {
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .tab-item::after {
+            content: "";
+            position: absolute;
+            bottom: 5px; left: 0; width: 100%; height: 3px;
+            background-color: var(--primary-blue);
+        }
+
+        .nav-spacer { flex-grow: 1; }
+        .nav-right { display: flex; align-items: center; }
+
+        .social-links { display: flex; gap: 12px; margin-right: 20px; }
+        .social-circle {
+            width: 38px; height: 38px;
+            background-color: #1a1a1a; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; text-decoration: none; transition: 0.3s;
+        }
+        .social-circle:hover { background-color: var(--primary-blue); }
+
+        .search-box { position: relative; width: 280px; display: flex; align-items: center; }
+        .search-input {
+            width: 100%;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 25px;
+            padding: 10px 45px 10px 20px;
+            color: white;
+            outline: none;
+        }
+        .search-btn {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: #ffffff; cursor: pointer;
+        }
+
+        .currency-selector {
+            background-color: white;
+            color: black;
+            display: flex; align-items: center;
+            padding: 5px 12px; border-radius: 5px;
+            font-weight: 800; font-size: 0.8rem; gap: 8px;
+        }
+        .flag {
+            width: 20px; height: 14px;
+            background: linear-gradient(90deg, #d91023 33%, #fff 33%, #fff 66%, #d91023 66%);
+            border: 1px solid #ccc;
+        }
+
+        /* --- 2. PORTADA FULL WIDTH --- */
+        .hero-banner { width: 100%; overflow: hidden; background-color: #000; }
+        .hero-img { width: 100%; height: auto; display: block; max-width: 2560px; margin: 0 auto; }
+
+        /* --- 3. CONTENEDORES UNIFICADOS (ANUNCIO Y SERVICIOS) --- */
+        .main-container {
+            max-width: 1300px;
+            margin: 30px auto;
+            width: 95%;
+            box-sizing: border-box;
+        }
+
+        /* Slider de Anuncios */
+        .ad-slider {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .ad-track {
+            display: flex;
+            transition: transform 0.8s ease-in-out;
+            width: 200%;
+            transform: translateX(-50%); /* Empieza en anuncio2 */
+        }
+
+        .ad-slide { width: 50%; position: relative; }
+        .ad-img { width: 100%; height: auto; display: block; }
+
+        .slider-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.5); color: white; border: none;
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+            z-index: 10; transition: 0.3s;
+        }
+        .slider-arrow:hover { background: var(--primary-blue); }
+        .arrow-prev { left: 15px; }
+        .arrow-next { right: 15px; }
+
+        .info-btn-ad {
+            position: absolute; bottom: 20px; right: 20px;
+            background-color: var(--primary-green); color: white;
+            padding: 12px 24px; border-radius: 6px; font-size: 0.85rem;
+            font-weight: 900; cursor: pointer; border: none; text-transform: uppercase;
+        }
+
+        /* --- 4. MODAL DE VIDEO --- */
+        .overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); display: none; 
+            justify-content: center; align-items: center; z-index: 3000; 
+        }
         .modal-container { 
-            position: relative; width: 75%; max-width: 320px; 
-            background: #1a1a1a; padding: 25px 15px; border-radius: 20px; text-align: center; border: 2px solid #b388ff; 
+            position: relative; width: 90%; max-width: 350px; 
+            background: #1a1a1a; padding: 30px 20px; border-radius: 20px; 
+            text-align: center; border: 2px solid #b388ff; 
         }
-        .modal-video { width: 100%; border-radius: 10px; display: block; }
+        .modal-video { width: 100%; border-radius: 10px; display: block; margin-bottom: 20px; }
+        .modal-buttons { display: flex; flex-direction: column; gap: 12px; }
+        .btn-modal {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            color: white; padding: 12px; border-radius: 8px; font-weight: 800;
+            text-decoration: none; border: none; text-transform: uppercase; font-size: 0.8rem; cursor: pointer;
+        }
+        .btn-green { background-color: var(--primary-green); }
+        .btn-blue { background-color: var(--primary-blue); }
+        .btn-red { background-color: #dc3545; }
 
-        /* --- 4. TÍTULO, PORTADA Y ANIMACIÓN --- */
-        @keyframes fadeInEffect {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .title-container { 
-            width: 100%; padding: 20px 0; text-align: center; 
-            opacity: 0; /* Se mantiene invisible hasta que JavaScript active la animación */
-        }
-        
-        /* Esta clase se activa vía JS al cerrar el video */
-        .animate-title {
-            animation: fadeInEffect 2s ease-out forwards; /* EDITABLE: '2s' es la velocidad del desvanecido */
-        }
-
-        /* [ESPECIFICACIÓN] IMAGEN DE PORTADA */
-        .main-portada-img { 
-            width: 95%; 
-            max-width: 800px; /* EDITABLE: Ancho máximo de la portada superior */
-            height: auto; 
-            border-radius: 15px; /* EDITABLE: Redondeo de esquinas de la portada */
-            margin-bottom: 10px; 
+        /* --- 5. SERVICIOS --- */
+        .services-box {
+            background-color: var(--card-container-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         }
 
-        /* [ESPECIFICACIÓN] LOGO "SERVICIOS STREAMING" */
-        .main-title-img { 
-            width: 90%; 
-            max-width: 350px; /* EDITABLE: Tamaño del logo central */
-            height: auto; 
+        .section-header { margin-bottom: 30px; }
+        .section-title { font-size: 1.5rem; font-weight: 800; color: #1e293b; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .section-divider { border: none; height: 2px; background-color: #cbd5e1; width: 100%; }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
         }
 
-        /* --- 5. TARJETAS DE SERVICIOS --- */
-        .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; max-width: 1200px; width: 90%; padding: 20px 0 60px 0; }
-        .card { background: rgba(22, 22, 22, 0.8); backdrop-filter: blur(8px); border-radius: 20px; overflow: hidden; border: 1px solid #333; transition: 0.3s; text-align: center; cursor: pointer; }
-        .card:hover { transform: translateY(-10px); background: rgba(30, 30, 30, 0.9); }
-        .card img { width: 100%; display: block; }
-        
-        .service-name { display: block; font-size: 1.1rem; font-weight: 600; color: #b388ff; margin-top: 15px; } 
-        .price { font-size: 1.3rem; font-weight: bold; padding: 5px 15px 15px 15px; display: block; color: white; } 
-        .buy-btn { display: block; margin: 0 15px 15px; border: 1.5px solid white; color: white; padding: 7px 0; border-radius: 20px; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; }
+        /* TARJETAS 1601x1656 */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #2a475e;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover { transform: translateY(-8px); border-color: var(--primary-blue); }
+        .card.agotado { opacity: 0.7; cursor: not-allowed; }
 
-        /* --- 6. PIE DE PÁGINA (FOOTER) --- */
-        footer { width: 100%; background-color: rgba(26, 26, 26, 0.95); padding: 10px 0 5px; border-top: 1px solid #333; margin-top: 40px; }
-        .footer-content { max-width: 1200px; margin: 0 auto; width: 95%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px; }
-        .footer-logo { height: 60px; width: auto; }
-        .footer-text { font-size: 0.95rem; line-height: 1.5; color: #ccc; margin: 0; flex: 2; min-width: 300px; }
-        .footer-payments { flex: 1; text-align: right; display: flex; flex-direction: column; align-items: flex-end; min-width: 250px; }
-        .payment-img { width: 100%; max-width: 150px; height: auto; }
-        .footer-bottom { text-align: center; border-top: 1px solid #333; margin-top: 10px; padding-top: 10px; color: #777; font-size: 0.85rem; width: 100%; }
+        .card-img-container { width: 100%; aspect-ratio: 1601 / 1656; overflow: hidden; background: #000; }
+        .card-img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
-        @media (max-width: 600px) {
-            .container { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .footer-content { flex-direction: column; text-align: center; }
-            header { justify-content: center; }
-            .header-icon { margin-left: 0; }
+        .card-body { padding: 18px; background-color: #0f1720; color: white; }
+        .status-badge { font-size: 0.65rem; padding: 4px 10px; border-radius: 4px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
+        .status-disponible { background-color: #28a745; color: white; }
+        .status-agotado { background-color: #dc3545; color: white; }
+
+        .service-name { font-weight: 700; margin-bottom: 15px; display: block; font-size: 1.1rem; }
+        .purchase-area { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1e293b; padding-top: 12px; }
+        .price-box { display: flex; flex-direction: column; }
+        .price-label { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; }
+        .price-value { color: var(--primary-blue); font-weight: 800; font-size: 1.2rem; }
+        .buy-btn { background-color: var(--primary-blue); color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.8rem; font-weight: 900; text-transform: uppercase; }
+
+        /* --- 6. WHATSAPP FLOTANTE --- */
+        .wsp-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; align-items: center; }
+        .wsp-tooltip { background-color: #111827; color: white; padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; margin-right: 15px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; }
+        .wsp-btn { width: 60px; height: 60px; display: block; transition: 0.3s; }
+        .wsp-btn img { width: 100%; height: 100%; display: block; }
+        .wsp-container:hover .wsp-tooltip { opacity: 1; visibility: visible; }
+        .wsp-btn:hover { transform: scale(1.1); }
+
+        /* --- 7. PIE DE PÁGINA --- */
+        footer {
+            background-color: var(--header-footer-bg);
+            padding: 40px 0 25px 0; text-align: center;
+            border-top: 2px solid var(--primary-blue);
+        }
+        .footer-text { color: white; font-weight: 600; margin-bottom: 15px; display: block; }
+        .payment-img { height: 30px; width: auto; margin: 0 auto 25px auto; display: block; }
+        .footer-line { width: 80%; max-width: 500px; height: 1px; background: #334155; margin: 0 auto 20px auto; border: none; }
+        .copyright { color: #64748b; font-size: 0.85rem; }
+
+        @media (max-width: 480px) {
+            .navbar { height: auto; flex-direction: column; padding: 10px; }
+            .nav-left, .nav-right { width: 100%; justify-content: center; margin-bottom: 10px; }
+            .search-box { width: 70%; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .wsp-tooltip { display: none; }
+            .info-btn-ad { padding: 8px 15px; font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="overlay" id="videoModal">
-        <div class="modal-container">
-            <button onclick="cerrarModal()" style="position:absolute; top:-15px; right:-10px; background:#ff4d4d; color:white; border:2px solid white; padding:8px 15px; border-radius:10px; cursor:pointer; font-weight:bold;">Cerrar X</button>
-            <video class="modal-video" id="videoPlayer" autoplay muted loop playsinline><source src="video.mp4" type="video/mp4"></video>
-            <button id="audioBtn" onclick="alternarSonido()" style="margin-top:15px; background:#444; color:white; border:1.5px solid #b388ff; padding:12px; border-radius:10px; cursor:pointer; width:100%; font-weight:bold;">🔊 Activar Sonido</button>
-            <div onclick="irWA('Información')" style="margin-top:15px; background:#b388ff; color:white; padding:12px; border-radius:30px; font-weight:bold; cursor:pointer;">Más información</div>
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="icono.png" alt="Mistiplay" class="main-icon">
+            <span class="v-separator">|</span>
+            <a href="#" class="tab-item">Tienda</a>
+        </div>
+        <div class="nav-spacer"></div>
+        <div class="nav-right">
+            <div class="social-links">
+                <a href="https://www.facebook.com/mistiplaygo" target="_blank" class="social-circle"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/mistiplaygo" target="_blank" class="social-circle"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@mistiplay" target="_blank" class="social-circle"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <div class="search-box">
+                <input id="search" type="text" class="search-input" placeholder="Buscar productos...">
+                <button class="search-btn"><i class="fa fa-search"></i></button>
+            </div>
+            <span class="v-separator">|</span>
+            <div class="currency-selector">
+                <div class="flag"></div>
+                <span>PEN</span>
+                <i class="fa fa-chevron-down" style="font-size: 0.6rem;"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-banner">
+        <img src="portada.jpg" class="hero-img">
+    </div>
+
+    <div class="main-container">
+        <div class="ad-slider">
+            <button class="slider-arrow arrow-prev" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+            <button class="slider-arrow arrow-next" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+            <div class="ad-track" id="ad-track">
+                <div class="ad-slide"><img src="anuncio.jpg" class="ad-img"></div>
+                <div class="ad-slide">
+                    <img src="anuncio2.jpg" class="ad-img">
+                    <button class="info-btn-ad" onclick="openModal()">MÁS INFORMACIÓN</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <header><img src="icono.png" class="header-icon" alt="MistiPlay Icono"></header>
-
-    <div class="title-container" id="mainTitle">
-        <img src="portada.png" class="main-portada-img" alt="Portada MistiPlay">
-        <br>
-        <img src="titulo.png" class="main-title-img" alt="Servicios Streaming">
+    <div class="overlay" id="videoModal">
+        <div class="modal-container">
+            <video id="modalVideo" class="modal-video" src="video.mp4" loop muted playsinline></video>
+            <div class="modal-buttons">
+                <button id="unmuteBtn" class="btn-modal btn-blue" onclick="toggleMute()">
+                    <i id="muteIcon" class="fas fa-volume-mute"></i> <span>Activar Sonido</span>
+                </button>
+                <a href="https://wa.me/51923666291?text=Deseo%20mas%20informaci%C3%B3n%20MaxPlayer" target="_blank" class="btn-modal btn-green">
+                    <i class="fab fa-whatsapp"></i> MÁS INFORMACIÓN
+                </a>
+                <button class="btn-modal btn-red" onclick="closeModal()">
+                    <i class="fas fa-times"></i> CERRAR
+                </button>
+            </div>
+        </div>
     </div>
 
-    <div class="container">
-        <div class="card" onclick="irWA('Netflix')"><img src="Netflix.jpg"><span class="service-name">Netflix</span><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('Disney')"><img src="Disney.jpg"><span class="service-name">Disney+</span><span class="price">S/ 14.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('HBO Max')"><img src="Max.jpg"><span class="service-name">HBO Max</span><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('Paramount')"><img src="Paramount.jpg"><span class="service-name">Paramount+</span><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('PrimeVideo')"><img src="Primevideo.jpg"><span class="service-name">Prime Video</span><span class="price">S/ 10.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('Vix')"><img src="Vix.jpg"><span class="service-name">Vix Premium</span><span class="price">S/ 10.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('Crunchyroll')"><img src="Crunchyroll.jpg"><span class="service-name">Crunchyroll</span><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('AppleTV')"><img src="Apple.jpg"><span class="service-name">Apple TV+</span><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('DirectvGO')"><img src="DGO.jpg"><span class="service-name">Directv GO</span><span class="price">S/ 35.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('MovistarPlay')"><img src="Movistar.jpg"><span class="service-name">Movistar TV</span><span class="price">S/ 25.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('TeleLatino')"><img src="Telelatino.jpg"><span class="service-name">Tele Latino</span><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('FlujoTV')"><img src="Flujotv.jpg"><span class="service-name">Flujo TV</span><span class="price">S/ 20.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('IPTV')"><img src="IPTV.jpg"><span class="service-name">IPTV Player</span><span class="price">S/ 20.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('Canva')"><img src="Canva.jpg"><span class="service-name">Canva Pro</span><span class="price">S/ 8.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('CapCut Pro')"><img src="Capcut.jpg"><span class="service-name">CapCut Pro</span><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('ChatGPT')"><img src="Chat.jpg"><span class="service-name">ChatGPT Plus</span><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('Spotify')"><img src="Spotify.jpg"><span class="service-name">Spotify</span><span class="price">S/ 13.00</span><div class="buy-btn">Comprar</div></div>
-        <div class="card" onclick="irWA('YoutubePremium')"><img src="Youtube.jpg"><span class="service-name">Youtube Premium</span><span class="price">S/ 15.00</span><div class="buy-btn">Comprar</div></div>
+    <div class="main-container">
+        <div class="services-box">
+            <div class="section-header">
+                <span class="section-title">Plataformas streaming</span>
+                <hr class="section-divider">
+            </div>
+            <div class="products-grid" id="grid-productos"></div>
+        </div>
+    </div>
+
+    <div class="wsp-container">
+        <div class="wsp-tooltip">Chatea con nosotros</div>
+        <a href="https://wa.me/51923666291?text=%C2%A1Hola%20Mistiplay!" target="_blank" class="wsp-btn">
+            <img src="wsp.png" alt="WhatsApp">
+        </a>
     </div>
 
     <footer>
-        <div class="footer-content">
-            <div style="display: flex; align-items: center; gap: 20px; flex: 2; min-width: 300px;">
-                <img src="icono.png" class="footer-logo">
-                <p class="footer-text">MistiPlay ofrece un servicio de streaming de calidad, podrás disfrutar con tus amigos y familia, películas, series, animes, música, documentales, tv en vivo y mucho más.</p>
-            </div>
-            <div class="footer-payments">
-                <h3 style="color: #b388ff; margin: 0 0 10px 0;">Métodos de pago</h3>
-                <img src="metodosdepago.png" class="payment-img">
-            </div>
-            <div class="footer-bottom">© 2025 MistiPlay. Todos los derechos reservados.</div>
-        </div>
+        <span class="footer-text">Métodos de pago:</span>
+        <img src="metodosdepago.png" class="payment-img">
+        <hr class="footer-line">
+        <span class="copyright">© 2025 MistiPlay. Todos los derechos reservados.</span>
     </footer>
 
+    <script src="stock.js"></script>
     <script>
-        function irWA(s) {
-            const n = "51923666291";
-            const m = encodeURIComponent("Hola MistiPlay, deseo comprar un perfil de " + s);
-            window.open("https://wa.me/" + n + "?text=" + m, '_blank');
+        // CARRUSEL
+        let currentSlide = 1; 
+        const track = document.getElementById('ad-track');
+        function moveSlide(dir) {
+            currentSlide = (currentSlide + dir + 2) % 2;
+            track.style.transform = `translateX(-${currentSlide * 50}%)`;
+        }
+        setInterval(() => moveSlide(1), 10000);
+
+        // MODAL VIDEO
+        const modal = document.getElementById('videoModal');
+        const video = document.getElementById('modalVideo');
+        const muteIcon = document.getElementById('muteIcon');
+        function openModal() { modal.style.display = 'flex'; video.play(); }
+        function closeModal() { modal.style.display = 'none'; video.pause(); video.currentTime = 0; }
+        function toggleMute() {
+            video.muted = !video.muted;
+            muteIcon.className = video.muted ? "fas fa-volume-mute" : "fas fa-volume-up";
+            document.querySelector('#unmuteBtn span').innerText = video.muted ? "Activar Sonido" : "Desactivar Sonido";
         }
 
-        // FUNCIÓN: Al cerrar el video, activa el desvanecido de la portada y el título
-        function cerrarModal() { 
-            document.getElementById('videoModal').style.display = 'none'; 
-            document.getElementById('videoPlayer').pause(); 
-            document.getElementById('mainTitle').classList.add('animate-title');
-        }
+        // RENDER PRODUCTOS
+        const servicios = [
+            {n: 'Netflix', p: '15.00', i: 'Netflix.jpg'},
+            {n: 'Disney+', p: '14.00', i: 'Disney.jpg'},
+            {n: 'HBO Max', p: '8.00', i: 'Max.jpg'},
+            {n: 'Paramount+', p: '8.00', i: 'Paramount.jpg'},
+            {n: 'Prime Video', p: '10.00', i: 'Primevideo.jpg'},
+            {n: 'Vix Premium', p: '10.00', i: 'Vix.jpg'},
+            {n: 'Crunchyroll', p: '8.00', i: 'Crunchyroll.jpg'},
+            {n: 'Apple TV+', p: '15.00', i: 'Apple.jpg'},
+            {n: 'Directv GO', p: '35.00', i: 'DGO.jpg'},
+            {n: 'Movistar TV', p: '25.00', i: 'Movistar.jpg'},
+            {n: 'Tele Latino', p: '15.00', i: 'Telelatino.jpg'},
+            {n: 'Flujo TV', p: '20.00', i: 'Flujotv.jpg'},
+            {n: 'IPTV Player', p: '20.00', i: 'IPTV.jpg'},
+            {n: 'Canva Pro', p: '8.00', i: 'Canva.jpg'},
+            {n: 'CapCut Pro', p: '15.00', i: 'Capcut.jpg'},
+            {n: 'ChatGPT Plus', p: '15.00', i: 'Chat.jpg'},
+            {n: 'Spotify', p: '13.00', i: 'Spotify.jpg'},
+            {n: 'Youtube Premium', p: '15.00', i: 'Youtube.jpg'}
+        ];
 
-        function alternarSonido() {
-            var v=document.getElementById('videoPlayer'), b=document.getElementById('audioBtn');
-            if(v.muted){ v.muted=false; b.innerHTML="🔇 Silenciar"; } else { v.muted=true; b.innerHTML="🔊 Activar Sonido"; }
+        function render() {
+            const grid = document.getElementById('grid-productos');
+            grid.innerHTML = '';
+            servicios.forEach(s => {
+                const status = stockData[s.n] || 'disponible';
+                const isAgotado = status === 'agotado';
+                grid.insertAdjacentHTML('beforeend', `
+                    <div class="card ${isAgotado ? 'agotado' : ''}" ${!isAgotado ? `onclick="window.open('https://wa.me/51923666291?text=Hola Mistiplay, deseo ${s.n}', '_blank')"` : ''}>
+                        <div class="card-img-container"><img src="${s.i}" class="card-img"></div>
+                        <div class="card-body">
+                            <div class="status-badge ${isAgotado ? 'status-agotado' : 'status-disponible'}">${status}</div>
+                            <span class="service-name">${s.n}</span>
+                            <div class="purchase-area">
+                                <div class="price-box"><span class="price-label">Precio</span><span class="price-value">S/ ${s.p}</span></div>
+                                <div class="buy-btn">${isAgotado ? 'Sin Stock' : 'Comprar'}</div>
+                            </div>
+                        </div>
+                    </div>`);
+            });
         }
+        document.getElementById('search').addEventListener('input', e => {
+            const q = e.target.value.toLowerCase();
+            document.querySelectorAll('.card').forEach(c => c.style.display = c.querySelector('.service-name').innerText.toLowerCase().includes(q) ? 'flex' : 'none');
+        });
+        render();
     </script>
 </body>
 </html>
