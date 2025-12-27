@@ -26,7 +26,7 @@
             min-height: 100vh;
         }
 
-        /* --- 1. CABECERA (ESTÉTICA PC) --- */
+        /* --- 1. CABECERA --- */
         .navbar {
             background-color: var(--header-footer-bg);
             height: 65px;
@@ -46,7 +46,7 @@
         .nav-spacer { flex-grow: 1; }
         .nav-right { display: flex; align-items: center; }
         .social-links { display: flex; gap: 12px; margin-right: 20px; }
-        .social-circle { width: 38px; height: 38px; background-color: #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: 0.3s; }
+        .social-circle { width: 38px; height: 38px; background-color: #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; }
         .social-circle:hover { background-color: var(--primary-blue); }
         .search-box { position: relative; width: 280px; display: flex; align-items: center; }
         .search-input { width: 100%; background-color: #1a1a1a; border: 1px solid #333; border-radius: 25px; padding: 10px 45px 10px 20px; color: white; outline: none; }
@@ -58,14 +58,15 @@
         .full-width-section { width: 100%; overflow: hidden; background-color: #000; position: relative; }
         .hero-img { width: 100%; height: auto; display: block; max-width: 2560px; margin: 0 auto; }
 
-        .ad-section { width: 100%; overflow: hidden; background-color: #000; position: relative; height: 400px; }
-        .ad-track { display: flex; height: 100%; transition: transform 0.8s ease-in-out; width: 200%; transform: translateX(-50%); }
-        .ad-slide { width: 50%; height: 100%; position: relative; }
-        .ad-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        /* Carrusel Renombrado (Evita bloqueos) */
+        .promo-slider { width: 100%; overflow: hidden; background-color: #000; position: relative; height: 400px; }
+        .promo-track { display: flex; height: 100%; transition: transform 0.8s ease-in-out; width: 200%; transform: translateX(-50%); }
+        .promo-slide { width: 50%; height: 100%; position: relative; }
+        .promo-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10; }
         .arrow-prev { left: 15px; } .arrow-next { right: 15px; }
-        .info-btn-ad { position: absolute; bottom: 20px; right: 20px; background-color: var(--primary-green); color: white; padding: 12px 24px; border-radius: 6px; font-size: 0.85rem; font-weight: 900; cursor: pointer; border: none; text-transform: uppercase; z-index: 11; }
+        .info-btn-promo { position: absolute; bottom: 20px; right: 20px; background-color: var(--primary-green); color: white; padding: 12px 24px; border-radius: 6px; font-size: 0.85rem; font-weight: 900; cursor: pointer; border: none; text-transform: uppercase; z-index: 11; }
 
         /* --- 3. MODAL DE VIDEO --- */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 3000; }
@@ -87,7 +88,7 @@
         .card { background-color: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #2a475e; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; }
         .card:hover { transform: translateY(-8px); border-color: var(--primary-blue); }
         .card.agotado { opacity: 0.7; cursor: not-allowed; }
-        .card-img-container { width: 100%; aspect-ratio: 1601/1656; overflow: hidden; background: #000; }
+        .card-img-container { width: 100%; aspect-ratio: 1601 / 1656; overflow: hidden; background: #000; }
         .card-img { width: 100%; height: 100%; object-fit: contain; display: block; }
         .card-body { padding: 18px; background-color: #0f1720; color: white; }
         .status-badge { font-size: 0.65rem; padding: 4px 10px; border-radius: 4px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
@@ -95,25 +96,24 @@
         .status-agotado { background-color: #dc3545; }
         .service-name { font-weight: 700; margin-bottom: 15px; display: block; font-size: 1.1rem; }
         .purchase-area { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1e293b; padding-top: 12px; }
+        .price-box { display: flex; flex-direction: column; }
         .price-value { color: var(--primary-blue); font-weight: 800; font-size: 1.2rem; }
         .buy-btn { background-color: var(--primary-blue); color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.8rem; font-weight: 900; text-transform: uppercase; }
 
         /* --- 5. WSP Y FOOTER --- */
         .wsp-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; align-items: center; }
         .wsp-tooltip { background-color: #111827; color: white; padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; margin-right: 15px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; }
-        .wsp-btn { width: 60px; height: 60px; display: block; transition: 0.3s; }
-        .wsp-btn img { width: 100%; height: 100%; display: block; }
+        .wsp-btn { width: 60px; height: 60px; display: block; }
         .wsp-container:hover .wsp-tooltip { opacity: 1; visibility: visible; }
         footer { background-color: var(--header-footer-bg); padding: 40px 0; text-align: center; border-top: 2px solid var(--primary-blue); }
-        .payment-img { height: 30px; width: auto; margin: 0 auto 20px auto; display: block; }
+        .payment-img { height: 30px; width: auto; margin: 0 auto 25px auto; display: block; }
 
-        /* --- MÓVIL MINIMALISTA --- */
         @media (max-width: 768px) {
             .navbar { height: 60px; padding: 0 15px; justify-content: space-between; }
             .v-separator, .tab-item, .nav-spacer, .social-links, .currency-selector { display: none !important; }
             .nav-right { width: 70%; display: flex; justify-content: flex-end; }
             .search-box { width: 100%; max-width: 220px; }
-            .ad-section { height: 320px; }
+            .promo-slider { height: 320px; }
             .main-container { margin: 15px auto; width: 98%; }
             .services-box { padding: 15px; }
             .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -121,7 +121,7 @@
             .service-name { font-size: 0.9rem; }
             .price-value { font-size: 1rem; }
             .buy-btn { padding: 6px 10px; font-size: 0.7rem; }
-            .info-btn-ad { padding: 8px 15px; font-size: 0.7rem; bottom: 10px; right: 10px; }
+            .info-btn-promo { padding: 8px 15px; font-size: 0.7rem; bottom: 10px; right: 10px; }
             .wsp-btn { width: 50px; height: 50px; }
         }
     </style>
@@ -152,22 +152,22 @@
 
     <div class="full-width-section"><img src="portada.jpg" class="hero-img"></div>
 
-    <div class="ad-section">
+    <div class="promo-slider">
         <button class="slider-arrow arrow-prev" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
         <button class="slider-arrow arrow-next" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
-        <div class="ad-track" id="ad-track">
-            <div class="ad-slide">
+        <div class="promo-track" id="promo-track">
+            <div class="promo-slide">
                 <picture>
-                    <source media="(max-width: 768px)" srcset="anuncio_movil.jpg">
-                    <img src="anuncio.jpg" class="ad-img" alt="Anuncio 1">
+                    <source media="(max-width: 768px)" srcset="promo_m.jpg">
+                    <img src="promo.jpg" class="promo-img" alt="P1">
                 </picture>
             </div>
-            <div class="ad-slide">
+            <div class="promo-slide">
                 <picture>
-                    <source media="(max-width: 768px)" srcset="anuncio2_movil.jpg">
-                    <img src="anuncio2.jpg" class="ad-img" alt="Anuncio 2">
+                    <source media="(max-width: 768px)" srcset="promo2_m.jpg">
+                    <img src="promo2.jpg" class="promo-img" alt="P2">
                 </picture>
-                <button class="info-btn-ad" onclick="openModal()">MÁS INFORMACIÓN</button>
+                <button class="info-btn-promo" onclick="openModal()">MÁS INFORMACIÓN</button>
             </div>
         </div>
     </div>
@@ -196,7 +196,7 @@
     <div class="wsp-container">
         <div class="wsp-tooltip">Chatea con nosotros</div>
         <a href="https://wa.me/51923666291?text=%C2%A1Hola%20Mistiplay!" target="_blank" class="wsp-btn">
-            <img src="wsp.png" alt="WhatsApp">
+            <img src="wsp.png" alt="WA">
         </a>
     </div>
 
@@ -208,7 +208,7 @@
     <script src="stock.js"></script>
     <script>
         let currentSlide = 1;
-        const track = document.getElementById('ad-track');
+        const track = document.getElementById('promo-track');
         function moveSlide(dir) { currentSlide = (currentSlide + dir + 2) % 2; track.style.transform = `translateX(-${currentSlide * 50}%)`; }
         setInterval(() => moveSlide(1), 10000);
 
