@@ -4,186 +4,227 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mistiplay - Tienda Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         /* =========================================
-           1. VARIABLES DE COLOR (Tema Principal)
+           1. VARIABLES DE COLOR (Tema Moderno Neon)
            ========================================= */
         :root {
-            --primary-blue: #2596be;     /* Azul para botones y acentoss */
-            --bg-page: #d1d5db;          /* Fondo gris de la página */
-            --header-footer-bg: #111827; /* Negro azulado para barras */
-            --card-container-bg: #e2e8f0;/* Fondo del recuadro de servicios */
-            --card-bg: #1f2937;          /* Fondo oscuro de las tarjetas */
-            --primary-green: #28a745;    /* Verde para Disponible y WhatsApp */
-            --error-red: #dc3545;        /* Rojo para Cerrar y Agotado */
+            --primary-blue: #00d2ff;     /* Azul/Cian brillante moderno */
+            --primary-blue-dark: #3a7bd5;
+            --bg-dark: #090c10;          /* Fondo muy oscuro */
+            --header-footer-bg: rgba(17, 24, 39, 0.85); /* Semitransparente (Glass) */
+            --card-container-bg: rgba(30, 41, 59, 0.6); /* Fondo del recuadro (Glass) */
+            --card-bg: #151d28;          /* Fondo de tarjetas */
+            --primary-green: #00ff88;    /* Verde neon */
+            --error-red: #ff3366;        /* Rojo moderno */
+            --text-light: #f1f5f9;
         }
 
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-page);
-            color: #111827;
+            font-family: 'Montserrat', sans-serif; /* Nueva tipografía */
+            color: var(--text-light);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            
+            /* EFECTO DE FONDO DINÁMICO (Movimiento suave) */
+            background: linear-gradient(-45deg, #090c10, #131a26, #0d1624, #000000);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
         }
 
-        /* --- 1. CABECERA (NAVBAR) --- */
+        /* Animación del fondo */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- 1. CABECERA (NAVBAR) GLASSMORPHISM --- */
         .navbar {
             background-color: var(--header-footer-bg);
-            height: 65px; 
+            backdrop-filter: blur(10px); /* Efecto cristal */
+            -webkit-backdrop-filter: blur(10px);
+            height: 70px; 
             display: flex;
             align-items: center;
             padding: 0 25px;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .nav-left { display: flex; align-items: center; }
-        .main-icon { height: 40px; width: auto; }
+        .main-icon { height: 45px; width: auto; filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2)); }
         .v-separator { color: #333; font-size: 1.5rem; margin: 0 15px; }
         .tab-item { 
-            color: white; text-decoration: none; font-weight: 700; 
-            font-size: 0.95rem; position: relative; padding: 20px 0; 
+            color: white; text-decoration: none; font-weight: 800; 
+            font-size: 1rem; position: relative; padding: 20px 0; text-transform: uppercase;
         }
-        .tab-item::after { content: ""; position: absolute; bottom: 5px; left: 0; width: 100%; height: 3px; background-color: var(--primary-blue); }
+        .tab-item::after { content: ""; position: absolute; bottom: 5px; left: 0; width: 100%; height: 3px; background-color: var(--primary-blue); box-shadow: 0 0 10px var(--primary-blue); }
         
         .nav-spacer { flex-grow: 1; }
         .nav-right { display: flex; align-items: center; }
         
         .social-links { display: flex; gap: 12px; margin-right: 20px; }
         .social-circle { 
-            width: 38px; height: 38px; background-color: #1a1a1a; 
+            width: 38px; height: 38px; background-color: rgba(255,255,255,0.05); 
             border-radius: 50%; display: flex; align-items: center; 
             justify-content: center; color: white; text-decoration: none; transition: 0.3s; 
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .social-circle:hover { background-color: var(--primary-blue); }
+        .social-circle:hover { background-color: var(--primary-blue); color: black; box-shadow: 0 0 15px var(--primary-blue); transform: translateY(-3px); }
 
         .search-box { position: relative; width: 280px; display: flex; align-items: center; }
         .search-input {
-            width: 100%; background-color: #1a1a1a; border: 1px solid #333;
-            border-radius: 25px; padding: 10px 45px 10px 20px; color: white; outline: none;
+            width: 100%; background-color: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 25px; padding: 12px 45px 12px 20px; color: white; outline: none;
+            font-family: 'Montserrat', sans-serif; transition: 0.3s;
         }
-        .search-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #ffffff; cursor: pointer; }
+        .search-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
+        .search-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--primary-blue); cursor: pointer; font-size: 1.1rem; }
         
-        .currency-selector { background-color: white; color: black; display: flex; align-items: center; padding: 5px 12px; border-radius: 5px; font-weight: 800; font-size: 0.8rem; gap: 8px; }
-        .flag { width: 20px; height: 14px; background: linear-gradient(90deg, #d91023 33%, #fff 33%, #fff 66%, #d91023 66%); border: 1px solid #ccc; }
+        .currency-selector { background-color: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; gap: 8px; border: 1px solid rgba(255,255,255,0.1); }
+        .flag { width: 20px; height: 14px; background: linear-gradient(90deg, #d91023 33%, #fff 33%, #fff 66%, #d91023 66%); border: 1px solid #333; }
 
-        /* --- 2. PORTADA Y BANNERS --- */
-        .full-width-section { width: 100%; overflow: hidden; background-color: #000; position: relative; }
-        .hero-img { width: 100%; height: auto; display: block; max-width: 2560px; margin: 0 auto; }
+        /* --- 2. PORTADA (AJUSTADA Y MODERNA) --- */
+        .full-width-section { 
+            width: 100%; 
+            /* Se establece una altura máxima en PC para que no tape todo */
+            height: 40vh; 
+            min-height: 250px;
+            max-height: 400px;
+            overflow: hidden; 
+            position: relative; 
+            border-bottom: 2px solid var(--primary-blue);
+        }
+        .hero-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; /* Esto hace que 1 sola imagen se adapte sin deformarse */
+            object-position: center; 
+            display: block; 
+        }
 
-        .promo-slider { width: 100%; overflow: hidden; background-color: #000; position: relative; height: 400px; } 
+        /* --- 3. BANNERS (CÓDIGO OPTIMIZADO PARA 1 IMAGEN) --- */
+        .promo-slider { width: 100%; overflow: hidden; background-color: #000; position: relative; height: 350px; border-bottom: 1px solid #333; } 
         .promo-track { display: flex; height: 100%; transition: transform 0.8s ease-in-out; width: 200%; transform: translateX(-50%); }
         .promo-slide { width: 50%; height: 100%; position: relative; }
-        .promo-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10; }
+        /* Object fit cover hace que la misma imagen sirva para celular y pc */
+        .promo-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; opacity: 0.8; }
+        .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: 1px solid rgba(255,255,255,0.2); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10; transition: 0.3s; }
+        .slider-arrow:hover { background: var(--primary-blue); color: black; }
         .arrow-prev { left: 15px; } .arrow-next { right: 15px; }
-
-        /* BOTÓN DE PROMO CENTRADO EN PC */
-        .info-btn-promo { 
-            position: absolute; 
-            bottom: 20px; 
-            left: 50%; 
-            transform: translateX(-50%); /* Centrado horizontal */
-            background-color: var(--primary-green); 
-            color: white; padding: 12px 24px; border-radius: 6px; 
-            font-size: 0.85rem; font-weight: 900; cursor: pointer; 
-            border: none; text-transform: uppercase; z-index: 11; 
-        }
-
-        /* --- 3. MODAL DE VIDEO (BOTONES COLOREADOS) --- */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 3000; }
-        .modal-container { position: relative; width: 75%; max-width: 320px; background: #1a1a1a; padding: 25px 15px; border-radius: 20px; text-align: center; border: 2px solid #b388ff; }
-        .modal-video { width: 100%; border-radius: 10px; display: block; margin-bottom: 20px; }
-        .modal-buttons { display: flex; flex-direction: column; gap: 10px; }
-        .btn-modal { display: flex; align-items: center; justify-content: center; gap: 10px; color: white; padding: 12px; border-radius: 8px; font-weight: 800; border: none; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; }
         
-        .btn-blue { background-color: var(--primary-blue); } 
-        .btn-green { background-color: var(--primary-green); }
-        .btn-red { background-color: var(--error-red); }
+        .info-btn-promo { 
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); 
+            background-color: var(--primary-green); color: black; padding: 12px 30px; border-radius: 30px; 
+            font-size: 0.9rem; font-weight: 900; cursor: pointer; border: none; text-transform: uppercase; z-index: 11; 
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); transition: 0.3s;
+        }
+        .info-btn-promo:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 0 25px rgba(0, 255, 136, 0.7); }
 
         /* --- 4. CONTENEDOR DE PRODUCTOS --- */
-        .main-container { max-width: 1300px; margin: 30px auto; width: 95%; box-sizing: border-box; }
-        .services-box { background-color: var(--card-container-bg); border-radius: 20px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .section-title { font-size: 1.5rem; font-weight: 800; color: #1e293b; text-transform: uppercase; margin-bottom: 10px; display: block; }
-        .section-divider { border: none; height: 2px; background-color: #cbd5e1; width: 100%; margin-bottom: 30px; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
+        .main-container { max-width: 1400px; margin: 40px auto; width: 95%; box-sizing: border-box; }
+        .services-box { 
+            background-color: var(--card-container-bg); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px; padding: 40px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; color: white; text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 1px; }
+        .section-divider { border: none; height: 3px; background: linear-gradient(90deg, var(--primary-blue), transparent); width: 100%; margin-bottom: 35px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
 
-        /* --- 5. TARJETAS (CARD) - DISEÑO COMPACTO --- */
+        /* --- 5. TARJETAS (CARD) - DISEÑO MODERNO --- */
         .card { 
-            background-color: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid #2a475e; 
-            cursor: pointer; transition: transform 0.4s ease, border-color 0.3s ease, opacity 0.5s ease; 
-            display: flex; flex-direction: column;
-            opacity: 0; transform: translateY(30px); 
+            background-color: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
+            cursor: pointer; transition: transform 0.4s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
+            display: flex; flex-direction: column; opacity: 0; transform: translateY(30px); position: relative;
         }
         .card.is-visible { opacity: 1; transform: translateY(0); }
 
-        /* FIX MÓVIL: El hover solo funciona en PC */
         @media (hover: hover) {
-            .card:hover { transform: translateY(-8px) !important; border-color: var(--primary-blue); }
+            .card:hover { transform: translateY(-10px) !important; border-color: var(--primary-blue); box-shadow: 0 15px 30px rgba(0, 210, 255, 0.2); }
+            .card:hover .buy-btn { background-color: white; color: black; }
         }
 
-        .card.agotado { opacity: 0.7; cursor: not-allowed; }
+        .card.agotado { opacity: 0.5; filter: grayscale(100%); cursor: not-allowed; }
         
         .card-img-container { width: 100%; aspect-ratio: 1601/1656; overflow: hidden; background: #000; position: relative; }
-        .card-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .card-img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform 0.5s ease; }
+        .card:hover .card-img { transform: scale(1.05); }
         
         .status-badge { 
-            position: absolute; bottom: 10px; left: 10px; z-index: 10;
-            font-size: 0.6rem; padding: 4px 8px; border-radius: 4px; font-weight: 900; 
-            text-transform: uppercase; display: inline-block; 
+            position: absolute; top: 15px; right: 15px; z-index: 10;
+            font-size: 0.65rem; padding: 6px 12px; border-radius: 20px; font-weight: 900; 
+            text-transform: uppercase; display: inline-block; letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .status-disponible { background-color: var(--primary-green); color: white; }
+        .status-disponible { background-color: var(--primary-green); color: black; }
         .status-agotado { background-color: var(--error-red); color: white; }
 
-        /* Cuerpo compacto sin línea divisoria */
-        .card-body { padding: 12px 15px; background-color: #0f1720; color: white; }
-        .service-name { font-weight: 700; margin-bottom: 5px; display: block; font-size: 1.05rem; }
-        .purchase-area { display: flex; justify-content: space-between; align-items: center; border-top: none; padding-top: 0; }
-        .price-value { color: var(--primary-blue); font-weight: 800; font-size: 1.15rem; }
-        .buy-btn { background-color: var(--primary-blue); color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; }
+        .card-body { padding: 20px; background-color: rgba(0,0,0,0.2); }
+        .service-name { font-weight: 800; margin-bottom: 12px; display: block; font-size: 1.15rem; color: white; }
+        .purchase-area { display: flex; justify-content: space-between; align-items: flex-end; }
+        
+        /* MEJORA DEL PRECIO */
+        .price-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-bottom: 3px; display: block;}
+        .price-value { 
+            color: var(--primary-blue); 
+            font-weight: 900; 
+            font-size: 1.4rem; /* Más grande */
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4); /* Brillo */
+        }
+        
+        .buy-btn { background-color: var(--primary-blue); color: black; padding: 10px 16px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
 
         /* --- 6. WHATSAPP Y FOOTER --- */
         .wsp-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; align-items: center; }
-        .wsp-tooltip { background-color: #111827; color: white; padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; margin-right: 15px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; }
-        .wsp-btn { width: 60px; height: 60px; display: block; transition: 0.3s; }
+        .wsp-tooltip { background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px); color: white; padding: 10px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-right: 15px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; border: 1px solid rgba(255,255,255,0.2); }
+        .wsp-btn { width: 65px; height: 65px; display: block; transition: 0.3s; filter: drop-shadow(0 10px 15px rgba(37, 211, 102, 0.4)); }
         .wsp-btn img { width: 100%; height: 100%; display: block; }
-        .wsp-container:hover .wsp-tooltip { opacity: 1; visibility: visible; }
+        .wsp-container:hover .wsp-tooltip { opacity: 1; visibility: visible; transform: translateX(-5px); }
+        .wsp-btn:hover { transform: scale(1.1); }
 
-        footer { background-color: var(--header-footer-bg); padding: 40px 0; text-align: center; border-top: 2px solid var(--primary-blue); }
+        footer { background-color: var(--header-footer-bg); backdrop-filter: blur(10px); padding: 50px 0 30px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
         .footer-socials-mobile { display: none; gap: 20px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap; }
-        .footer-socials-mobile a { color: white; font-size: 1.8rem; text-decoration: none; }
+        .footer-socials-mobile a { color: white; font-size: 1.8rem; text-decoration: none; transition: 0.3s; }
+        .footer-socials-mobile a:hover { color: var(--primary-blue); }
         
-        .payment-container { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .payment-label { color: #94a3b8; font-weight: 700; font-size: 0.85rem; }
-        .payment-img { height: 30px; width: auto; display: block; }
+        .payment-container { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .payment-label { color: #94a3b8; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .payment-img { height: 35px; width: auto; display: block; opacity: 0.8; transition: 0.3s; }
+        .payment-img:hover { opacity: 1; }
 
         /* --- 7. AJUSTES MÓVILES --- */
         @media (max-width: 768px) {
-            .navbar { height: 60px; padding: 0 15px; justify-content: space-between; }
+            .navbar { height: 65px; padding: 0 15px; justify-content: space-between; }
             .v-separator, .tab-item, .nav-spacer, .social-links, .currency-selector { display: none !important; }
-            .nav-right { width: 70%; display: flex; justify-content: flex-end; }
-            .search-box { width: 100%; max-width: 220px; }
-            .promo-slider { height: 320px; }
-            .main-container { margin: 15px auto; width: 98%; }
-            .services-box { padding: 15px; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .nav-right { width: 75%; display: flex; justify-content: flex-end; }
+            .search-box { width: 100%; max-width: 240px; }
+            .full-width-section { height: 25vh; min-height: 180px; }
+            .promo-slider { height: 280px; }
+            .main-container { margin: 20px auto; width: 95%; }
+            .services-box { padding: 20px; }
+            .section-title { font-size: 1.4rem; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .footer-socials-mobile { display: flex; } 
-            .card-body { padding: 8px 10px; }
-            .service-name { font-size: 0.85rem; margin-bottom: 2px; }
-            .price-value { font-size: 0.95rem; }
-            .buy-btn { padding: 4px 8px; font-size: 0.6rem; }
             
-            /* BOTÓN DE PROMO VUELVE A LA ESQUINA EN MÓVIL */
-            .info-btn-promo { 
-                padding: 8px 15px; font-size: 0.7rem; 
-                bottom: 10px; right: 10px; 
-                left: auto; transform: none; 
-            }
-            .wsp-btn { width: 50px; height: 50px; }
+            .card-body { padding: 12px; }
+            .service-name { font-size: 0.95rem; margin-bottom: 8px; }
+            .price-label { font-size: 0.55rem; }
+            .price-value { font-size: 1.15rem; }
+            .buy-btn { padding: 8px; font-size: 0.65rem; text-align: center; width: 100%; }
+            .purchase-area { flex-direction: column; align-items: flex-start; gap: 10px; }
+            
+            .info-btn-promo { padding: 10px 20px; font-size: 0.75rem; bottom: 20px; }
+            .wsp-btn { width: 55px; height: 55px; }
         }
     </style>
 </head>
@@ -211,43 +252,17 @@
         </div>
     </nav>
 
-    <div class="full-width-section"><img src="portada.jpg" class="hero-img"></div>
-
-    <div class="promo-slider">
-        <button class="slider-arrow arrow-prev" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
-        <button class="slider-arrow arrow-next" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
-        <div class="promo-track" id="promo-track">
-            <div class="promo-slide">
-                <picture>
-                    <source media="(max-width: 768px)" srcset="promo_m.jpg">
-                    <img src="promo.jpg" class="promo-img" alt="P1">
-                </picture>
-            </div>
-            <div class="promo-slide">
-                <picture>
-                    <source media="(max-width: 768px)" srcset="promo2_m.jpg">
-                    <img src="promo2.jpg" class="promo-img" alt="P2">
-                </picture>
-                <button class="info-btn-promo" onclick="openModal()">MÁS INFORMACIÓN</button>
-            </div>
-        </div>
+    <div class="full-width-section">
+        <img src="portada.jpg" class="hero-img">
     </div>
 
-    <div class="overlay" id="videoModal">
-        <div class="modal-container">
-            <video id="modalVideo" class="modal-video" src="video.mp4" loop muted playsinline></video>
-            <div class="modal-buttons">
-                <button id="unmuteBtn" class="btn-modal btn-blue" onclick="toggleMute()"><i id="muteIcon" class="fas fa-volume-mute"></i> <span>Activar Sonido</span></button>
-                <a href="https://wa.me/51923666291?text=Deseo%20mas%20informaci%C3%B3n%20MaxPlayer" target="_blank" class="btn-modal btn-green" style="text-decoration:none;"><i class="fab fa-whatsapp"></i> MÁS INFORMACIÓN</a>
-                <button class="btn-modal btn-red" onclick="closeModal()"><i class="fas fa-times"></i> CERRAR</button>
-            </div>
-        </div>
-    </div>
-
+    "
+      =========================================================
+    -->
     <div class="main-container">
-        <div class="services-box">
+        <div class="services-box" id="seccion-tienda">
             <div class="section-header">
-                <span class="section-title">Plataformas streaming</span>
+                <span class="section-title">Catálogo de Plataformas</span>
                 <hr class="section-divider">
             </div>
             <div class="products-grid" id="grid-productos"></div>
@@ -255,7 +270,7 @@
     </div>
 
     <div class="wsp-container">
-        <div class="wsp-tooltip">Chatea con nosotros</div>
+        <div class="wsp-tooltip">¡Estamos en línea!</div>
         <a href="https://wa.me/51923666291?text=%C2%A1Hola%20Mistiplay!" target="_blank" class="wsp-btn">
             <img src="wsp.png" alt="WhatsApp">
         </a>
@@ -263,61 +278,53 @@
 
     <footer>
         <div class="footer-socials-mobile">
-            <p style="color: white; font-weight: 700; width: 100%; margin-bottom: 10px; font-size: 1.1rem;">Síguenos en:</p>
+            <p style="color: white; font-weight: 800; width: 100%; margin-bottom: 5px; font-size: 1.1rem;">Síguenos en</p>
             <a href="https://facebook.com/mistiplaygo" target="_blank"><i class="fab fa-facebook-f"></i></a>
             <a href="https://instagram.com/mistiplaygo" target="_blank"><i class="fab fa-instagram"></i></a>
             <a href="https://tiktok.com/@mistiplay" target="_blank"><i class="fab fa-tiktok"></i></a>
         </div>
         <div class="payment-container">
-            <span class="payment-label">Métodos de pago:</span>
+            <span class="payment-label">Métodos de pago seguros</span>
             <img src="metodosdepago.png" class="payment-img">
         </div>
-        <p style="color:#64748b; font-size:0.85rem;">© 2025 MistiPlay. Todos los derechos reservados.</p>
+        <p style="color:#64748b; font-size:0.85rem; font-weight: 600; margin-top: 20px;">© 2025 MistiPlay. Todos los derechos reservados.</p>
     </footer>
 
     <script src="stock.js"></script>
     <script>
-        /* --- 1. LÓGICA DEL CARRUSEL --- */
+        /* --- 1. LÓGICA DEL CARRUSEL (Inactivo hasta que descomentes el HTML) --- */
         let currentSlide = 1;
         const track = document.getElementById('promo-track');
-        function moveSlide(dir) { currentSlide = (currentSlide + dir + 2) % 2; track.style.transform = `translateX(-${currentSlide * 50}%)`; }
-        setInterval(() => moveSlide(1), 10000);
-
-        /* --- 2. LÓGICA DEL MODAL --- */
-        const modal = document.getElementById('videoModal');
-        const video = document.getElementById('modalVideo');
-        const muteIcon = document.getElementById('muteIcon');
-        function openModal() { modal.style.display = 'flex'; video.play(); }
-        function closeModal() { modal.style.display = 'none'; video.pause(); video.currentTime = 0; }
-        function toggleMute() {
-            video.muted = !video.muted;
-            muteIcon.className = video.muted ? "fas fa-volume-mute" : "fas fa-volume-up";
-            document.querySelector('#unmuteBtn span').innerText = video.muted ? "Activar Sonido" : "Desactivar Sonido";
+        function moveSlide(dir) { 
+            if(!track) return; // Evita errores si la promo está oculta
+            currentSlide = (currentSlide + dir + 2) % 2; 
+            track.style.transform = `translateX(-${currentSlide * 50}%)`; 
         }
+        if(track) setInterval(() => moveSlide(1), 10000);
 
-        /* --- 3. LISTADO DE SERVICIOS (NUMERADO) --- */
+        /* --- 2. LISTADO DE SERVICIOS --- */
         const servicios = [
-            {n: 'Netflix', p: '15.00', i: 'Netflix.jpg'},         // 1
-            {n: 'Disney+', p: '14.00', i: 'Disney.jpg'},         // 2
-            {n: 'HBO Max', p: '8.00', i: 'Max.jpg'},             // 3
-            {n: 'Paramount+', p: '8.00', i: 'Paramount.jpg'},    // 4
-            {n: 'Prime Video', p: '10.00', i: 'Primevideo.jpg'}, // 5
-            {n: 'Vix Premium', p: '10.00', i: 'Vix.jpg'},         // 6
-            {n: 'Crunchyroll', p: '8.00', i: 'Crunchyroll.jpg'}, // 7
-            {n: 'Apple TV+', p: '15.00', i: 'Apple.jpg'},         // 8
-            {n: 'Directv GO', p: '35.00', i: 'DGO.jpg'},          // 9
-            {n: 'Movistar TV', p: '25.00', i: 'Movistar.jpg'},    // 10
-            {n: 'Tele Latino', p: '20.00', i: 'Telelatino.jpg'},  // 11
-            {n: 'Flujo TV', p: '20.00', i: 'Flujotv.jpg'},        // 12
-            {n: 'MaxPlayer', p: '25.00', i: 'Maxplayer.jpg'},     // 13
-            {n: 'Canva Pro', p: '8.00', i: 'Canva.jpg'},          // 14
-            {n: 'CapCut Pro', p: '15.00', i: 'Capcut.jpg'},       // 15
-            {n: 'ChatGPT Plus', p: '15.00', i: 'Chat.jpg'},       // 16
-            {n: 'Spotify', p: '13.00', i: 'Spotify.jpg'},         // 17
-            {n: 'Youtube Premium', p: '15.00', i: 'Youtube.jpg'}  // 18
+            {n: 'Netflix', p: '15.00', i: 'Netflix.jpg'},         
+            {n: 'Disney+', p: '14.00', i: 'Disney.jpg'},         
+            {n: 'HBO Max', p: '8.00', i: 'Max.jpg'},             
+            {n: 'Paramount+', p: '8.00', i: 'Paramount.jpg'},    
+            {n: 'Prime Video', p: '10.00', i: 'Primevideo.jpg'}, 
+            {n: 'Vix Premium', p: '10.00', i: 'Vix.jpg'},         
+            {n: 'Crunchyroll', p: '8.00', i: 'Crunchyroll.jpg'}, 
+            {n: 'Apple TV+', p: '15.00', i: 'Apple.jpg'},         
+            {n: 'Directv GO', p: '35.00', i: 'DGO.jpg'},          
+            {n: 'Movistar TV', p: '25.00', i: 'Movistar.jpg'},    
+            {n: 'Tele Latino', p: '20.00', i: 'Telelatino.jpg'},  
+            {n: 'Flujo TV', p: '20.00', i: 'Flujotv.jpg'},        
+            {n: 'MaxPlayer', p: '25.00', i: 'Maxplayer.jpg'},     
+            {n: 'Canva Pro', p: '8.00', i: 'Canva.jpg'},          
+            {n: 'CapCut Pro', p: '15.00', i: 'Capcut.jpg'},       
+            {n: 'ChatGPT Plus', p: '15.00', i: 'Chat.jpg'},       
+            {n: 'Spotify', p: '13.00', i: 'Spotify.jpg'},         
+            {n: 'Youtube Premium', p: '15.00', i: 'Youtube.jpg'}  
         ];
 
-        /* --- 4. RENDERIZADO CON DISEÑO COMPACTO --- */
+        /* --- 3. RENDERIZADO CON DISEÑO MODERNO --- */
         function render() {
             const grid = document.getElementById('grid-productos');
             grid.innerHTML = '';
@@ -328,32 +335,44 @@
                     <div class="card ${status==='agotado'?'agotado':''}" ${status==='agotado' ? '' : `onclick="window.open('https://wa.me/51923666291?text=Hola Mistiplay, deseo ${s.n}', '_blank')"`}>
                         <div class="card-img-container">
                             <div class="status-badge ${status==='agotado'?'status-agotado':'status-disponible'}">${status}</div>
-                            <img src="${s.i}" class="card-img">
+                            <img src="${s.i}" class="card-img" alt="${s.n}">
                         </div>
                         <div class="card-body">
                             <span class="service-name">${s.n}</span>
                             <div class="purchase-area">
-                                <div style="display:flex; flex-direction:column;"><span style="font-size:0.6rem; color:#94a3b8; text-transform:uppercase;">Precio</span><span class="price-value">S/ ${s.p}</span></div>
-                                <div class="buy-btn">COMPRAR</div>
+                                <div>
+                                    <span class="price-label">Precio</span>
+                                    <span class="price-value">S/ ${s.p}</span>
+                                </div>
+                                <div class="buy-btn">Comprar</div>
                             </div>
                         </div>
                     </div>`;
                 grid.insertAdjacentHTML('beforeend', cardHtml);
             });
 
-            // Animación escalonada
+            // Animación escalonada al cargar la página
             const cards = document.querySelectorAll('.card');
             cards.forEach((card, index) => {
                 setTimeout(() => {
                     card.classList.add('is-visible');
-                }, index * 100); 
+                }, index * 80); 
             });
         }
 
-        /* --- 5. BUSCADOR --- */
+        /* --- 4. BUSCADOR CON AUTO-DESPLAZAMIENTO --- */
+        let searchTimeout;
         document.getElementById('search').addEventListener('input', e => {
             const q = e.target.value.toLowerCase();
             document.querySelectorAll('.card').forEach(c => c.style.display = c.querySelector('.service-name').innerText.toLowerCase().includes(q) ? 'flex' : 'none');
+            
+            // Cuando el usuario teclea algo, la página baja automáticamente
+            if (q.length > 0) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    document.getElementById('seccion-tienda').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 400); // Pequeña espera para no marear al usuario mientras teclea rápido
+            }
         });
 
         render();
