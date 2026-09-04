@@ -9,7 +9,7 @@
     
     <style>
         /* =========================================
-           1. COLORES Y ESTILO GENERAL
+           1. VARIABLES DE COLOR Y ESTILO GENERAL
            ========================================= */
         :root {
             --primary-blue: #00d2ff;     /* Cian neon brillante */
@@ -29,7 +29,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            /* Fondo sutil animado */
+            /* Fondo tecnológico sutilmente animado */
             background: linear-gradient(-45deg, #090c10, #131a26, #0b1420, #05070a);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
@@ -40,6 +40,9 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+
+        /* Oculta bordes feos de imágenes rotas */
+        img { border: 0; outline: none; }
 
         /* --- CABECERA (NAVBAR) --- */
         .navbar {
@@ -92,7 +95,7 @@
         .currency-selector { background-color: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; gap: 8px; border: 1px solid rgba(255,255,255,0.1); }
         .flag { width: 20px; height: 14px; background: linear-gradient(90deg, #d91023 33%, #fff 33%, #fff 66%, #d91023 66%); border: 1px solid #333; }
 
-        /* --- 2. PORTADA (RESPONSIVE PC Y MOVIL) --- */
+        /* --- 2. PORTADA --- */
         .full-width-section { 
             width: 100%; 
             background-color: #000; 
@@ -107,13 +110,13 @@
             margin: 0 auto; 
         }
 
-        /* --- 3. CARRUSEL DE PROMOCIONES INTELIGENTE --- */
+        /* --- 3. CARRUSEL DE PROMOCIONES --- */
         .promo-slider { 
             width: 100%; 
             overflow: hidden; 
             background-color: #000; 
             position: relative; 
-            height: 400px; /* Altura ideal en PC */
+            height: 400px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         } 
         .promo-track { 
@@ -151,7 +154,6 @@
         .arrow-prev { left: 15px; } 
         .arrow-next { right: 15px; }
 
-        /* Botón de promoción */
         .info-btn-promo { 
             position: absolute; 
             bottom: 25px; 
@@ -195,7 +197,7 @@
         .section-divider { border: none; height: 3px; background: linear-gradient(90deg, var(--primary-blue), transparent); width: 100%; margin-bottom: 35px; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
 
-        /* --- 6. TARJETAS (CARDS) --- */
+        /* --- 6. TARJETAS --- */
         .card { 
             background-color: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
             cursor: pointer; transition: transform 0.4s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
@@ -235,7 +237,7 @@
         
         .buy-btn { background-color: var(--primary-blue); color: black; padding: 8px 14px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
 
-        /* --- 7. WHATSAPP FLOTANTE Y FOOTER --- */
+        /* --- 7. WHATSAPP Y FOOTER --- */
         .wsp-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; align-items: center; }
         .wsp-tooltip { background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px); color: white; padding: 10px 18px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-right: 15px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; border: 1px solid rgba(255,255,255,0.2); }
         .wsp-btn { width: 65px; height: 65px; display: block; transition: 0.3s; filter: drop-shadow(0 8px 15px rgba(37, 211, 102, 0.4)); }
@@ -251,28 +253,23 @@
         .payment-label { color: #94a3b8; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
         .payment-img { height: 32px; width: auto; display: block; opacity: 0.85; }
 
-        /* --- 8. ADAPTACIONES MÓVILES (PANTALLAS PEQUEÑAS) --- */
+        /* --- 8. AJUSTES MÓVILES --- */
         @media (max-width: 768px) {
             .navbar { height: 65px; padding: 0 15px; justify-content: space-between; }
             .v-separator, .tab-item, .nav-spacer, .social-links, .currency-selector { display: none !important; }
             .nav-right { width: 75%; display: flex; justify-content: flex-end; }
             .search-box { width: 100%; max-width: 240px; }
-            
-            /* Altura del carrusel en celular para mostrar la imagen móvil completa */
             .promo-slider { height: 340px; }
-            
             .main-container { margin: 20px auto; width: 95%; }
             .services-box { padding: 20px; }
             .section-title { font-size: 1.3rem; }
             .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .footer-socials-mobile { display: flex; } 
-            
             .card-body { padding: 12px; }
             .service-name { font-size: 0.9rem; margin-bottom: 6px; }
             .price-label { font-size: 0.55rem; }
             .price-value { font-size: 1.1rem; }
             .buy-btn { padding: 6px 10px; font-size: 0.65rem; text-align: center; }
-            
             .info-btn-promo { padding: 8px 18px; font-size: 0.7rem; bottom: 15px; }
             .wsp-btn { width: 55px; height: 55px; }
         }
@@ -282,7 +279,7 @@
 
     <nav class="navbar">
         <div class="nav-left">
-            <img src="icono.png" alt="Mistiplay" class="main-icon">
+            <img src="icono.png" alt="" class="main-icon">
             <span class="v-separator">|</span>
             <a href="#" class="tab-item">Tienda</a>
         </div>
@@ -303,15 +300,15 @@
     </nav>
 
 
-    <div class="full-width-section">
+    <div class="full-width-section" id="seccion-portada">
         <picture>
             <source media="(max-width: 768px)" srcset="portada_m.jpg">
-            <img src="portada.jpg" class="hero-img" alt="Portada Mistiplay">
+            <img src="portada.jpg" class="hero-img" alt="" onerror="controlErroresImagen(this, true)">
         </picture>
     </div>
 
 
-    <div class="promo-slider">
+    <div class="promo-slider" id="seccion-promociones">
         <button class="slider-arrow arrow-prev" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
         <button class="slider-arrow arrow-next" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
         
@@ -320,14 +317,14 @@
             <div class="promo-slide">
                 <picture>
                     <source media="(max-width: 768px)" srcset="promo_m.jpg">
-                    <img src="promo.jpg" class="promo-img" alt="Promoción 1">
+                    <img src="promo.jpg" class="promo-img" alt="" onerror="controlErroresImagen(this, false)">
                 </picture>
             </div>
 
             <div class="promo-slide">
                 <picture>
                     <source media="(max-width: 768px)" srcset="promo2_m.jpg">
-                    <img src="promo2.jpg" class="promo-img" alt="Promoción 2">
+                    <img src="promo2.jpg" class="promo-img" alt="" onerror="controlErroresImagen(this, false)">
                 </picture>
                 <button class="info-btn-promo" onclick="openModal()">MÁS INFORMACIÓN</button>
             </div>
@@ -361,7 +358,7 @@
     <div class="wsp-container">
         <div class="wsp-tooltip">¡Escríbenos en directo!</div>
         <a href="https://wa.me/51923666291?text=%C2%A1Hola%20Mistiplay!" target="_blank" class="wsp-btn">
-            <img src="wsp.png" alt="WhatsApp">
+            <img src="wsp.png" alt="">
         </a>
     </div>
 
@@ -374,34 +371,83 @@
         </div>
         <div class="payment-container">
             <span class="payment-label">Métodos de pago aceptados:</span>
-            <img src="metodosdepago.png" class="payment-img" alt="Métodos de pago">
+            <img src="metodosdepago.png" class="payment-img" alt="">
         </div>
         <p style="color:#64748b; font-size:0.85rem; font-weight: 600; margin-top: 20px;">© 2025 MistiPlay. Todos los derechos reservados.</p>
     </footer>
 
     <script src="stock.js"></script>
     <script>
-        /* --- 1. LÓGICA DEL CARRUSEL (AUTOMÁTICO PARA N BANNERS) --- */
+        /* ========================================================
+           SISTEMA INTELIGENTE DE CONTROL DE ERRORES DE IMÁGENES
+           Evita que se vean imágenes rotas o textos corruptos
+           ======================================================== */
+        function controlErroresImagen(img, esPortada) {
+            const picture = img.parentElement;
+            
+            // 1. Si falló buscando la foto móvil (_m), intenta cargar la foto normal de PC
+            if (picture && picture.tagName === 'PICTURE') {
+                const source = picture.querySelector('source');
+                if (source) {
+                    source.remove(); // Quitamos la fuente móvil inexistente
+                    return; // El navegador intentará cargar automáticamente la imagen estándar
+                }
+            }
+
+            // 2. Si tampoco existe la imagen normal (o no hay ninguna foto en tu carpeta):
+            if (esPortada) {
+                // Oculta por completo la portada sin dejar espacios en blanco
+                const sec = document.getElementById('seccion-portada');
+                if (sec) sec.style.display = 'none';
+            } else {
+                // Es una promo: elimina este slide dañado o inexistente
+                const slide = img.closest('.promo-slide');
+                if (slide) {
+                    slide.remove();
+                    actualizarCarrusel();
+                }
+            }
+        }
+
+        /* --- 1. LÓGICA DEL CARRUSEL AUTOMÁTICO --- */
         let currentSlide = 0;
         const track = document.getElementById('promo-track');
-        
-        function getSlidesCount() {
-            return document.querySelectorAll('.promo-slide').length;
+
+        function actualizarCarrusel() {
+            const slider = document.getElementById('seccion-promociones');
+            const slides = document.querySelectorAll('.promo-slide');
+            
+            // Si no hay ninguna promo válida, ocultamos el carrusel entero
+            if (slides.length === 0) {
+                if (slider) slider.style.display = 'none';
+            } else {
+                if (slider) slider.style.display = 'block';
+                currentSlide = currentSlide % slides.length;
+                if (track) track.style.transform = `translateX(-${currentSlide * 100}%)`;
+                
+                // Si solo queda 1 promo, ocultamos las flechas porque no hace falta deslizar
+                const flechas = document.querySelectorAll('.slider-arrow');
+                flechas.forEach(f => f.style.display = slides.length > 1 ? 'block' : 'none');
+            }
         }
 
         function moveSlide(dir) { 
-            const total = getSlidesCount();
-            if(!track || total === 0) return;
+            const slides = document.querySelectorAll('.promo-slide');
+            const total = slides.length;
+            if (!track || total <= 1) return;
             currentSlide = (currentSlide + dir + total) % total; 
             track.style.transform = `translateX(-${currentSlide * 100}%)`; 
         }
 
-        // Pasa las imágenes solas cada 10 segundos
-        let promoTimer = setInterval(() => {
-            if(getSlidesCount() > 1) moveSlide(1);
+        // Pasa las fotos cada 10 segundos
+        setInterval(() => {
+            const slides = document.querySelectorAll('.promo-slide');
+            if (slides.length > 1) moveSlide(1);
         }, 10000);
 
-        /* --- 2. LÓGICA DEL MODAL --- */
+        actualizarCarrusel();
+
+        /* --- 2. MODAL DE VIDEO --- */
         const modal = document.getElementById('videoModal');
         const video = document.getElementById('modalVideo');
         const muteIcon = document.getElementById('muteIcon');
@@ -413,7 +459,7 @@
             document.querySelector('#unmuteBtn span').innerText = video.muted ? "Activar Sonido" : "Desactivar Sonido";
         }
 
-        /* --- 3. LISTADO DE PRODUCTOS --- */
+        /* --- 3. SERVICIOS / PRODUCTOS --- */
         const servicios = [
             {n: 'Netflix', p: '15.00', i: 'Netflix.jpg'},         
             {n: 'Disney+', p: '14.00', i: 'Disney.jpg'},         
@@ -446,7 +492,7 @@
                     <div class="card ${status==='agotado'?'agotado':''}" ${status==='agotado' ? '' : `onclick="window.open('https://wa.me/51923666291?text=Hola Mistiplay, deseo ${s.n}', '_blank')"`}>
                         <div class="card-img-container">
                             <div class="status-badge ${status==='agotado'?'status-agotado':'status-disponible'}">${status}</div>
-                            <img src="${s.i}" class="card-img" alt="${s.n}">
+                            <img src="${s.i}" class="card-img" alt="">
                         </div>
                         <div class="card-body">
                             <span class="service-name">${s.n}</span>
@@ -462,7 +508,6 @@
                 grid.insertAdjacentHTML('beforeend', cardHtml);
             });
 
-            // Animación de aparición
             const cards = document.querySelectorAll('.card');
             cards.forEach((card, index) => {
                 setTimeout(() => {
@@ -471,7 +516,7 @@
             });
         }
 
-        /* --- 5. BUSCADOR CON AUTO-DESPLAZAMIENTO SUAVE --- */
+        /* --- 5. BUSCADOR INTELIGENTE --- */
         let searchTimeout;
         document.getElementById('search').addEventListener('input', e => {
             const q = e.target.value.toLowerCase();
