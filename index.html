@@ -1,530 +1,788 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mistiplay - Tienda Digital</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* ========================================================
-           1. COLORES Y ESTILO GENERAL DE LA PÁGINA
-           ======================================================== */
-        :root {
-            --primary-blue: #00d2ff;
-            --bg-dark: #090c10;
-            --header-footer-bg: rgba(17, 24, 39, 0.95);
-            --card-container-bg: rgba(26, 36, 52, 0.7);
-            --card-bg: #151d28;
-            --primary-green: #00ff88;
-            --error-red: #ff3366;
-            --text-light: #f1f5f9;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MistiPlay · Tienda Digital</title>
+<meta name="description" content="MistiPlay - Plataformas de streaming, música y herramientas digitales al mejor precio.">
 
-        body {
-            margin: 0;
-            font-family: 'Montserrat', sans-serif;
-            color: var(--text-light);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background: linear-gradient(-45deg, #090c10, #131a26, #0b1420, #05070a);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-        }
+<!-- Iconos (Font Awesome). No borrar esta línea o desaparecen los iconos. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+<style>
+/* =======================================================================
+   PALETA DE COLORES
+   Cambia SOLO los códigos de color (#xxxxxx) y toda la web se actualiza.
+   ======================================================================= */
+:root{
+  --primary:        #2596be;  /* Azul principal (botones, precios) */
+  --primary-dark:   #17708f;  /* Azul oscuro (degradados) */
+  --bg-page:        #eef2f7;  /* Fondo general de la página */
+  --bar-bg:         #0b1220;  /* Barra superior y pie de página */
+  --box-bg:         #ffffff;  /* Recuadro blanco donde van los productos */
+  --card-bg:        #131c2b;  /* Fondo de cada tarjeta */
+  --card-bg-2:      #0d1421;  /* Parte baja de la tarjeta */
+  --green:          #22c55e;  /* Verde (disponible / WhatsApp) */
+  --red:            #ef4444;  /* Rojo (agotado / cerrar) */
+  --text-dark:      #0f172a;
+  --text-soft:      #94a3b8;
+  --radius:         16px;     /* Qué tan redondeadas son las esquinas */
+}
 
-        /* ========================================================
-           2. CABECERA (NAVBAR)
-           ======================================================== */
-        .navbar {
-            background-color: var(--header-footer-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            height: 70px; 
-            display: flex;
-            align-items: center;
-            padding: 0 25px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-        .nav-left { display: flex; align-items: center; }
-        .main-icon { height: 45px; width: auto; }
-        .v-separator { color: #333; font-size: 1.5rem; margin: 0 15px; }
-        .tab-item { 
-            color: white; text-decoration: none; font-weight: 800; 
-            font-size: 1rem; position: relative; padding: 20px 0; text-transform: uppercase;
-        }
-        .tab-item::after { 
-            content: ""; position: absolute; bottom: 5px; left: 0; 
-            width: 100%; height: 3px; background-color: var(--primary-blue); 
-            box-shadow: 0 0 10px var(--primary-blue); 
-        }
-        
-        .nav-spacer { flex-grow: 1; }
-        .nav-right { display: flex; align-items: center; }
-        
-        .social-links { display: flex; gap: 12px; margin-right: 20px; }
-        .social-circle { 
-            width: 38px; height: 38px; background-color: rgba(255,255,255,0.05); 
-            border-radius: 50%; display: flex; align-items: center; 
-            justify-content: center; color: white; text-decoration: none; transition: 0.3s; 
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .social-circle:hover { background-color: var(--primary-blue); color: black; box-shadow: 0 0 15px var(--primary-blue); transform: translateY(-3px); }
+/* ---------- BASE ---------- */
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }        /* Hace que el scroll sea suave */
+body{
+  margin:0;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background:var(--bg-page);
+  color:var(--text-dark);
+  display:flex; flex-direction:column; min-height:100vh;
+}
+img{ border:0; }
+a{ text-decoration:none; }
 
-        .search-box { position: relative; width: 280px; display: flex; align-items: center; }
-        .search-input {
-            width: 100%; background-color: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 25px; padding: 12px 45px 12px 20px; color: white; outline: none;
-            font-family: 'Montserrat', sans-serif; transition: 0.3s;
-        }
-        .search-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 12px rgba(0, 210, 255, 0.4); }
-        .search-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--primary-blue); cursor: pointer; font-size: 1.1rem; }
-        
-        .currency-selector { background-color: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; gap: 8px; border: 1px solid rgba(255,255,255,0.1); }
-        .flag { width: 20px; height: 14px; background: linear-gradient(90deg, #d91023 33%, #fff 33%, #fff 66%, #d91023 66%); border: 1px solid #333; }
+/* =======================================================================
+   1. BARRA SUPERIOR (NAVBAR)
+   ======================================================================= */
+.navbar{
+  background:rgba(11,18,32,.92);
+  backdrop-filter:blur(10px);          /* Efecto vidrio */
+  height:68px; display:flex; align-items:center; gap:14px;
+  padding:0 25px; position:sticky; top:0; z-index:1000;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  box-shadow:0 6px 24px rgba(0,0,0,.35);
+}
+.nav-left{ display:flex; align-items:center; gap:14px; }
+.main-icon{ height:42px; width:auto; display:block; }
+.v-separator{ color:#334155; font-size:1.4rem; }
+.tab-item{
+  color:#fff; font-weight:700; font-size:.95rem;
+  position:relative; padding:22px 2px;
+}
+.tab-item::after{
+  content:""; position:absolute; bottom:14px; left:0;
+  width:100%; height:3px; border-radius:3px;
+  background:linear-gradient(90deg,var(--primary),var(--green));
+}
+.nav-spacer{ flex-grow:1; }
+.nav-right{ display:flex; align-items:center; gap:14px; }
 
-        /* ========================================================
-           3. PORTADA Y BANNERS (SEPARADOS: PC VS MÓVIL)
-           ======================================================== */
-        /* Por defecto (PC): se muestran solo imágenes de PC */
-        .img-pc { display: block !important; }
-        .img-movil { display: none !important; }
+.social-links{ display:flex; gap:10px; }
+.social-circle{
+  width:38px; height:38px; background:#18202f; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; transition:.25s;
+}
+.social-circle:hover{ background:var(--primary); transform:translateY(-3px); }
 
-        .full-width-section { 
-            width: 100%; 
-            background-color: #000; 
-            position: relative; 
-            border-bottom: 2px solid var(--primary-blue);
-        }
-        .hero-img { 
-            width: 100%; 
-            height: auto; 
-            display: block; 
-            max-width: 2560px; 
-            margin: 0 auto; 
-        }
+/* Buscador */
+.search-box{ position:relative; width:300px; }
+.search-input{
+  width:100%; background:#18202f; border:1px solid #2a3446;
+  border-radius:30px; padding:11px 74px 11px 20px;
+  color:#fff; outline:none; font-size:.9rem; transition:.25s;
+}
+.search-input::placeholder{ color:#7c8ba1; }
+.search-input:focus{ border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,150,190,.25); }
+.search-btn,.clear-btn{
+  position:absolute; top:50%; transform:translateY(-50%);
+  background:none; border:none; color:#fff; cursor:pointer; font-size:.95rem;
+}
+.search-btn{ right:16px; }
+.clear-btn{ right:44px; color:#7c8ba1; display:none; }  /* Se muestra al escribir */
 
-        .promo-slider { 
-            width: 100%; 
-            overflow: hidden; 
-            background-color: #000; 
-            position: relative; 
-            height: 400px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        } 
-        .promo-track { 
-            display: flex; 
-            height: 100%; 
-            transition: transform 0.6s ease; 
-            width: 100%; 
-        }
-        .promo-slide { 
-            min-width: 100%; 
-            max-width: 100%; 
-            height: 100%; 
-            position: relative; 
-            flex-shrink: 0;
-        }
-        .promo-img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            display: block; 
-        }
-        
-        .slider-arrow { 
-            position: absolute; top: 50%; transform: translateY(-50%); 
-            background: rgba(0,0,0,0.6); color: white; border: 1px solid rgba(255,255,255,0.2); 
-            width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10; transition: 0.3s; 
-        }
-        .slider-arrow:hover { background: var(--primary-blue); color: black; }
-        .arrow-prev { left: 15px; } 
-        .arrow-next { right: 15px; }
+.currency-selector{
+  background:#fff; color:#000; display:flex; align-items:center;
+  padding:6px 12px; border-radius:8px; font-weight:800; font-size:.8rem; gap:8px;
+}
+.flag{
+  width:20px; height:14px; border:1px solid #ccc;
+  background:linear-gradient(90deg,#d91023 33%,#fff 33%,#fff 66%,#d91023 66%);
+}
 
-        .info-btn-promo { 
-            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); 
-            background-color: var(--primary-green); color: black; padding: 12px 28px; 
-            border-radius: 30px; font-size: 0.85rem; font-weight: 900; cursor: pointer; 
-            border: none; text-transform: uppercase; z-index: 11; 
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); 
-        }
+/* =======================================================================
+   2. PORTADA Y CARRUSEL DE BANNERS
+   ======================================================================= */
+.full-width-section{ width:100%; overflow:hidden; background:#000; }
+.hero-img{ width:100%; height:auto; display:block; max-width:2560px; margin:0 auto; }
 
-        /* ========================================================
-           4. CAJABOX / PRODUCTOS (SOLUCIÓN PRECIO DISPAREJO)
-           ======================================================== */
-        .main-container { max-width: 1300px; margin: 35px auto; width: 95%; box-sizing: border-box; }
-        .services-box { 
-            background-color: var(--card-container-bg); 
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px; padding: 35px; 
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-        }
-        .section-title { font-size: 1.6rem; font-weight: 900; color: white; text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 1px; }
-        .section-divider { border: none; height: 2px; background: linear-gradient(90deg, var(--primary-blue), transparent); width: 100%; margin-bottom: 30px; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
+.promo-slider{
+  width:100%; height:400px; overflow:hidden;
+  background:#000; position:relative;
+}
+.promo-track{
+  display:flex; height:100%;
+  transition:transform .7s cubic-bezier(.4,0,.2,1);
+}
+.promo-slide{ flex:0 0 100%; height:100%; position:relative; }
+.promo-img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-        .card { 
-            background-color: var(--card-bg); border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
-            cursor: pointer; transition: transform 0.3s ease, border-color 0.3s ease; 
-            display: flex; flex-direction: column; opacity: 0; transform: translateY(20px); position: relative;
-        }
-        .card.is-visible { opacity: 1; transform: translateY(0); }
-        .card.agotado { opacity: 0.5; filter: grayscale(100%); cursor: not-allowed; }
-        
-        .card-img-container { width: 100%; aspect-ratio: 1601/1656; overflow: hidden; background: #000; position: relative; }
-        .card-img { width: 100%; height: 100%; object-fit: contain; display: block; }
-        
-        .status-badge { 
-            position: absolute; top: 10px; right: 10px; z-index: 10;
-            font-size: 0.65rem; padding: 4px 8px; border-radius: 6px; font-weight: 900; 
-            text-transform: uppercase; display: inline-block;
-        }
-        .status-disponible { background-color: var(--primary-green); color: black; }
-        .status-agotado { background-color: var(--error-red); color: white; }
+.slider-arrow{
+  position:absolute; top:50%; transform:translateY(-50%);
+  background:rgba(0,0,0,.45); color:#fff; border:1px solid rgba(255,255,255,.2);
+  width:46px; height:46px; border-radius:50%; cursor:pointer; z-index:10; transition:.25s;
+}
+.slider-arrow:hover{ background:var(--primary); }
+.arrow-prev{ left:16px; } .arrow-next{ right:16px; }
 
-        /* Estructura interna de la tarjeta */
-        .card-body { padding: 14px; background-color: #0e1520; display: flex; flex-direction: column; gap: 8px; }
-        .service-name { font-weight: 800; font-size: 1rem; color: white; display: block; }
+.slider-dots{
+  position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+  display:flex; gap:8px; z-index:12;
+}
+.dot{
+  width:10px; height:10px; border-radius:50%; border:none; cursor:pointer;
+  background:rgba(255,255,255,.45); transition:.25s;
+}
+.dot.active{ background:#fff; width:26px; border-radius:6px; }
 
-        /* Fila de precio y botón: siempre juntos y alineados */
-        .purchase-area { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            width: 100%;
-        }
-        
-        .price-wrapper {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .price-label { font-size: 0.6rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; line-height: 1; }
-        
-        /* white-space: nowrap impide totalmente que S/ y el valor se separen */
-        .price-value { 
-            color: var(--primary-blue); 
-            font-weight: 900; 
-            font-size: 1.15rem; 
-            white-space: nowrap; 
-            line-height: 1.2;
-        }
-        
-        .buy-btn { 
-            background-color: var(--primary-blue); 
-            color: black; 
-            padding: 7px 12px; 
-            border-radius: 6px; 
-            font-size: 0.7rem; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            white-space: nowrap;
-        }
+/* Botón verde sobre el banner */
+.info-btn-promo{
+  position:absolute; bottom:52px; left:50%; transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--green),#16a34a);
+  color:#fff; padding:13px 26px; border-radius:10px;
+  font-size:.85rem; font-weight:900; cursor:pointer; border:none;
+  text-transform:uppercase; z-index:11; box-shadow:0 8px 22px rgba(34,197,94,.4);
+  transition:.25s;
+}
+.info-btn-promo:hover{ transform:translateX(-50%) translateY(-3px); }
 
-        /* ========================================================
-           5. MODAL, FOOTER Y WHATSAPP
-           ======================================================== */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 3000; }
-        .modal-container { position: relative; width: 75%; max-width: 320px; background: #1a1a1a; padding: 25px 15px; border-radius: 20px; text-align: center; border: 2px solid var(--primary-blue); }
-        .modal-video { width: 100%; border-radius: 10px; display: block; margin-bottom: 20px; }
-        .modal-buttons { display: flex; flex-direction: column; gap: 10px; }
-        .btn-modal { display: flex; align-items: center; justify-content: center; gap: 10px; color: white; padding: 12px; border-radius: 8px; font-weight: 800; border: none; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; text-decoration: none; }
-        .btn-blue { background-color: #0077b6; } 
-        .btn-green { background-color: var(--primary-green); color: black; font-weight: 900; }
-        .btn-red { background-color: var(--error-red); }
+/* Cuando NO hay ningún banner cargado, se oculta todo el bloque */
+.promo-slider.vacio{ display:none; }
 
-        .wsp-container { position: fixed; bottom: 25px; right: 25px; z-index: 2000; display: flex; align-items: center; }
-        .wsp-tooltip { background-color: rgba(0,0,0,0.8); color: white; padding: 8px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-right: 10px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; border: 1px solid rgba(255,255,255,0.2); }
-        .wsp-btn { width: 60px; height: 60px; display: block; }
-        .wsp-btn img { width: 100%; height: 100%; display: block; }
-        .wsp-container:hover .wsp-tooltip { opacity: 1; visibility: visible; }
+/* =======================================================================
+   3. VENTANA DE VIDEO (MODAL)
+   ======================================================================= */
+.overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.93);
+  display:none; justify-content:center; align-items:center; z-index:3000;
+  backdrop-filter:blur(4px); padding:20px;
+}
+.overlay.abierto{ display:flex; }
+.modal-container{
+  position:relative; width:100%; max-width:340px; background:#131c2b;
+  padding:22px 16px; border-radius:20px; text-align:center;
+  border:1px solid rgba(255,255,255,.12); box-shadow:0 25px 60px rgba(0,0,0,.6);
+}
+.modal-video{ width:100%; border-radius:12px; display:block; margin-bottom:18px; background:#000; }
+.modal-buttons{ display:flex; flex-direction:column; gap:10px; }
+.btn-modal{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  color:#fff; padding:13px; border-radius:10px; font-weight:800;
+  border:none; text-transform:uppercase; font-size:.8rem; cursor:pointer; transition:.2s;
+}
+.btn-modal:hover{ filter:brightness(1.12); }
+.btn-blue{ background:var(--primary); }
+.btn-green{ background:var(--green); }
+.btn-red{ background:var(--red); }
 
-        footer { background-color: var(--header-footer-bg); padding: 40px 0 25px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
-        .footer-socials-mobile { display: none; gap: 20px; justify-content: center; margin-bottom: 20px; }
-        .footer-socials-mobile a { color: white; font-size: 1.6rem; text-decoration: none; }
-        .payment-container { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .payment-label { color: #94a3b8; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; }
-        .payment-img { height: 28px; width: auto; display: block; }
+/* =======================================================================
+   4. ZONA DE PRODUCTOS
+   ======================================================================= */
+.main-container{ max-width:1300px; margin:34px auto; width:95%; }
+.services-box{
+  background:var(--box-bg); border-radius:22px; padding:30px;
+  box-shadow:0 10px 40px rgba(15,23,42,.08);
+}
+.section-title{
+  font-size:1.5rem; font-weight:900; color:var(--text-dark);
+  text-transform:uppercase; display:block; letter-spacing:.5px;
+}
+.section-sub{ color:#64748b; font-size:.9rem; margin:6px 0 0; }
+.section-divider{
+  border:none; height:3px; border-radius:3px; margin:16px 0 22px;
+  background:linear-gradient(90deg,var(--primary),transparent);
+}
 
-        /* ========================================================
-           6. CONFIGURACIÓN EXCLUSIVA PARA MÓVIL (PANTALLAS CHICAS)
-           ======================================================== */
-        @media (max-width: 768px) {
-            /* En móvil se apagan las de PC y se prenden solo las de móvil */
-            .img-pc { display: none !important; }
-            .img-movil { display: block !important; }
+/* Filtros por categoría */
+.filters{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.chip{
+  border:1px solid #d7dfea; background:#f4f7fb; color:#334155;
+  padding:8px 16px; border-radius:30px; font-size:.8rem; font-weight:800;
+  cursor:pointer; text-transform:uppercase; transition:.2s;
+}
+.chip:hover{ border-color:var(--primary); color:var(--primary); }
+.chip.active{ background:var(--primary); border-color:var(--primary); color:#fff; }
 
-            .navbar { height: 60px; padding: 0 15px; justify-content: space-between; }
-            .v-separator, .tab-item, .nav-spacer, .social-links, .currency-selector { display: none !important; }
-            .nav-right { width: 75%; display: flex; justify-content: flex-end; }
-            .search-box { width: 100%; max-width: 220px; }
-            
-            .promo-slider { height: 320px; }
-            .main-container { margin: 15px auto; width: 95%; }
-            .services-box { padding: 15px; }
-            .section-title { font-size: 1.2rem; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .footer-socials-mobile { display: flex; } 
+.result-info{ font-size:.85rem; color:#64748b; margin-bottom:16px; font-weight:600; }
+.no-results{
+  display:none; text-align:center; padding:45px 20px; color:#64748b;
+}
+.no-results i{ font-size:2.4rem; color:#cbd5e1; margin-bottom:12px; display:block; }
 
-            /* Ajuste perfecto de cajabox en móvil */
-            .card-body { padding: 10px; gap: 6px; }
-            .service-name { font-size: 0.85rem; }
-            .purchase-area { display: flex; flex-direction: row; justify-content: space-between; align-items: center; }
-            .price-label { font-size: 0.55rem; }
-            .price-value { font-size: 0.95rem; white-space: nowrap; }
-            .buy-btn { padding: 5px 8px; font-size: 0.6rem; }
+.products-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:22px;
+}
 
-            .info-btn-promo { padding: 8px 18px; font-size: 0.7rem; bottom: 15px; }
-            .wsp-btn { width: 50px; height: 50px; }
-        }
-    </style>
+/* ---------- TARJETAS ---------- */
+.card{
+  background:var(--card-bg); border-radius:var(--radius); overflow:hidden;
+  border:1px solid #24334a; cursor:pointer; display:flex; flex-direction:column;
+  opacity:0; transform:translateY(26px);
+  transition:opacity .5s ease, transform .45s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.card.is-visible{ opacity:1; transform:translateY(0); }
+@media (hover:hover){   /* El efecto solo en computadora, no en celular */
+  .card:hover{
+    transform:translateY(-8px); border-color:var(--primary);
+    box-shadow:0 18px 36px rgba(15,23,42,.28);
+  }
+  .card:hover .card-img{ transform:scale(1.06); }
+}
+.card.agotado{ opacity:.6; cursor:not-allowed; }
+.card.agotado:hover{ transform:none; }
+
+.card-img-container{
+  width:100%; aspect-ratio:1601/1656; overflow:hidden;
+  background:#000; position:relative;
+}
+.card-img{ width:100%; height:100%; object-fit:contain; display:block; transition:transform .5s ease; }
+
+.status-badge{
+  position:absolute; bottom:10px; left:10px; z-index:10;
+  font-size:.6rem; padding:5px 9px; border-radius:6px; font-weight:900;
+  text-transform:uppercase; letter-spacing:.5px;
+}
+.status-disponible{ background:var(--green); color:#fff; }
+.status-agotado{ background:var(--red); color:#fff; }
+
+.card-body{ padding:13px 15px; background:var(--card-bg-2); color:#fff; }
+.service-name{ font-weight:700; font-size:1.02rem; display:block; margin-bottom:8px; }
+.purchase-area{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.price-label{ font-size:.6rem; color:var(--text-soft); text-transform:uppercase; display:block; }
+.price-value{ color:var(--primary); font-weight:900; font-size:1.15rem; }
+.buy-btn{
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff; padding:8px 14px; border-radius:8px;
+  font-size:.72rem; font-weight:900; text-transform:uppercase; white-space:nowrap;
+}
+
+/* =======================================================================
+   5. WHATSAPP FLOTANTE, SUBIR Y PIE DE PÁGINA
+   ======================================================================= */
+.wsp-container{ position:fixed; bottom:28px; right:28px; z-index:2000; display:flex; align-items:center; }
+.wsp-tooltip{
+  background:#0b1220; color:#fff; padding:9px 15px; border-radius:10px;
+  font-size:.85rem; font-weight:600; margin-right:14px;
+  opacity:0; visibility:hidden; transition:.3s; white-space:nowrap;
+}
+.wsp-container:hover .wsp-tooltip{ opacity:1; visibility:visible; }
+.wsp-btn{ width:60px; height:60px; display:block; transition:.3s; }
+.wsp-btn:hover{ transform:scale(1.08); }
+.wsp-btn img{ width:100%; height:100%; display:block; }
+
+.top-btn{
+  position:fixed; bottom:100px; right:34px; z-index:1999;
+  width:46px; height:46px; border-radius:50%; border:none; cursor:pointer;
+  background:var(--bar-bg); color:#fff; opacity:0; pointer-events:none; transition:.3s;
+}
+.top-btn.visible{ opacity:.9; pointer-events:auto; }
+
+footer{
+  background:var(--bar-bg); padding:42px 20px; text-align:center;
+  border-top:3px solid var(--primary); margin-top:auto;
+}
+.footer-socials-mobile{ display:none; gap:20px; justify-content:center; margin-bottom:24px; flex-wrap:wrap; }
+.footer-socials-mobile a{ color:#fff; font-size:1.7rem; }
+.payment-container{ display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:14px; }
+.payment-label{ color:var(--text-soft); font-weight:700; font-size:.85rem; }
+.payment-img{ height:32px; width:auto; display:block; }
+.copyright{ color:#64748b; font-size:.85rem; margin:0; }
+
+/* =======================================================================
+   6. AJUSTES PARA CELULAR
+   ======================================================================= */
+@media (max-width:768px){
+  .navbar{ height:62px; padding:0 14px; gap:10px; }
+  .v-separator,.tab-item,.nav-spacer,.social-links,.currency-selector{ display:none !important; }
+  .nav-right{ flex:1; justify-content:flex-end; }
+  .search-box{ width:100%; max-width:260px; }
+  .promo-slider{ height:300px; }
+  .main-container{ margin:16px auto; width:96%; }
+  .services-box{ padding:16px; border-radius:16px; }
+  .section-title{ font-size:1.15rem; }
+  .products-grid{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  .card-body{ padding:9px 10px; }
+  .service-name{ font-size:.85rem; margin-bottom:4px; }
+  .price-value{ font-size:.92rem; }
+  .buy-btn{ padding:5px 9px; font-size:.6rem; }
+  .info-btn-promo{ padding:10px 16px; font-size:.7rem; bottom:44px; }
+  .footer-socials-mobile{ display:flex; }
+  .wsp-btn{ width:52px; height:52px; }
+  .wsp-container{ bottom:18px; right:18px; }
+  .top-btn{ bottom:84px; right:22px; width:40px; height:40px; }
+}
+</style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="nav-left">
-            <img src="icono.png" alt="Mistiplay" class="main-icon">
-            <span class="v-separator">|</span>
-            <a href="#" class="tab-item">Tienda</a>
-        </div>
-        <div class="nav-spacer"></div>
-        <div class="nav-right">
-            <div class="social-links">
-                <a href="https://facebook.com/mistiplaygo" target="_blank" class="social-circle"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://instagram.com/mistiplaygo" target="_blank" class="social-circle"><i class="fab fa-instagram"></i></a>
-                <a href="https://tiktok.com/@mistiplay" target="_blank" class="social-circle"><i class="fab fa-tiktok"></i></a>
-            </div>
-            <div class="search-box">
-                <input id="search" type="text" class="search-input" placeholder="Buscar productos...">
-                <button class="search-btn"><i class="fa fa-search"></i></button>
-            </div>
-            <span class="v-separator">|</span>
-            <div class="currency-selector"><div class="flag"></div><span>PEN</span><i class="fa fa-chevron-down" style="font-size: 0.6rem; margin-left:8px;"></i></div>
-        </div>
-    </nav>
-
-    <div class="full-width-section" id="seccion-portada">
-        <img src="portada.jpg" class="hero-img img-pc" alt="" onerror="ocultarSeccionPortada()">
-        <img src="portada_m.jpg" class="hero-img img-movil" alt="" onerror="ocultarSeccionPortada()">
+<!-- ============================ BARRA SUPERIOR ============================ -->
+<nav class="navbar">
+  <div class="nav-left">
+    <img src="icono.png" alt="MistiPlay" class="main-icon">
+    <span class="v-separator">|</span>
+    <a href="#productos" class="tab-item">Tienda</a>
+  </div>
+  <div class="nav-spacer"></div>
+  <div class="nav-right">
+    <div class="social-links" id="redes-pc"></div>
+    <div class="search-box">
+      <input id="search" type="text" class="search-input" placeholder="Buscar plataforma..." autocomplete="off">
+      <button class="clear-btn" id="clear-search" title="Borrar"><i class="fas fa-times"></i></button>
+      <button class="search-btn" title="Buscar"><i class="fa fa-search"></i></button>
     </div>
-
-    <div class="promo-slider" id="seccion-promociones">
-        <button class="slider-arrow arrow-prev" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
-        <button class="slider-arrow arrow-next" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
-        
-        <div class="promo-track" id="promo-track">
-            
-            <div class="promo-slide">
-                <img src="promo.jpg" class="promo-img img-pc" alt="" onerror="descartarSlide(this)">
-                <img src="promo_m.jpg" class="promo-img img-movil" alt="" onerror="descartarSlide(this)">
-            </div>
-
-            <div class="promo-slide">
-                <img src="promo2.jpg" class="promo-img img-pc" alt="" onerror="descartarSlide(this)">
-                <img src="promo2_m.jpg" class="promo-img img-movil" alt="" onerror="descartarSlide(this)">
-                <button class="info-btn-promo" onclick="openModal()">MÁS INFORMACIÓN</button>
-            </div>
-
-        </div>
+    <span class="v-separator">|</span>
+    <div class="currency-selector">
+      <div class="flag"></div><span>PEN</span>
+      <i class="fa fa-chevron-down" style="font-size:.6rem"></i>
     </div>
+  </div>
+</nav>
 
-    <div class="overlay" id="videoModal">
-        <div class="modal-container">
-            <video id="modalVideo" class="modal-video" src="video.mp4" loop muted playsinline></video>
-            <div class="modal-buttons">
-                <button id="unmuteBtn" class="btn-modal btn-blue" onclick="toggleMute()"><i id="muteIcon" class="fas fa-volume-mute"></i> <span>Activar Sonido</span></button>
-                <a href="https://wa.me/51923666291?text=Deseo%20mas%20informaci%C3%B3n%20MaxPlayer" target="_blank" class="btn-modal btn-green"><i class="fab fa-whatsapp"></i> MÁS INFORMACIÓN</a>
-                <button class="btn-modal btn-red" onclick="closeModal()"><i class="fas fa-times"></i> CERRAR</button>
+<!-- ============================ PORTADA ============================ -->
+<div class="full-width-section">
+  <img src="portada.jpg" class="hero-img" alt="Portada MistiPlay">
+</div>
+
+<!-- ==================== CARRUSEL DE BANNERS ====================
+     No escribas nada aquí: las imágenes se crean solas desde
+     la lista "BANNERS" que está más abajo en el bloque azul de JavaScript.
+================================================================= -->
+<div class="promo-slider" id="promo-slider">
+  <button class="slider-arrow arrow-prev" id="btn-prev" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+  <button class="slider-arrow arrow-next" id="btn-next" aria-label="Siguiente"><i class="fas fa-chevron-right"></i></button>
+  <div class="promo-track" id="promo-track"></div>
+  <div class="slider-dots" id="slider-dots"></div>
+</div>
+
+<!-- ============================ VENTANA DE VIDEO ============================ -->
+<div class="overlay" id="videoModal">
+  <div class="modal-container">
+    <video id="modalVideo" class="modal-video" src="video.mp4" loop muted playsinline></video>
+    <div class="modal-buttons">
+      <button id="unmuteBtn" class="btn-modal btn-blue">
+        <i id="muteIcon" class="fas fa-volume-mute"></i> <span>Activar Sonido</span>
+      </button>
+      <a id="modalWsp" href="#" target="_blank" rel="noopener" class="btn-modal btn-green">
+        <i class="fab fa-whatsapp"></i> Más información
+      </a>
+      <button id="closeModalBtn" class="btn-modal btn-red"><i class="fas fa-times"></i> Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ PRODUCTOS ============================ -->
+<div class="main-container" id="productos">
+  <div class="services-box">
+    <span class="section-title">Plataformas y servicios</span>
+    <p class="section-sub">Entrega inmediata · Garantía durante todo el periodo · Soporte por WhatsApp</p>
+    <hr class="section-divider">
+
+    <div class="filters" id="filtros"></div>
+    <p class="result-info" id="result-info"></p>
+
+    <div class="products-grid" id="grid-productos"></div>
+
+    <div class="no-results" id="no-results">
+      <i class="fas fa-magnifying-glass"></i>
+      <strong>No encontramos esa plataforma.</strong>
+      <p>Escríbenos por WhatsApp y la conseguimos para ti.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================ BOTONES FLOTANTES ============================ -->
+<button class="top-btn" id="top-btn" title="Subir"><i class="fas fa-chevron-up"></i></button>
+
+<div class="wsp-container">
+  <div class="wsp-tooltip">Chatea con nosotros</div>
+  <a id="wspFlotante" href="#" target="_blank" rel="noopener" class="wsp-btn">
+    <img src="wsp.png" alt="WhatsApp">
+  </a>
+</div>
+
+<!-- ============================ PIE DE PÁGINA ============================ -->
+<footer>
+  <div class="footer-socials-mobile" id="redes-movil">
+    <p style="color:#fff;font-weight:700;width:100%;margin:0 0 10px;font-size:1.05rem;">Síguenos en:</p>
+  </div>
+  <div class="payment-container">
+    <span class="payment-label">Métodos de pago:</span>
+    <img src="metodosdepago.png" class="payment-img" alt="Métodos de pago">
+  </div>
+  <p class="copyright">© <span id="anio"></span> MistiPlay. Todos los derechos reservados.</p>
+</footer>
+
+<!-- OPCIONAL: archivo externo de stock. Si no lo usas, borra esta línea. -->
+<script src="stock.js"></script>
+
+<script>
+/* =========================================================================
+   ██  ZONA DE CONFIGURACIÓN  ██
+   Todo lo que necesitas cambiar está entre esta línea y la que dice
+   "FIN DE LA CONFIGURACIÓN". Más abajo NO hace falta tocar nada.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1) DATOS DEL NEGOCIO
+   ------------------------------------------------------------------------- */
+const CONFIG = {
+  whatsapp: "51923666291",                 // Tu número CON código de país, sin + ni espacios
+  saludo:   "¡Hola MistiPlay!",            // Mensaje del botón verde flotante
+  redes: {                                 // Deja "" (vacío) en la red que no uses
+    facebook:  "https://facebook.com/mistiplaygo",
+    instagram: "https://instagram.com/mistiplaygo",
+    tiktok:    "https://tiktok.com/@mistiplay"
+  }
+};
+
+/* -------------------------------------------------------------------------
+   2) BANNERS DEL CARRUSEL
+   ------------------------------------------------------------------------- */
+/*  ➤ QUÉ SE QUITÓ: se eliminaron "promo.jpg" y "promo_m.jpg" como pediste.
+
+    ➤ CÓMO AGREGAR UN BANNER NUEVO:
+      Copia una línea completa que empiece con {  y termine con },
+      pégala debajo y cambia los nombres de las imágenes.
+
+      pc    = imagen para computadora (recomendado 1920x600 px)
+      movil = imagen para celular (recomendado 800x600 px)
+              Si no tienes versión para celular, pon la misma de "pc".
+      boton = qué hace el botón verde encima del banner:
+              "modal"                  → abre el video
+              "https://wa.me/519..."   → abre WhatsApp o cualquier enlace
+              ""  (vacío)              → NO muestra ningún botón
+      texto = lo que dice el botón
+
+    ➤ EJEMPLO de banner nuevo (así se vería agregado):
+      { pc:"promo3.jpg", movil:"promo3_m.jpg", boton:"", texto:"" },
+
+    ➤ IMPORTANTE: cada línea termina con coma, menos la última (opcional).
+    ➤ Si dejas la lista vacía [ ], el carrusel desaparece automáticamente.  */
+const BANNERS = [
+  { pc:"promo2.jpg", movil:"promo2_m.jpg", boton:"modal", texto:"Más información" }
+];
+
+/*  Mensaje que se envía al dar clic en WhatsApp dentro del video */
+const MENSAJE_MODAL = "Deseo más información de MaxPlayer";
+
+/* -------------------------------------------------------------------------
+   3) LISTA DE PRODUCTOS
+   ------------------------------------------------------------------------- */
+/*  ➤ CÓMO AGREGAR UN PRODUCTO:
+      Copia una línea entera, pégala al final de la lista y cambia los datos.
+
+      n   = nombre que se ve en la tarjeta
+      p   = precio (solo el número, con dos decimales: "12.00")
+      i   = nombre EXACTO del archivo de imagen (respeta mayúsculas: Netflix.jpg)
+      c   = categoría, para los filtros de arriba.
+            Usa una de estas: "streaming", "musica", "ia", "diseno"
+            (si inventas una nueva, aparece sola como filtro)
+      s   = stock. Escribe "agotado" para marcarlo agotado.
+            Si lo dejas vacío "" o no lo pones, sale como DISPONIBLE.
+
+    ➤ EJEMPLO de producto nuevo:
+      { n:"Duolingo Plus", p:"12.00", i:"Duolingo.jpg", c:"ia", s:"" },
+
+    ➤ PARA CAMBIAR UN PRECIO: solo edita el número en "p".
+    ➤ PARA OCULTAR UN PRODUCTO: borra su línea completa.
+    ➤ NOTA: si usas el archivo stock.js, ese archivo tiene prioridad
+      sobre lo que escribas en "s".                                        */
+const SERVICIOS = [
+  { n:"Netflix",         p:"15.00", i:"Netflix.jpg",     c:"streaming", s:"" },
+  { n:"Disney+",         p:"14.00", i:"Disney.jpg",      c:"streaming", s:"" },
+  { n:"HBO Max",         p:"8.00",  i:"Max.jpg",         c:"streaming", s:"" },
+  { n:"Paramount+",      p:"8.00",  i:"Paramount.jpg",   c:"streaming", s:"" },
+  { n:"Prime Video",     p:"10.00", i:"Primevideo.jpg",  c:"streaming", s:"" },
+  { n:"Vix Premium",     p:"10.00", i:"Vix.jpg",         c:"streaming", s:"" },
+  { n:"Crunchyroll",     p:"8.00",  i:"Crunchyroll.jpg", c:"streaming", s:"" },
+  { n:"Apple TV+",       p:"15.00", i:"Apple.jpg",       c:"streaming", s:"" },
+  { n:"Directv GO",      p:"35.00", i:"DGO.jpg",         c:"streaming", s:"" },
+  { n:"Movistar TV",     p:"25.00", i:"Movistar.jpg",    c:"streaming", s:"" },
+  { n:"Tele Latino",     p:"20.00", i:"Telelatino.jpg",  c:"streaming", s:"" },
+  { n:"Flujo TV",        p:"20.00", i:"Flujotv.jpg",     c:"streaming", s:"" },
+  { n:"MaxPlayer",       p:"25.00", i:"Maxplayer.jpg",   c:"streaming", s:"" },
+  { n:"Canva Pro",       p:"8.00",  i:"Canva.jpg",       c:"diseno",    s:"" },
+  { n:"CapCut Pro",      p:"15.00", i:"Capcut.jpg",      c:"diseno",    s:"" },
+  { n:"ChatGPT Plus",    p:"15.00", i:"Chat.jpg",        c:"ia",        s:"" },
+  { n:"Spotify",         p:"13.00", i:"Spotify.jpg",     c:"musica",    s:"" },
+  { n:"Youtube Premium", p:"15.00", i:"Youtube.jpg",     c:"musica",    s:"" }
+];
+
+/*  Nombres bonitos de los filtros. Si creas una categoría nueva en "c",
+    agrégala aquí igual: nuevacategoria: "Texto que se ve"                 */
+const NOMBRES_CATEGORIAS = {
+  todos:     "Todos",
+  streaming: "Streaming",
+  musica:    "Música",
+  ia:        "Inteligencia Artificial",
+  diseno:    "Diseño"
+};
+
+/* =========================================================================
+   ██  FIN DE LA CONFIGURACIÓN — de aquí para abajo es el motor de la web ██
+   No necesitas modificar nada más.
+   ========================================================================= */
+
+/* ---------- Utilidades ---------- */
+const $ = (id) => document.getElementById(id);
+
+// Arma un link de WhatsApp seguro (codifica tildes, espacios y signos)
+const linkWsp = (texto) =>
+  "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(texto);
+
+// Quita tildes y mayúsculas para que el buscador sea flexible
+const normalizar = (t) => (t || "")
+  .toString().toLowerCase()
+  .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+/* ---------- Enlaces de WhatsApp y redes ---------- */
+$("wspFlotante").href = linkWsp(CONFIG.saludo);
+$("modalWsp").href    = linkWsp(MENSAJE_MODAL);
+$("anio").textContent = new Date().getFullYear();
+
+(function pintarRedes(){
+  const iconos = { facebook:"fab fa-facebook-f", instagram:"fab fa-instagram", tiktok:"fab fa-tiktok" };
+  const pc = $("redes-pc"), movil = $("redes-movil");
+  Object.keys(CONFIG.redes).forEach(red => {
+    const url = CONFIG.redes[red];
+    if(!url) return;                                  // Si está vacío, no se muestra
+    pc.insertAdjacentHTML("beforeend",
+      `<a href="${url}" target="_blank" rel="noopener" class="social-circle" aria-label="${red}"><i class="${iconos[red]}"></i></a>`);
+    movil.insertAdjacentHTML("beforeend",
+      `<a href="${url}" target="_blank" rel="noopener" aria-label="${red}"><i class="${iconos[red]}"></i></a>`);
+  });
+})();
+
+/* =========================================================================
+   CARRUSEL — funciona con cualquier cantidad de banners (1, 2, 10...)
+   ========================================================================= */
+const slider = $("promo-slider");
+const track  = $("promo-track");
+const dotsBox= $("slider-dots");
+let slideActual = 0, autoPlay = null;
+
+function crearBanners(){
+  if(BANNERS.length === 0){ slider.classList.add("vacio"); return; }  // Sin banners: se oculta
+
+  BANNERS.forEach((b, idx) => {
+    const boton = b.boton
+      ? (b.boton === "modal"
+          ? `<button class="info-btn-promo" data-accion="modal">${b.texto || "Más información"}</button>`
+          : `<a class="info-btn-promo" href="${b.boton}" target="_blank" rel="noopener">${b.texto || "Más información"}</a>`)
+      : "";
+    track.insertAdjacentHTML("beforeend", `
+      <div class="promo-slide">
+        <picture>
+          <source media="(max-width: 768px)" srcset="${b.movil || b.pc}">
+          <img src="${b.pc}" class="promo-img" alt="Promoción ${idx + 1}" loading="lazy">
+        </picture>
+        ${boton}
+      </div>`);
+    dotsBox.insertAdjacentHTML("beforeend",
+      `<button class="dot ${idx === 0 ? "active" : ""}" data-i="${idx}" aria-label="Banner ${idx + 1}"></button>`);
+  });
+
+  // Con un solo banner no hacen falta flechas ni puntitos
+  const solo = BANNERS.length < 2;
+  $("btn-prev").style.display = solo ? "none" : "";
+  $("btn-next").style.display = solo ? "none" : "";
+  dotsBox.style.display       = solo ? "none" : "flex";
+
+  track.addEventListener("click", e => {
+    if(e.target.closest('[data-accion="modal"]')) abrirModal();
+  });
+  dotsBox.addEventListener("click", e => {
+    const d = e.target.closest(".dot");
+    if(d) irA(Number(d.dataset.i));
+  });
+  if(!solo) iniciarAuto();
+}
+
+function irA(i){
+  slideActual = (i + BANNERS.length) % BANNERS.length;   // Da la vuelta al llegar al final
+  track.style.transform = `translateX(-${slideActual * 100}%)`;
+  dotsBox.querySelectorAll(".dot").forEach((d, k) => d.classList.toggle("active", k === slideActual));
+}
+const mover = (dir) => irA(slideActual + dir);
+$("btn-prev").addEventListener("click", () => { mover(-1); reiniciarAuto(); });
+$("btn-next").addEventListener("click", () => { mover(1);  reiniciarAuto(); });
+
+/* Cambio automático cada 8 segundos (cambia el 8000 si lo quieres más lento/rápido) */
+const iniciarAuto  = () => { autoPlay = setInterval(() => mover(1), 8000); };
+const reiniciarAuto= () => { clearInterval(autoPlay); if(BANNERS.length > 1) iniciarAuto(); };
+slider.addEventListener("mouseenter", () => clearInterval(autoPlay));
+slider.addEventListener("mouseleave", reiniciarAuto);
+
+/* Deslizar con el dedo en celular */
+let x0 = null;
+slider.addEventListener("touchstart", e => x0 = e.touches[0].clientX, { passive:true });
+slider.addEventListener("touchend", e => {
+  if(x0 === null) return;
+  const dif = e.changedTouches[0].clientX - x0;
+  if(Math.abs(dif) > 45){ mover(dif < 0 ? 1 : -1); reiniciarAuto(); }
+  x0 = null;
+});
+
+crearBanners();
+
+/* =========================================================================
+   VENTANA DE VIDEO
+   ========================================================================= */
+const modal = $("videoModal"), video = $("modalVideo"), muteIcon = $("muteIcon");
+function abrirModal(){ modal.classList.add("abierto"); video.play().catch(()=>{}); }
+function cerrarModal(){ modal.classList.remove("abierto"); video.pause(); video.currentTime = 0; }
+$("closeModalBtn").addEventListener("click", cerrarModal);
+modal.addEventListener("click", e => { if(e.target === modal) cerrarModal(); });   // Cierra al tocar fuera
+document.addEventListener("keydown", e => { if(e.key === "Escape") cerrarModal(); });
+$("unmuteBtn").addEventListener("click", () => {
+  video.muted = !video.muted;
+  muteIcon.className = video.muted ? "fas fa-volume-mute" : "fas fa-volume-up";
+  document.querySelector("#unmuteBtn span").textContent = video.muted ? "Activar Sonido" : "Desactivar Sonido";
+});
+
+/* =========================================================================
+   PRODUCTOS, FILTROS Y BUSCADOR
+   ========================================================================= */
+const grid = $("grid-productos"), infoRes = $("result-info"), sinRes = $("no-results");
+let categoriaActiva = "todos", busqueda = "";
+
+// Lee el stock: primero stock.js (si existe), luego el valor "s" del producto
+function estadoDe(s){
+  if(typeof stockData !== "undefined" && stockData && stockData[s.n])
+    return String(stockData[s.n]).toLowerCase();
+  return (s.s || "disponible").toLowerCase();
+}
+
+/* Crea los botones de filtro automáticamente según las categorías usadas */
+(function crearFiltros(){
+  const cats = ["todos", ...new Set(SERVICIOS.map(s => s.c || "otros"))];
+  $("filtros").innerHTML = cats.map(c =>
+    `<button class="chip ${c === "todos" ? "active" : ""}" data-cat="${c}">${NOMBRES_CATEGORIAS[c] || c}</button>`
+  ).join("");
+  $("filtros").addEventListener("click", e => {
+    const chip = e.target.closest(".chip");
+    if(!chip) return;
+    categoriaActiva = chip.dataset.cat;
+    $("filtros").querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+    chip.classList.add("active");
+    render();
+  });
+})();
+
+function render(){
+  const q = normalizar(busqueda);
+
+  // Filtra por texto escrito y por categoría
+  const lista = SERVICIOS.filter(s => {
+    const coincideTexto = !q || normalizar(s.n).includes(q) || normalizar(s.c).includes(q);
+    const coincideCat   = categoriaActiva === "todos" || (s.c || "otros") === categoriaActiva;
+    return coincideTexto && coincideCat;
+  });
+
+  grid.innerHTML = lista.map(s => {
+    const estado   = estadoDe(s);
+    const agotado  = estado === "agotado";
+    return `
+      <article class="card ${agotado ? "agotado" : ""}"
+               data-nombre="${s.n}" data-agotado="${agotado}">
+        <div class="card-img-container">
+          <span class="status-badge ${agotado ? "status-agotado" : "status-disponible"}">${agotado ? "Agotado" : "Disponible"}</span>
+          <img src="${s.i}" class="card-img" alt="${s.n}" loading="lazy">
+        </div>
+        <div class="card-body">
+          <span class="service-name">${s.n}</span>
+          <div class="purchase-area">
+            <div>
+              <span class="price-label">Precio</span>
+              <span class="price-value">S/ ${s.p}</span>
             </div>
+            <span class="buy-btn">${agotado ? "Avísame" : "Comprar"}</span>
+          </div>
         </div>
-    </div>
+      </article>`;
+  }).join("");
 
-    <div class="main-container">
-        <div class="services-box" id="seccion-tienda">
-            <div class="section-header">
-                <span class="section-title">Plataformas Streaming</span>
-                <hr class="section-divider">
-            </div>
-            <div class="products-grid" id="grid-productos"></div>
-        </div>
-    </div>
+  // Mensajes de resultados
+  sinRes.style.display = lista.length ? "none" : "block";
+  infoRes.textContent  = busqueda
+    ? `${lista.length} resultado(s) para "${busqueda}"`
+    : `${lista.length} servicios disponibles`;
 
-    <div class="wsp-container">
-        <div class="wsp-tooltip">¡Escríbenos en directo!</div>
-        <a href="https://wa.me/51923666291?text=%C2%A1Hola%20Mistiplay!" target="_blank" class="wsp-btn">
-            <img src="wsp.png" alt="WhatsApp">
-        </a>
-    </div>
+  animarTarjetas();
+}
 
-    <footer>
-        <div class="footer-socials-mobile">
-            <p style="color: white; font-weight: 800; width: 100%; margin-bottom: 5px; font-size: 1.1rem;">Síguenos en:</p>
-            <a href="https://facebook.com/mistiplaygo" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://instagram.com/mistiplaygo" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://tiktok.com/@mistiplay" target="_blank"><i class="fab fa-tiktok"></i></a>
-        </div>
-        <div class="payment-container">
-            <span class="payment-label">Métodos de pago aceptados:</span>
-            <img src="metodosdepago.png" class="payment-img" alt="Métodos de pago">
-        </div>
-        <p style="color:#64748b; font-size:0.85rem; font-weight: 600; margin-top: 20px;">© 2025 MistiPlay. Todos los derechos reservados.</p>
-    </footer>
+/* Las tarjetas aparecen suavemente al entrar en pantalla */
+function animarTarjetas(){
+  const obs = new IntersectionObserver((entradas, o) => {
+    entradas.forEach((en, i) => {
+      if(en.isIntersecting){
+        setTimeout(() => en.target.classList.add("is-visible"), i * 60);
+        o.unobserve(en.target);
+      }
+    });
+  }, { threshold:.08 });
+  grid.querySelectorAll(".card").forEach(c => obs.observe(c));
+}
 
-    <script src="stock.js"></script>
-    <script>
-        /* ========================================================
-           GUÍA VISIBLE 1: CONTROL INTELIGENTE DE IMÁGENES
-           Si la imagen no existe en la carpeta, se apaga de inmediato.
-           No fuerza a que la de PC se adapte al celular.
-           ======================================================== */
-        function ocultarSeccionPortada() {
-            const sec = document.getElementById('seccion-portada');
-            if (sec) sec.style.display = 'none';
-        }
+/* Clic en una tarjeta → abre WhatsApp con el mensaje ya escrito */
+grid.addEventListener("click", e => {
+  const card = e.target.closest(".card");
+  if(!card) return;
+  const nombre = card.dataset.nombre;
+  const texto  = card.dataset.agotado === "true"
+    ? `Hola MistiPlay, ¿cuándo tendrán stock de ${nombre}?`
+    : `Hola MistiPlay, deseo ${nombre}`;
+  window.open(linkWsp(texto), "_blank");
+});
 
-        function descartarSlide(imgElement) {
-            const slide = imgElement.closest('.promo-slide');
-            if (slide) {
-                slide.remove();
-                actualizarEstadoSlider();
-            }
-        }
+/* ---------- BUSCADOR CON SCROLL AUTOMÁTICO ----------
+   Al escribir, la página baja sola hasta los resultados:
+   ya no hay que desplazarse a mano.                     */
+const inputBusqueda = $("search");
+let temporizador = null, yaBajo = false;
 
-        /* ========================================================
-           GUÍA VISIBLE 2: CARRUSEL AUTOMÁTICO
-           Detecta cuántas promociones quedan vivas y las desliza.
-           ======================================================== */
-        let currentSlide = 0;
-        const track = document.getElementById('promo-track');
+inputBusqueda.addEventListener("input", e => {
+  busqueda = e.target.value.trim();
+  $("clear-search").style.display = busqueda ? "block" : "none";
 
-        function actualizarEstadoSlider() {
-            const slider = document.getElementById('seccion-promociones');
-            const slides = document.querySelectorAll('.promo-slide');
-            if (slides.length === 0) {
-                if (slider) slider.style.display = 'none';
-            } else {
-                if (slider) slider.style.display = 'block';
-                currentSlide = currentSlide % slides.length;
-                if (track) track.style.transform = `translateX(-${currentSlide * 100}%)`;
-                const flechas = document.querySelectorAll('.slider-arrow');
-                flechas.forEach(f => f.style.display = slides.length > 1 ? 'block' : 'none');
-            }
-        }
+  clearTimeout(temporizador);
+  temporizador = setTimeout(() => {
+    render();
+    if(busqueda.length >= 1 && !yaBajo){
+      // 80 = altura de la barra superior, para que no tape el título
+      const y = document.getElementById("productos").getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top:y, behavior:"smooth" });
+      yaBajo = true;                 // Solo baja una vez por búsqueda
+    }
+    if(busqueda.length === 0) yaBajo = false;
+  }, 180);                           // Espera 180 ms para no recalcular en cada tecla
+});
 
-        function moveSlide(dir) { 
-            const slides = document.querySelectorAll('.promo-slide');
-            const total = slides.length;
-            if (!track || total <= 1) return;
-            currentSlide = (currentSlide + dir + total) % total; 
-            track.style.transform = `translateX(-${currentSlide * 100}%)`; 
-        }
+/* Enter también lleva a los resultados */
+inputBusqueda.addEventListener("keydown", e => {
+  if(e.key === "Enter"){
+    e.preventDefault();
+    const y = document.getElementById("productos").getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top:y, behavior:"smooth" });
+  }
+});
 
-        setInterval(() => {
-            const slides = document.querySelectorAll('.promo-slide');
-            if (slides.length > 1) moveSlide(1);
-        }, 10000);
+/* Botón X: limpia la búsqueda */
+$("clear-search").addEventListener("click", () => {
+  inputBusqueda.value = ""; busqueda = ""; yaBajo = false;
+  $("clear-search").style.display = "none";
+  render(); inputBusqueda.focus();
+});
 
-        actualizarEstadoSlider();
+/* Botón "subir" */
+window.addEventListener("scroll", () => {
+  $("top-btn").classList.toggle("visible", window.scrollY > 500);
+});
+$("top-btn").addEventListener("click", () => window.scrollTo({ top:0, behavior:"smooth" }));
 
-        /* ========================================================
-           GUÍA VISIBLE 3: LISTADO DE PRODUCTOS Y PRECIOS
-           Para cambiar precios o agregar productos, edita la lista:
-           ======================================================== */
-        const servicios = [
-            {n: 'Netflix', p: '15.00', i: 'Netflix.jpg'},         
-            {n: 'Disney+', p: '14.00', i: 'Disney.jpg'},         
-            {n: 'HBO Max', p: '8.00', i: 'Max.jpg'},             
-            {n: 'Paramount+', p: '8.00', i: 'Paramount.jpg'},    
-            {n: 'Prime Video', p: '10.00', i: 'Primevideo.jpg'}, 
-            {n: 'Vix Premium', p: '10.00', i: 'Vix.jpg'},         
-            {n: 'Crunchyroll', p: '8.00', i: 'Crunchyroll.jpg'}, 
-            {n: 'Apple TV+', p: '15.00', i: 'Apple.jpg'},         
-            {n: 'Directv GO', p: '35.00', i: 'DGO.jpg'},          
-            {n: 'Movistar TV', p: '25.00', i: 'Movistar.jpg'},    
-            {n: 'Tele Latino', p: '20.00', i: 'Telelatino.jpg'},  
-            {n: 'Flujo TV', p: '20.00', i: 'Flujotv.jpg'},        
-            {n: 'MaxPlayer', p: '25.00', i: 'Maxplayer.jpg'},     
-            {n: 'Canva Pro', p: '8.00', i: 'Canva.jpg'},          
-            {n: 'CapCut Pro', p: '15.00', i: 'Capcut.jpg'},       
-            {n: 'ChatGPT Plus', p: '15.00', i: 'Chat.jpg'},       
-            {n: 'Spotify', p: '13.00', i: 'Spotify.jpg'},         
-            {n: 'Youtube Premium', p: '15.00', i: 'Youtube.jpg'}  
-        ];
-
-        function render() {
-            const grid = document.getElementById('grid-productos');
-            grid.innerHTML = '';
-            
-            servicios.forEach((s) => {
-                const status = typeof stockData !== 'undefined' ? (stockData[s.n] || 'disponible') : 'disponible';
-                const cardHtml = `
-                    <div class="card ${status==='agotado'?'agotado':''}" ${status==='agotado' ? '' : `onclick="window.open('https://wa.me/51923666291?text=Hola Mistiplay, deseo ${s.n}', '_blank')"`}>
-                        <div class="card-img-container">
-                            <div class="status-badge ${status==='agotado'?'status-agotado':'status-disponible'}">${status}</div>
-                            <img src="${s.i}" class="card-img" alt="">
-                        </div>
-                        <div class="card-body">
-                            <span class="service-name">${s.n}</span>
-                            <div class="purchase-area">
-                                <div class="price-wrapper">
-                                    <span class="price-label">Precio</span>
-                                    <span class="price-value">S/ ${s.p}</span>
-                                </div>
-                                <div class="buy-btn">Comprar</div>
-                            </div>
-                        </div>
-                    </div>`;
-                grid.insertAdjacentHTML('beforeend', cardHtml);
-            });
-
-            const cards = document.querySelectorAll('.card');
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.classList.add('is-visible');
-                }, index * 60); 
-            });
-        }
-
-        /* ========================================================
-           GUÍA VISIBLE 4: BUSCADOR CON SALTO DIRECTO
-           ======================================================== */
-        let searchTimeout;
-        document.getElementById('search').addEventListener('input', e => {
-            const q = e.target.value.toLowerCase();
-            document.querySelectorAll('.card').forEach(c => c.style.display = c.querySelector('.service-name').innerText.toLowerCase().includes(q) ? 'flex' : 'none');
-            
-            if (q.length > 0) {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    document.getElementById('seccion-tienda').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 300);
-            }
-        });
-
-        /* LÓGICA DEL MODAL */
-        const modal = document.getElementById('videoModal');
-        const video = document.getElementById('modalVideo');
-        const muteIcon = document.getElementById('muteIcon');
-        function openModal() { modal.style.display = 'flex'; video.play(); }
-        function closeModal() { modal.style.display = 'none'; video.pause(); video.currentTime = 0; }
-        function toggleMute() {
-            video.muted = !video.muted;
-            muteIcon.className = video.muted ? "fas fa-volume-mute" : "fas fa-volume-up";
-            document.querySelector('#unmuteBtn span').innerText = video.muted ? "Activar Sonido" : "Desactivar Sonido";
-        }
-
-        render();
-    </script>
+/* Arranque */
+render();
+</script>
 </body>
 </html>
