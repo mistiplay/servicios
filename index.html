@@ -8,16 +8,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* =========================================
-           1. VARIABLES DE COLOR Y ESTILO GENERAL
-           ========================================= */
+        /* ========================================================
+           1. COLORES Y ESTILO GENERAL DE LA PÁGINA
+           ======================================================== */
         :root {
-            --primary-blue: #00d2ff;     /* Cian neon brillante */
+            --primary-blue: #00d2ff;
             --bg-dark: #090c10;
-            --header-footer-bg: rgba(17, 24, 39, 0.9);
-            --card-container-bg: rgba(30, 41, 59, 0.65);
+            --header-footer-bg: rgba(17, 24, 39, 0.95);
+            --card-container-bg: rgba(26, 36, 52, 0.7);
             --card-bg: #151d28;
-            --primary-green: #00ff88;    /* Verde neon */
+            --primary-green: #00ff88;
             --error-red: #ff3366;
             --text-light: #f1f5f9;
         }
@@ -29,7 +29,6 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            /* Fondo tecnológico sutilmente animado */
             background: linear-gradient(-45deg, #090c10, #131a26, #0b1420, #05070a);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
@@ -41,10 +40,9 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Oculta bordes feos de imágenes rotas */
-        img { border: 0; outline: none; }
-
-        /* --- CABECERA (NAVBAR) --- */
+        /* ========================================================
+           2. CABECERA (NAVBAR)
+           ======================================================== */
         .navbar {
             background-color: var(--header-footer-bg);
             backdrop-filter: blur(10px);
@@ -59,7 +57,7 @@
             border-bottom: 1px solid rgba(255,255,255,0.08);
         }
         .nav-left { display: flex; align-items: center; }
-        .main-icon { height: 45px; width: auto; filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2)); }
+        .main-icon { height: 45px; width: auto; }
         .v-separator { color: #333; font-size: 1.5rem; margin: 0 15px; }
         .tab-item { 
             color: white; text-decoration: none; font-weight: 800; 
@@ -95,7 +93,13 @@
         .currency-selector { background-color: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; gap: 8px; border: 1px solid rgba(255,255,255,0.1); }
         .flag { width: 20px; height: 14px; background: linear-gradient(90deg, #d91023 33%, #fff 33%, #fff 66%, #d91023 66%); border: 1px solid #333; }
 
-        /* --- 2. PORTADA --- */
+        /* ========================================================
+           3. PORTADA Y BANNERS (SEPARADOS: PC VS MÓVIL)
+           ======================================================== */
+        /* Por defecto (PC): se muestran solo imágenes de PC */
+        .img-pc { display: block !important; }
+        .img-movil { display: none !important; }
+
         .full-width-section { 
             width: 100%; 
             background-color: #000; 
@@ -110,7 +114,6 @@
             margin: 0 auto; 
         }
 
-        /* --- 3. CARRUSEL DE PROMOCIONES --- */
         .promo-slider { 
             width: 100%; 
             overflow: hidden; 
@@ -122,7 +125,7 @@
         .promo-track { 
             display: flex; 
             height: 100%; 
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+            transition: transform 0.6s ease; 
             width: 100%; 
         }
         .promo-slide { 
@@ -132,16 +135,10 @@
             position: relative; 
             flex-shrink: 0;
         }
-        .promo-slide picture {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
         .promo-img { 
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
-            object-position: center; 
             display: block; 
         }
         
@@ -155,26 +152,89 @@
         .arrow-next { right: 15px; }
 
         .info-btn-promo { 
-            position: absolute; 
-            bottom: 25px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            background-color: var(--primary-green); 
-            color: black; 
-            padding: 12px 28px; 
-            border-radius: 30px; 
-            font-size: 0.85rem; 
-            font-weight: 900; 
-            cursor: pointer; 
-            border: none; 
-            text-transform: uppercase; 
-            z-index: 11; 
+            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); 
+            background-color: var(--primary-green); color: black; padding: 12px 28px; 
+            border-radius: 30px; font-size: 0.85rem; font-weight: 900; cursor: pointer; 
+            border: none; text-transform: uppercase; z-index: 11; 
             box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); 
-            transition: 0.3s;
         }
-        .info-btn-promo:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 0 25px rgba(0, 255, 136, 0.7); }
 
-        /* --- 4. MODAL DE VIDEO --- */
+        /* ========================================================
+           4. CAJABOX / PRODUCTOS (SOLUCIÓN PRECIO DISPAREJO)
+           ======================================================== */
+        .main-container { max-width: 1300px; margin: 35px auto; width: 95%; box-sizing: border-box; }
+        .services-box { 
+            background-color: var(--card-container-bg); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px; padding: 35px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+        }
+        .section-title { font-size: 1.6rem; font-weight: 900; color: white; text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 1px; }
+        .section-divider { border: none; height: 2px; background: linear-gradient(90deg, var(--primary-blue), transparent); width: 100%; margin-bottom: 30px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
+
+        .card { 
+            background-color: var(--card-bg); border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
+            cursor: pointer; transition: transform 0.3s ease, border-color 0.3s ease; 
+            display: flex; flex-direction: column; opacity: 0; transform: translateY(20px); position: relative;
+        }
+        .card.is-visible { opacity: 1; transform: translateY(0); }
+        .card.agotado { opacity: 0.5; filter: grayscale(100%); cursor: not-allowed; }
+        
+        .card-img-container { width: 100%; aspect-ratio: 1601/1656; overflow: hidden; background: #000; position: relative; }
+        .card-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        
+        .status-badge { 
+            position: absolute; top: 10px; right: 10px; z-index: 10;
+            font-size: 0.65rem; padding: 4px 8px; border-radius: 6px; font-weight: 900; 
+            text-transform: uppercase; display: inline-block;
+        }
+        .status-disponible { background-color: var(--primary-green); color: black; }
+        .status-agotado { background-color: var(--error-red); color: white; }
+
+        /* Estructura interna de la tarjeta */
+        .card-body { padding: 14px; background-color: #0e1520; display: flex; flex-direction: column; gap: 8px; }
+        .service-name { font-weight: 800; font-size: 1rem; color: white; display: block; }
+
+        /* Fila de precio y botón: siempre juntos y alineados */
+        .purchase-area { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            width: 100%;
+        }
+        
+        .price-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .price-label { font-size: 0.6rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; line-height: 1; }
+        
+        /* white-space: nowrap impide totalmente que S/ y el valor se separen */
+        .price-value { 
+            color: var(--primary-blue); 
+            font-weight: 900; 
+            font-size: 1.15rem; 
+            white-space: nowrap; 
+            line-height: 1.2;
+        }
+        
+        .buy-btn { 
+            background-color: var(--primary-blue); 
+            color: black; 
+            padding: 7px 12px; 
+            border-radius: 6px; 
+            font-size: 0.7rem; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            white-space: nowrap;
+        }
+
+        /* ========================================================
+           5. MODAL, FOOTER Y WHATSAPP
+           ======================================================== */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 3000; }
         .modal-container { position: relative; width: 75%; max-width: 320px; background: #1a1a1a; padding: 25px 15px; border-radius: 20px; text-align: center; border: 2px solid var(--primary-blue); }
         .modal-video { width: 100%; border-radius: 10px; display: block; margin-bottom: 20px; }
@@ -184,94 +244,49 @@
         .btn-green { background-color: var(--primary-green); color: black; font-weight: 900; }
         .btn-red { background-color: var(--error-red); }
 
-        /* --- 5. CONTENEDOR DE PRODUCTOS --- */
-        .main-container { max-width: 1400px; margin: 40px auto; width: 95%; box-sizing: border-box; }
-        .services-box { 
-            background-color: var(--card-container-bg); 
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px; padding: 40px; 
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-        }
-        .section-title { font-size: 1.8rem; font-weight: 900; color: white; text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 1px; }
-        .section-divider { border: none; height: 3px; background: linear-gradient(90deg, var(--primary-blue), transparent); width: 100%; margin-bottom: 35px; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
-
-        /* --- 6. TARJETAS --- */
-        .card { 
-            background-color: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
-            cursor: pointer; transition: transform 0.4s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
-            display: flex; flex-direction: column; opacity: 0; transform: translateY(30px); position: relative;
-        }
-        .card.is-visible { opacity: 1; transform: translateY(0); }
-
-        @media (hover: hover) {
-            .card:hover { transform: translateY(-8px) !important; border-color: var(--primary-blue); box-shadow: 0 15px 30px rgba(0, 210, 255, 0.2); }
-            .card:hover .buy-btn { background-color: white; color: black; }
-        }
-
-        .card.agotado { opacity: 0.5; filter: grayscale(100%); cursor: not-allowed; }
-        
-        .card-img-container { width: 100%; aspect-ratio: 1601/1656; overflow: hidden; background: #000; position: relative; }
-        .card-img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform 0.5s ease; }
-        .card:hover .card-img { transform: scale(1.05); }
-        
-        .status-badge { 
-            position: absolute; top: 12px; right: 12px; z-index: 10;
-            font-size: 0.65rem; padding: 5px 10px; border-radius: 20px; font-weight: 900; 
-            text-transform: uppercase; display: inline-block; letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        .status-disponible { background-color: var(--primary-green); color: black; }
-        .status-agotado { background-color: var(--error-red); color: white; }
-
-        .card-body { padding: 18px; background-color: rgba(0,0,0,0.25); }
-        .service-name { font-weight: 800; margin-bottom: 12px; display: block; font-size: 1.1rem; color: white; }
-        .purchase-area { display: flex; justify-content: space-between; align-items: flex-end; }
-        
-        .price-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-bottom: 2px; display: block;}
-        .price-value { 
-            color: var(--primary-blue); font-weight: 900; font-size: 1.35rem; 
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.35); 
-        }
-        
-        .buy-btn { background-color: var(--primary-blue); color: black; padding: 8px 14px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
-
-        /* --- 7. WHATSAPP Y FOOTER --- */
-        .wsp-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; align-items: center; }
-        .wsp-tooltip { background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px); color: white; padding: 10px 18px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-right: 15px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; border: 1px solid rgba(255,255,255,0.2); }
-        .wsp-btn { width: 65px; height: 65px; display: block; transition: 0.3s; filter: drop-shadow(0 8px 15px rgba(37, 211, 102, 0.4)); }
+        .wsp-container { position: fixed; bottom: 25px; right: 25px; z-index: 2000; display: flex; align-items: center; }
+        .wsp-tooltip { background-color: rgba(0,0,0,0.8); color: white; padding: 8px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-right: 10px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; border: 1px solid rgba(255,255,255,0.2); }
+        .wsp-btn { width: 60px; height: 60px; display: block; }
         .wsp-btn img { width: 100%; height: 100%; display: block; }
-        .wsp-container:hover .wsp-tooltip { opacity: 1; visibility: visible; transform: translateX(-5px); }
-        .wsp-btn:hover { transform: scale(1.1); }
+        .wsp-container:hover .wsp-tooltip { opacity: 1; visibility: visible; }
 
-        footer { background-color: var(--header-footer-bg); backdrop-filter: blur(10px); padding: 50px 0 30px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
-        .footer-socials-mobile { display: none; gap: 20px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap; }
-        .footer-socials-mobile a { color: white; font-size: 1.8rem; text-decoration: none; }
-        
-        .payment-container { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .payment-label { color: #94a3b8; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
-        .payment-img { height: 32px; width: auto; display: block; opacity: 0.85; }
+        footer { background-color: var(--header-footer-bg); padding: 40px 0 25px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
+        .footer-socials-mobile { display: none; gap: 20px; justify-content: center; margin-bottom: 20px; }
+        .footer-socials-mobile a { color: white; font-size: 1.6rem; text-decoration: none; }
+        .payment-container { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .payment-label { color: #94a3b8; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; }
+        .payment-img { height: 28px; width: auto; display: block; }
 
-        /* --- 8. AJUSTES MÓVILES --- */
+        /* ========================================================
+           6. CONFIGURACIÓN EXCLUSIVA PARA MÓVIL (PANTALLAS CHICAS)
+           ======================================================== */
         @media (max-width: 768px) {
-            .navbar { height: 65px; padding: 0 15px; justify-content: space-between; }
+            /* En móvil se apagan las de PC y se prenden solo las de móvil */
+            .img-pc { display: none !important; }
+            .img-movil { display: block !important; }
+
+            .navbar { height: 60px; padding: 0 15px; justify-content: space-between; }
             .v-separator, .tab-item, .nav-spacer, .social-links, .currency-selector { display: none !important; }
             .nav-right { width: 75%; display: flex; justify-content: flex-end; }
-            .search-box { width: 100%; max-width: 240px; }
-            .promo-slider { height: 340px; }
-            .main-container { margin: 20px auto; width: 95%; }
-            .services-box { padding: 20px; }
-            .section-title { font-size: 1.3rem; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .search-box { width: 100%; max-width: 220px; }
+            
+            .promo-slider { height: 320px; }
+            .main-container { margin: 15px auto; width: 95%; }
+            .services-box { padding: 15px; }
+            .section-title { font-size: 1.2rem; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .footer-socials-mobile { display: flex; } 
-            .card-body { padding: 12px; }
-            .service-name { font-size: 0.9rem; margin-bottom: 6px; }
+
+            /* Ajuste perfecto de cajabox en móvil */
+            .card-body { padding: 10px; gap: 6px; }
+            .service-name { font-size: 0.85rem; }
+            .purchase-area { display: flex; flex-direction: row; justify-content: space-between; align-items: center; }
             .price-label { font-size: 0.55rem; }
-            .price-value { font-size: 1.1rem; }
-            .buy-btn { padding: 6px 10px; font-size: 0.65rem; text-align: center; }
+            .price-value { font-size: 0.95rem; white-space: nowrap; }
+            .buy-btn { padding: 5px 8px; font-size: 0.6rem; }
+
             .info-btn-promo { padding: 8px 18px; font-size: 0.7rem; bottom: 15px; }
-            .wsp-btn { width: 55px; height: 55px; }
+            .wsp-btn { width: 50px; height: 50px; }
         }
     </style>
 </head>
@@ -279,7 +294,7 @@
 
     <nav class="navbar">
         <div class="nav-left">
-            <img src="icono.png" alt="" class="main-icon">
+            <img src="icono.png" alt="Mistiplay" class="main-icon">
             <span class="v-separator">|</span>
             <a href="#" class="tab-item">Tienda</a>
         </div>
@@ -299,14 +314,10 @@
         </div>
     </nav>
 
-
     <div class="full-width-section" id="seccion-portada">
-        <picture>
-            <source media="(max-width: 768px)" srcset="portada_m.jpg">
-            <img src="portada.jpg" class="hero-img" alt="" onerror="controlErroresImagen(this, true)">
-        </picture>
+        <img src="portada.jpg" class="hero-img img-pc" alt="" onerror="ocultarSeccionPortada()">
+        <img src="portada_m.jpg" class="hero-img img-movil" alt="" onerror="ocultarSeccionPortada()">
     </div>
-
 
     <div class="promo-slider" id="seccion-promociones">
         <button class="slider-arrow arrow-prev" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
@@ -315,23 +326,18 @@
         <div class="promo-track" id="promo-track">
             
             <div class="promo-slide">
-                <picture>
-                    <source media="(max-width: 768px)" srcset="promo_m.jpg">
-                    <img src="promo.jpg" class="promo-img" alt="" onerror="controlErroresImagen(this, false)">
-                </picture>
+                <img src="promo.jpg" class="promo-img img-pc" alt="" onerror="descartarSlide(this)">
+                <img src="promo_m.jpg" class="promo-img img-movil" alt="" onerror="descartarSlide(this)">
             </div>
 
             <div class="promo-slide">
-                <picture>
-                    <source media="(max-width: 768px)" srcset="promo2_m.jpg">
-                    <img src="promo2.jpg" class="promo-img" alt="" onerror="controlErroresImagen(this, false)">
-                </picture>
+                <img src="promo2.jpg" class="promo-img img-pc" alt="" onerror="descartarSlide(this)">
+                <img src="promo2_m.jpg" class="promo-img img-movil" alt="" onerror="descartarSlide(this)">
                 <button class="info-btn-promo" onclick="openModal()">MÁS INFORMACIÓN</button>
             </div>
 
-            </div>
+        </div>
     </div>
-
 
     <div class="overlay" id="videoModal">
         <div class="modal-container">
@@ -343,7 +349,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="main-container">
         <div class="services-box" id="seccion-tienda">
@@ -358,7 +363,7 @@
     <div class="wsp-container">
         <div class="wsp-tooltip">¡Escríbenos en directo!</div>
         <a href="https://wa.me/51923666291?text=%C2%A1Hola%20Mistiplay!" target="_blank" class="wsp-btn">
-            <img src="wsp.png" alt="">
+            <img src="wsp.png" alt="WhatsApp">
         </a>
     </div>
 
@@ -371,7 +376,7 @@
         </div>
         <div class="payment-container">
             <span class="payment-label">Métodos de pago aceptados:</span>
-            <img src="metodosdepago.png" class="payment-img" alt="">
+            <img src="metodosdepago.png" class="payment-img" alt="Métodos de pago">
         </div>
         <p style="color:#64748b; font-size:0.85rem; font-weight: 600; margin-top: 20px;">© 2025 MistiPlay. Todos los derechos reservados.</p>
     </footer>
@@ -379,53 +384,39 @@
     <script src="stock.js"></script>
     <script>
         /* ========================================================
-           SISTEMA INTELIGENTE DE CONTROL DE ERRORES DE IMÁGENES
-           Evita que se vean imágenes rotas o textos corruptos
+           GUÍA VISIBLE 1: CONTROL INTELIGENTE DE IMÁGENES
+           Si la imagen no existe en la carpeta, se apaga de inmediato.
+           No fuerza a que la de PC se adapte al celular.
            ======================================================== */
-        function controlErroresImagen(img, esPortada) {
-            const picture = img.parentElement;
-            
-            // 1. Si falló buscando la foto móvil (_m), intenta cargar la foto normal de PC
-            if (picture && picture.tagName === 'PICTURE') {
-                const source = picture.querySelector('source');
-                if (source) {
-                    source.remove(); // Quitamos la fuente móvil inexistente
-                    return; // El navegador intentará cargar automáticamente la imagen estándar
-                }
-            }
+        function ocultarSeccionPortada() {
+            const sec = document.getElementById('seccion-portada');
+            if (sec) sec.style.display = 'none';
+        }
 
-            // 2. Si tampoco existe la imagen normal (o no hay ninguna foto en tu carpeta):
-            if (esPortada) {
-                // Oculta por completo la portada sin dejar espacios en blanco
-                const sec = document.getElementById('seccion-portada');
-                if (sec) sec.style.display = 'none';
-            } else {
-                // Es una promo: elimina este slide dañado o inexistente
-                const slide = img.closest('.promo-slide');
-                if (slide) {
-                    slide.remove();
-                    actualizarCarrusel();
-                }
+        function descartarSlide(imgElement) {
+            const slide = imgElement.closest('.promo-slide');
+            if (slide) {
+                slide.remove();
+                actualizarEstadoSlider();
             }
         }
 
-        /* --- 1. LÓGICA DEL CARRUSEL AUTOMÁTICO --- */
+        /* ========================================================
+           GUÍA VISIBLE 2: CARRUSEL AUTOMÁTICO
+           Detecta cuántas promociones quedan vivas y las desliza.
+           ======================================================== */
         let currentSlide = 0;
         const track = document.getElementById('promo-track');
 
-        function actualizarCarrusel() {
+        function actualizarEstadoSlider() {
             const slider = document.getElementById('seccion-promociones');
             const slides = document.querySelectorAll('.promo-slide');
-            
-            // Si no hay ninguna promo válida, ocultamos el carrusel entero
             if (slides.length === 0) {
                 if (slider) slider.style.display = 'none';
             } else {
                 if (slider) slider.style.display = 'block';
                 currentSlide = currentSlide % slides.length;
                 if (track) track.style.transform = `translateX(-${currentSlide * 100}%)`;
-                
-                // Si solo queda 1 promo, ocultamos las flechas porque no hace falta deslizar
                 const flechas = document.querySelectorAll('.slider-arrow');
                 flechas.forEach(f => f.style.display = slides.length > 1 ? 'block' : 'none');
             }
@@ -439,27 +430,17 @@
             track.style.transform = `translateX(-${currentSlide * 100}%)`; 
         }
 
-        // Pasa las fotos cada 10 segundos
         setInterval(() => {
             const slides = document.querySelectorAll('.promo-slide');
             if (slides.length > 1) moveSlide(1);
         }, 10000);
 
-        actualizarCarrusel();
+        actualizarEstadoSlider();
 
-        /* --- 2. MODAL DE VIDEO --- */
-        const modal = document.getElementById('videoModal');
-        const video = document.getElementById('modalVideo');
-        const muteIcon = document.getElementById('muteIcon');
-        function openModal() { modal.style.display = 'flex'; video.play(); }
-        function closeModal() { modal.style.display = 'none'; video.pause(); video.currentTime = 0; }
-        function toggleMute() {
-            video.muted = !video.muted;
-            muteIcon.className = video.muted ? "fas fa-volume-mute" : "fas fa-volume-up";
-            document.querySelector('#unmuteBtn span').innerText = video.muted ? "Activar Sonido" : "Desactivar Sonido";
-        }
-
-        /* --- 3. SERVICIOS / PRODUCTOS --- */
+        /* ========================================================
+           GUÍA VISIBLE 3: LISTADO DE PRODUCTOS Y PRECIOS
+           Para cambiar precios o agregar productos, edita la lista:
+           ======================================================== */
         const servicios = [
             {n: 'Netflix', p: '15.00', i: 'Netflix.jpg'},         
             {n: 'Disney+', p: '14.00', i: 'Disney.jpg'},         
@@ -481,7 +462,6 @@
             {n: 'Youtube Premium', p: '15.00', i: 'Youtube.jpg'}  
         ];
 
-        /* --- 4. RENDERIZADO DE PRODUCTOS --- */
         function render() {
             const grid = document.getElementById('grid-productos');
             grid.innerHTML = '';
@@ -497,7 +477,7 @@
                         <div class="card-body">
                             <span class="service-name">${s.n}</span>
                             <div class="purchase-area">
-                                <div>
+                                <div class="price-wrapper">
                                     <span class="price-label">Precio</span>
                                     <span class="price-value">S/ ${s.p}</span>
                                 </div>
@@ -512,11 +492,13 @@
             cards.forEach((card, index) => {
                 setTimeout(() => {
                     card.classList.add('is-visible');
-                }, index * 70); 
+                }, index * 60); 
             });
         }
 
-        /* --- 5. BUSCADOR INTELIGENTE --- */
+        /* ========================================================
+           GUÍA VISIBLE 4: BUSCADOR CON SALTO DIRECTO
+           ======================================================== */
         let searchTimeout;
         document.getElementById('search').addEventListener('input', e => {
             const q = e.target.value.toLowerCase();
@@ -526,9 +508,21 @@
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => {
                     document.getElementById('seccion-tienda').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 350);
+                }, 300);
             }
         });
+
+        /* LÓGICA DEL MODAL */
+        const modal = document.getElementById('videoModal');
+        const video = document.getElementById('modalVideo');
+        const muteIcon = document.getElementById('muteIcon');
+        function openModal() { modal.style.display = 'flex'; video.play(); }
+        function closeModal() { modal.style.display = 'none'; video.pause(); video.currentTime = 0; }
+        function toggleMute() {
+            video.muted = !video.muted;
+            muteIcon.className = video.muted ? "fas fa-volume-mute" : "fas fa-volume-up";
+            document.querySelector('#unmuteBtn span').innerText = video.muted ? "Activar Sonido" : "Desactivar Sonido";
+        }
 
         render();
     </script>
