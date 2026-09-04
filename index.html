@@ -9,15 +9,15 @@
     
     <style>
         /* =========================================
-           1. VARIABLES DE COLOR (Tema Moderno Neon)
+           1. COLORES Y ESTILO GENERAL
            ========================================= */
         :root {
-            --primary-blue: #00d2ff;
+            --primary-blue: #00d2ff;     /* Cian neon brillante */
             --bg-dark: #090c10;
-            --header-footer-bg: rgba(17, 24, 39, 0.85);
-            --card-container-bg: rgba(30, 41, 59, 0.6);
+            --header-footer-bg: rgba(17, 24, 39, 0.9);
+            --card-container-bg: rgba(30, 41, 59, 0.65);
             --card-bg: #151d28;
-            --primary-green: #00ff88;
+            --primary-green: #00ff88;    /* Verde neon */
             --error-red: #ff3366;
             --text-light: #f1f5f9;
         }
@@ -29,7 +29,8 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background: linear-gradient(-45deg, #090c10, #131a26, #0d1624, #000000);
+            /* Fondo sutil animado */
+            background: linear-gradient(-45deg, #090c10, #131a26, #0b1420, #05070a);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
         }
@@ -40,7 +41,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- 1. CABECERA --- */
+        /* --- CABECERA (NAVBAR) --- */
         .navbar {
             background-color: var(--header-footer-bg);
             backdrop-filter: blur(10px);
@@ -52,7 +53,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
         .nav-left { display: flex; align-items: center; }
         .main-icon { height: 45px; width: auto; filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2)); }
@@ -61,7 +62,11 @@
             color: white; text-decoration: none; font-weight: 800; 
             font-size: 1rem; position: relative; padding: 20px 0; text-transform: uppercase;
         }
-        .tab-item::after { content: ""; position: absolute; bottom: 5px; left: 0; width: 100%; height: 3px; background-color: var(--primary-blue); box-shadow: 0 0 10px var(--primary-blue); }
+        .tab-item::after { 
+            content: ""; position: absolute; bottom: 5px; left: 0; 
+            width: 100%; height: 3px; background-color: var(--primary-blue); 
+            box-shadow: 0 0 10px var(--primary-blue); 
+        }
         
         .nav-spacer { flex-grow: 1; }
         .nav-right { display: flex; align-items: center; }
@@ -81,13 +86,13 @@
             border-radius: 25px; padding: 12px 45px 12px 20px; color: white; outline: none;
             font-family: 'Montserrat', sans-serif; transition: 0.3s;
         }
-        .search-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
+        .search-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 12px rgba(0, 210, 255, 0.4); }
         .search-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--primary-blue); cursor: pointer; font-size: 1.1rem; }
         
         .currency-selector { background-color: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; gap: 8px; border: 1px solid rgba(255,255,255,0.1); }
         .flag { width: 20px; height: 14px; background: linear-gradient(90deg, #d91023 33%, #fff 33%, #fff 66%, #d91023 66%); border: 1px solid #333; }
 
-        /* --- 2. PORTADA (SIN RECORTES) --- */
+        /* --- 2. PORTADA (RESPONSIVE PC Y MOVIL) --- */
         .full-width-section { 
             width: 100%; 
             background-color: #000; 
@@ -96,46 +101,88 @@
         }
         .hero-img { 
             width: 100%; 
-            height: auto; /* Muestra la imagen completa sin recortar */
+            height: auto; 
             display: block; 
+            max-width: 2560px; 
+            margin: 0 auto; 
         }
 
-        /* --- 3. BANNERS (DINÁMICO Y SIN RECORTES) --- */
+        /* --- 3. CARRUSEL DE PROMOCIONES INTELIGENTE --- */
         .promo-slider { 
             width: 100%; 
+            overflow: hidden; 
             background-color: #000; 
             position: relative; 
-            border-bottom: 1px solid #333; 
-            overflow: hidden; 
+            height: 400px; /* Altura ideal en PC */
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         } 
         .promo-track { 
             display: flex; 
-            transition: transform 0.8s ease-in-out; 
+            height: 100%; 
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
             width: 100%; 
         }
         .promo-slide { 
-            flex: 0 0 100%; /* Cada imagen ocupa el 100% del espacio */
+            min-width: 100%; 
+            max-width: 100%; 
+            height: 100%; 
             position: relative; 
+            flex-shrink: 0;
+        }
+        .promo-slide picture {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
         .promo-img { 
             width: 100%; 
-            height: auto; /* Muestra la imagen completa sin recortar */
+            height: 100%; 
+            object-fit: cover; 
+            object-position: center; 
             display: block; 
         }
         
-        .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: 1px solid rgba(255,255,255,0.2); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10; transition: 0.3s; }
+        .slider-arrow { 
+            position: absolute; top: 50%; transform: translateY(-50%); 
+            background: rgba(0,0,0,0.6); color: white; border: 1px solid rgba(255,255,255,0.2); 
+            width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10; transition: 0.3s; 
+        }
         .slider-arrow:hover { background: var(--primary-blue); color: black; }
-        .arrow-prev { left: 15px; } .arrow-next { right: 15px; }
-        
+        .arrow-prev { left: 15px; } 
+        .arrow-next { right: 15px; }
+
+        /* Botón de promoción */
         .info-btn-promo { 
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); 
-            background-color: var(--primary-green); color: black; padding: 12px 30px; border-radius: 30px; 
-            font-size: 0.9rem; font-weight: 900; cursor: pointer; border: none; text-transform: uppercase; z-index: 11; 
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); transition: 0.3s;
+            position: absolute; 
+            bottom: 25px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background-color: var(--primary-green); 
+            color: black; 
+            padding: 12px 28px; 
+            border-radius: 30px; 
+            font-size: 0.85rem; 
+            font-weight: 900; 
+            cursor: pointer; 
+            border: none; 
+            text-transform: uppercase; 
+            z-index: 11; 
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); 
+            transition: 0.3s;
         }
         .info-btn-promo:hover { transform: translateX(-50%) scale(1.05); box-shadow: 0 0 25px rgba(0, 255, 136, 0.7); }
 
-        /* --- 4. CONTENEDOR DE PRODUCTOS --- */
+        /* --- 4. MODAL DE VIDEO --- */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; justify-content: center; align-items: center; z-index: 3000; }
+        .modal-container { position: relative; width: 75%; max-width: 320px; background: #1a1a1a; padding: 25px 15px; border-radius: 20px; text-align: center; border: 2px solid var(--primary-blue); }
+        .modal-video { width: 100%; border-radius: 10px; display: block; margin-bottom: 20px; }
+        .modal-buttons { display: flex; flex-direction: column; gap: 10px; }
+        .btn-modal { display: flex; align-items: center; justify-content: center; gap: 10px; color: white; padding: 12px; border-radius: 8px; font-weight: 800; border: none; text-transform: uppercase; font-size: 0.8rem; cursor: pointer; text-decoration: none; }
+        .btn-blue { background-color: #0077b6; } 
+        .btn-green { background-color: var(--primary-green); color: black; font-weight: 900; }
+        .btn-red { background-color: var(--error-red); }
+
+        /* --- 5. CONTENEDOR DE PRODUCTOS --- */
         .main-container { max-width: 1400px; margin: 40px auto; width: 95%; box-sizing: border-box; }
         .services-box { 
             background-color: var(--card-container-bg); 
@@ -148,7 +195,7 @@
         .section-divider { border: none; height: 3px; background: linear-gradient(90deg, var(--primary-blue), transparent); width: 100%; margin-bottom: 35px; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
 
-        /* --- 5. TARJETAS (CARD) --- */
+        /* --- 6. TARJETAS (CARDS) --- */
         .card { 
             background-color: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
             cursor: pointer; transition: transform 0.4s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
@@ -157,7 +204,7 @@
         .card.is-visible { opacity: 1; transform: translateY(0); }
 
         @media (hover: hover) {
-            .card:hover { transform: translateY(-10px) !important; border-color: var(--primary-blue); box-shadow: 0 15px 30px rgba(0, 210, 255, 0.2); }
+            .card:hover { transform: translateY(-8px) !important; border-color: var(--primary-blue); box-shadow: 0 15px 30px rgba(0, 210, 255, 0.2); }
             .card:hover .buy-btn { background-color: white; color: black; }
         }
 
@@ -168,64 +215,65 @@
         .card:hover .card-img { transform: scale(1.05); }
         
         .status-badge { 
-            position: absolute; top: 15px; right: 15px; z-index: 10;
-            font-size: 0.65rem; padding: 6px 12px; border-radius: 20px; font-weight: 900; 
+            position: absolute; top: 12px; right: 12px; z-index: 10;
+            font-size: 0.65rem; padding: 5px 10px; border-radius: 20px; font-weight: 900; 
             text-transform: uppercase; display: inline-block; letter-spacing: 1px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
         .status-disponible { background-color: var(--primary-green); color: black; }
         .status-agotado { background-color: var(--error-red); color: white; }
 
-        .card-body { padding: 20px; background-color: rgba(0,0,0,0.2); }
-        .service-name { font-weight: 800; margin-bottom: 12px; display: block; font-size: 1.15rem; color: white; }
+        .card-body { padding: 18px; background-color: rgba(0,0,0,0.25); }
+        .service-name { font-weight: 800; margin-bottom: 12px; display: block; font-size: 1.1rem; color: white; }
         .purchase-area { display: flex; justify-content: space-between; align-items: flex-end; }
         
-        .price-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-bottom: 3px; display: block;}
+        .price-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-bottom: 2px; display: block;}
         .price-value { 
-            color: var(--primary-blue); font-weight: 900; font-size: 1.4rem; 
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4); 
+            color: var(--primary-blue); font-weight: 900; font-size: 1.35rem; 
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.35); 
         }
         
-        .buy-btn { background-color: var(--primary-blue); color: black; padding: 10px 16px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
+        .buy-btn { background-color: var(--primary-blue); color: black; padding: 8px 14px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
 
-        /* --- 6. WHATSAPP Y FOOTER --- */
+        /* --- 7. WHATSAPP FLOTANTE Y FOOTER --- */
         .wsp-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; align-items: center; }
-        .wsp-tooltip { background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px); color: white; padding: 10px 20px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-right: 15px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; border: 1px solid rgba(255,255,255,0.2); }
-        .wsp-btn { width: 65px; height: 65px; display: block; transition: 0.3s; filter: drop-shadow(0 10px 15px rgba(37, 211, 102, 0.4)); }
+        .wsp-tooltip { background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px); color: white; padding: 10px 18px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; margin-right: 15px; opacity: 0; visibility: hidden; transition: 0.3s; white-space: nowrap; border: 1px solid rgba(255,255,255,0.2); }
+        .wsp-btn { width: 65px; height: 65px; display: block; transition: 0.3s; filter: drop-shadow(0 8px 15px rgba(37, 211, 102, 0.4)); }
         .wsp-btn img { width: 100%; height: 100%; display: block; }
         .wsp-container:hover .wsp-tooltip { opacity: 1; visibility: visible; transform: translateX(-5px); }
         .wsp-btn:hover { transform: scale(1.1); }
 
         footer { background-color: var(--header-footer-bg); backdrop-filter: blur(10px); padding: 50px 0 30px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
         .footer-socials-mobile { display: none; gap: 20px; justify-content: center; margin-bottom: 25px; flex-wrap: wrap; }
-        .footer-socials-mobile a { color: white; font-size: 1.8rem; text-decoration: none; transition: 0.3s; }
-        .footer-socials-mobile a:hover { color: var(--primary-blue); }
+        .footer-socials-mobile a { color: white; font-size: 1.8rem; text-decoration: none; }
         
         .payment-container { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 20px; }
         .payment-label { color: #94a3b8; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
-        .payment-img { height: 35px; width: auto; display: block; opacity: 0.8; transition: 0.3s; }
-        .payment-img:hover { opacity: 1; }
+        .payment-img { height: 32px; width: auto; display: block; opacity: 0.85; }
 
-        /* --- 7. AJUSTES MÓVILES --- */
+        /* --- 8. ADAPTACIONES MÓVILES (PANTALLAS PEQUEÑAS) --- */
         @media (max-width: 768px) {
             .navbar { height: 65px; padding: 0 15px; justify-content: space-between; }
             .v-separator, .tab-item, .nav-spacer, .social-links, .currency-selector { display: none !important; }
             .nav-right { width: 75%; display: flex; justify-content: flex-end; }
             .search-box { width: 100%; max-width: 240px; }
+            
+            /* Altura del carrusel en celular para mostrar la imagen móvil completa */
+            .promo-slider { height: 340px; }
+            
             .main-container { margin: 20px auto; width: 95%; }
             .services-box { padding: 20px; }
-            .section-title { font-size: 1.4rem; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .section-title { font-size: 1.3rem; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .footer-socials-mobile { display: flex; } 
             
             .card-body { padding: 12px; }
-            .service-name { font-size: 0.95rem; margin-bottom: 8px; }
+            .service-name { font-size: 0.9rem; margin-bottom: 6px; }
             .price-label { font-size: 0.55rem; }
-            .price-value { font-size: 1.15rem; }
-            .buy-btn { padding: 8px; font-size: 0.65rem; text-align: center; width: 100%; }
-            .purchase-area { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .price-value { font-size: 1.1rem; }
+            .buy-btn { padding: 6px 10px; font-size: 0.65rem; text-align: center; }
             
-            .info-btn-promo { padding: 10px 20px; font-size: 0.75rem; bottom: 20px; }
+            .info-btn-promo { padding: 8px 18px; font-size: 0.7rem; bottom: 15px; }
             .wsp-btn { width: 55px; height: 55px; }
         }
     </style>
@@ -254,9 +302,14 @@
         </div>
     </nav>
 
+
     <div class="full-width-section">
-        <img src="portada.jpg" class="hero-img">
+        <picture>
+            <source media="(max-width: 768px)" srcset="portada_m.jpg">
+            <img src="portada.jpg" class="hero-img" alt="Portada Mistiplay">
+        </picture>
     </div>
+
 
     <div class="promo-slider">
         <button class="slider-arrow arrow-prev" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
@@ -265,22 +318,40 @@
         <div class="promo-track" id="promo-track">
             
             <div class="promo-slide">
-                <img src="promo.jpg" class="promo-img" alt="Promoción 1">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="promo_m.jpg">
+                    <img src="promo.jpg" class="promo-img" alt="Promoción 1">
+                </picture>
             </div>
 
             <div class="promo-slide">
-                <img src="promo2.jpg" class="promo-img" alt="Promoción 2">
-                <button class="info-btn-promo" onclick="window.open('https://wa.me/51923666291', '_blank')">MÁS INFORMACIÓN</button>
+                <picture>
+                    <source media="(max-width: 768px)" srcset="promo2_m.jpg">
+                    <img src="promo2.jpg" class="promo-img" alt="Promoción 2">
+                </picture>
+                <button class="info-btn-promo" onclick="openModal()">MÁS INFORMACIÓN</button>
             </div>
 
             </div>
     </div>
 
 
+    <div class="overlay" id="videoModal">
+        <div class="modal-container">
+            <video id="modalVideo" class="modal-video" src="video.mp4" loop muted playsinline></video>
+            <div class="modal-buttons">
+                <button id="unmuteBtn" class="btn-modal btn-blue" onclick="toggleMute()"><i id="muteIcon" class="fas fa-volume-mute"></i> <span>Activar Sonido</span></button>
+                <a href="https://wa.me/51923666291?text=Deseo%20mas%20informaci%C3%B3n%20MaxPlayer" target="_blank" class="btn-modal btn-green"><i class="fab fa-whatsapp"></i> MÁS INFORMACIÓN</a>
+                <button class="btn-modal btn-red" onclick="closeModal()"><i class="fas fa-times"></i> CERRAR</button>
+            </div>
+        </div>
+    </div>
+
+
     <div class="main-container">
         <div class="services-box" id="seccion-tienda">
             <div class="section-header">
-                <span class="section-title">Catálogo de Plataformas</span>
+                <span class="section-title">Plataformas Streaming</span>
                 <hr class="section-divider">
             </div>
             <div class="products-grid" id="grid-productos"></div>
@@ -288,7 +359,7 @@
     </div>
 
     <div class="wsp-container">
-        <div class="wsp-tooltip">¡Estamos en línea!</div>
+        <div class="wsp-tooltip">¡Escríbenos en directo!</div>
         <a href="https://wa.me/51923666291?text=%C2%A1Hola%20Mistiplay!" target="_blank" class="wsp-btn">
             <img src="wsp.png" alt="WhatsApp">
         </a>
@@ -296,37 +367,53 @@
 
     <footer>
         <div class="footer-socials-mobile">
-            <p style="color: white; font-weight: 800; width: 100%; margin-bottom: 5px; font-size: 1.1rem;">Síguenos en</p>
+            <p style="color: white; font-weight: 800; width: 100%; margin-bottom: 5px; font-size: 1.1rem;">Síguenos en:</p>
             <a href="https://facebook.com/mistiplaygo" target="_blank"><i class="fab fa-facebook-f"></i></a>
             <a href="https://instagram.com/mistiplaygo" target="_blank"><i class="fab fa-instagram"></i></a>
             <a href="https://tiktok.com/@mistiplay" target="_blank"><i class="fab fa-tiktok"></i></a>
         </div>
         <div class="payment-container">
-            <span class="payment-label">Métodos de pago seguros</span>
-            <img src="metodosdepago.png" class="payment-img">
+            <span class="payment-label">Métodos de pago aceptados:</span>
+            <img src="metodosdepago.png" class="payment-img" alt="Métodos de pago">
         </div>
         <p style="color:#64748b; font-size:0.85rem; font-weight: 600; margin-top: 20px;">© 2025 MistiPlay. Todos los derechos reservados.</p>
     </footer>
 
     <script src="stock.js"></script>
     <script>
-        /* --- 1. LÓGICA DEL CARRUSEL (AHORA ES AUTOMÁTICO PARA CUALQUIER CANTIDAD DE FOTOS) --- */
+        /* --- 1. LÓGICA DEL CARRUSEL (AUTOMÁTICO PARA N BANNERS) --- */
         let currentSlide = 0;
         const track = document.getElementById('promo-track');
-        const slides = document.querySelectorAll('.promo-slide');
-        const totalSlides = slides.length;
+        
+        function getSlidesCount() {
+            return document.querySelectorAll('.promo-slide').length;
+        }
 
         function moveSlide(dir) { 
-            if(!track || totalSlides === 0) return;
-            currentSlide = (currentSlide + dir + totalSlides) % totalSlides; 
+            const total = getSlidesCount();
+            if(!track || total === 0) return;
+            currentSlide = (currentSlide + dir + total) % total; 
             track.style.transform = `translateX(-${currentSlide * 100}%)`; 
         }
-        
-        // Pasa las imágenes solas cada 10 segundos, siempre y cuando haya más de 1 imagen
-        if(track && totalSlides > 1) setInterval(() => moveSlide(1), 10000);
 
+        // Pasa las imágenes solas cada 10 segundos
+        let promoTimer = setInterval(() => {
+            if(getSlidesCount() > 1) moveSlide(1);
+        }, 10000);
 
-        /* --- 2. LISTADO DE SERVICIOS --- */
+        /* --- 2. LÓGICA DEL MODAL --- */
+        const modal = document.getElementById('videoModal');
+        const video = document.getElementById('modalVideo');
+        const muteIcon = document.getElementById('muteIcon');
+        function openModal() { modal.style.display = 'flex'; video.play(); }
+        function closeModal() { modal.style.display = 'none'; video.pause(); video.currentTime = 0; }
+        function toggleMute() {
+            video.muted = !video.muted;
+            muteIcon.className = video.muted ? "fas fa-volume-mute" : "fas fa-volume-up";
+            document.querySelector('#unmuteBtn span').innerText = video.muted ? "Activar Sonido" : "Desactivar Sonido";
+        }
+
+        /* --- 3. LISTADO DE PRODUCTOS --- */
         const servicios = [
             {n: 'Netflix', p: '15.00', i: 'Netflix.jpg'},         
             {n: 'Disney+', p: '14.00', i: 'Disney.jpg'},         
@@ -348,7 +435,7 @@
             {n: 'Youtube Premium', p: '15.00', i: 'Youtube.jpg'}  
         ];
 
-        /* --- 3. RENDERIZADO CON DISEÑO MODERNO --- */
+        /* --- 4. RENDERIZADO DE PRODUCTOS --- */
         function render() {
             const grid = document.getElementById('grid-productos');
             grid.innerHTML = '';
@@ -375,15 +462,16 @@
                 grid.insertAdjacentHTML('beforeend', cardHtml);
             });
 
+            // Animación de aparición
             const cards = document.querySelectorAll('.card');
             cards.forEach((card, index) => {
                 setTimeout(() => {
                     card.classList.add('is-visible');
-                }, index * 80); 
+                }, index * 70); 
             });
         }
 
-        /* --- 4. BUSCADOR CON AUTO-DESPLAZAMIENTO --- */
+        /* --- 5. BUSCADOR CON AUTO-DESPLAZAMIENTO SUAVE --- */
         let searchTimeout;
         document.getElementById('search').addEventListener('input', e => {
             const q = e.target.value.toLowerCase();
@@ -393,7 +481,7 @@
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => {
                     document.getElementById('seccion-tienda').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 400);
+                }, 350);
             }
         });
 
