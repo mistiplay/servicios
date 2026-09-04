@@ -12,42 +12,38 @@
            1. VARIABLES DE COLOR (Tema Moderno Neon)
            ========================================= */
         :root {
-            --primary-blue: #00d2ff;     /* Azul/Cian brillante moderno */
-            --primary-blue-dark: #3a7bd5;
-            --bg-dark: #090c10;          /* Fondo muy oscuro */
-            --header-footer-bg: rgba(17, 24, 39, 0.85); /* Semitransparente (Glass) */
-            --card-container-bg: rgba(30, 41, 59, 0.6); /* Fondo del recuadro (Glass) */
-            --card-bg: #151d28;          /* Fondo de tarjetas */
-            --primary-green: #00ff88;    /* Verde neon */
-            --error-red: #ff3366;        /* Rojo moderno */
+            --primary-blue: #00d2ff;
+            --bg-dark: #090c10;
+            --header-footer-bg: rgba(17, 24, 39, 0.85);
+            --card-container-bg: rgba(30, 41, 59, 0.6);
+            --card-bg: #151d28;
+            --primary-green: #00ff88;
+            --error-red: #ff3366;
             --text-light: #f1f5f9;
         }
 
         body {
             margin: 0;
-            font-family: 'Montserrat', sans-serif; /* Nueva tipografía */
+            font-family: 'Montserrat', sans-serif;
             color: var(--text-light);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            
-            /* EFECTO DE FONDO DINÁMICO (Movimiento suave) */
             background: linear-gradient(-45deg, #090c10, #131a26, #0d1624, #000000);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
         }
 
-        /* Animación del fondo */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* --- 1. CABECERA (NAVBAR) GLASSMORPHISM --- */
+        /* --- 1. CABECERA --- */
         .navbar {
             background-color: var(--header-footer-bg);
-            backdrop-filter: blur(10px); /* Efecto cristal */
+            backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             height: 70px; 
             display: flex;
@@ -91,31 +87,42 @@
         .currency-selector { background-color: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; gap: 8px; border: 1px solid rgba(255,255,255,0.1); }
         .flag { width: 20px; height: 14px; background: linear-gradient(90deg, #d91023 33%, #fff 33%, #fff 66%, #d91023 66%); border: 1px solid #333; }
 
-        /* --- 2. PORTADA (AJUSTADA Y MODERNA) --- */
+        /* --- 2. PORTADA (SIN RECORTES) --- */
         .full-width-section { 
             width: 100%; 
-            /* Se establece una altura máxima en PC para que no tape todo */
-            height: 40vh; 
-            min-height: 250px;
-            max-height: 400px;
-            overflow: hidden; 
+            background-color: #000; 
             position: relative; 
             border-bottom: 2px solid var(--primary-blue);
         }
         .hero-img { 
             width: 100%; 
-            height: 100%; 
-            object-fit: cover; /* Esto hace que 1 sola imagen se adapte sin deformarse */
-            object-position: center; 
+            height: auto; /* Muestra la imagen completa sin recortar */
             display: block; 
         }
 
-        /* --- 3. BANNERS (CÓDIGO OPTIMIZADO PARA 1 IMAGEN) --- */
-        .promo-slider { width: 100%; overflow: hidden; background-color: #000; position: relative; height: 350px; border-bottom: 1px solid #333; } 
-        .promo-track { display: flex; height: 100%; transition: transform 0.8s ease-in-out; width: 200%; transform: translateX(-50%); }
-        .promo-slide { width: 50%; height: 100%; position: relative; }
-        /* Object fit cover hace que la misma imagen sirva para celular y pc */
-        .promo-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; opacity: 0.8; }
+        /* --- 3. BANNERS (DINÁMICO Y SIN RECORTES) --- */
+        .promo-slider { 
+            width: 100%; 
+            background-color: #000; 
+            position: relative; 
+            border-bottom: 1px solid #333; 
+            overflow: hidden; 
+        } 
+        .promo-track { 
+            display: flex; 
+            transition: transform 0.8s ease-in-out; 
+            width: 100%; 
+        }
+        .promo-slide { 
+            flex: 0 0 100%; /* Cada imagen ocupa el 100% del espacio */
+            position: relative; 
+        }
+        .promo-img { 
+            width: 100%; 
+            height: auto; /* Muestra la imagen completa sin recortar */
+            display: block; 
+        }
+        
         .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); color: white; border: 1px solid rgba(255,255,255,0.2); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10; transition: 0.3s; }
         .slider-arrow:hover { background: var(--primary-blue); color: black; }
         .arrow-prev { left: 15px; } .arrow-next { right: 15px; }
@@ -141,7 +148,7 @@
         .section-divider { border: none; height: 3px; background: linear-gradient(90deg, var(--primary-blue), transparent); width: 100%; margin-bottom: 35px; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
 
-        /* --- 5. TARJETAS (CARD) - DISEÑO MODERNO --- */
+        /* --- 5. TARJETAS (CARD) --- */
         .card { 
             background-color: var(--card-bg); border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
             cursor: pointer; transition: transform 0.4s ease, box-shadow 0.3s ease, border-color 0.3s ease; 
@@ -173,13 +180,10 @@
         .service-name { font-weight: 800; margin-bottom: 12px; display: block; font-size: 1.15rem; color: white; }
         .purchase-area { display: flex; justify-content: space-between; align-items: flex-end; }
         
-        /* MEJORA DEL PRECIO */
         .price-label { font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-bottom: 3px; display: block;}
         .price-value { 
-            color: var(--primary-blue); 
-            font-weight: 900; 
-            font-size: 1.4rem; /* Más grande */
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4); /* Brillo */
+            color: var(--primary-blue); font-weight: 900; font-size: 1.4rem; 
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4); 
         }
         
         .buy-btn { background-color: var(--primary-blue); color: black; padding: 10px 16px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; transition: 0.3s; }
@@ -208,8 +212,6 @@
             .v-separator, .tab-item, .nav-spacer, .social-links, .currency-selector { display: none !important; }
             .nav-right { width: 75%; display: flex; justify-content: flex-end; }
             .search-box { width: 100%; max-width: 240px; }
-            .full-width-section { height: 25vh; min-height: 180px; }
-            .promo-slider { height: 280px; }
             .main-container { margin: 20px auto; width: 95%; }
             .services-box { padding: 20px; }
             .section-title { font-size: 1.4rem; }
@@ -256,9 +258,25 @@
         <img src="portada.jpg" class="hero-img">
     </div>
 
-    "
-      =========================================================
-    -->
+    <div class="promo-slider">
+        <button class="slider-arrow arrow-prev" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+        <button class="slider-arrow arrow-next" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+        
+        <div class="promo-track" id="promo-track">
+            
+            <div class="promo-slide">
+                <img src="promo.jpg" class="promo-img" alt="Promoción 1">
+            </div>
+
+            <div class="promo-slide">
+                <img src="promo2.jpg" class="promo-img" alt="Promoción 2">
+                <button class="info-btn-promo" onclick="window.open('https://wa.me/51923666291', '_blank')">MÁS INFORMACIÓN</button>
+            </div>
+
+            </div>
+    </div>
+
+
     <div class="main-container">
         <div class="services-box" id="seccion-tienda">
             <div class="section-header">
@@ -292,15 +310,21 @@
 
     <script src="stock.js"></script>
     <script>
-        /* --- 1. LÓGICA DEL CARRUSEL (Inactivo hasta que descomentes el HTML) --- */
-        let currentSlide = 1;
+        /* --- 1. LÓGICA DEL CARRUSEL (AHORA ES AUTOMÁTICO PARA CUALQUIER CANTIDAD DE FOTOS) --- */
+        let currentSlide = 0;
         const track = document.getElementById('promo-track');
+        const slides = document.querySelectorAll('.promo-slide');
+        const totalSlides = slides.length;
+
         function moveSlide(dir) { 
-            if(!track) return; // Evita errores si la promo está oculta
-            currentSlide = (currentSlide + dir + 2) % 2; 
-            track.style.transform = `translateX(-${currentSlide * 50}%)`; 
+            if(!track || totalSlides === 0) return;
+            currentSlide = (currentSlide + dir + totalSlides) % totalSlides; 
+            track.style.transform = `translateX(-${currentSlide * 100}%)`; 
         }
-        if(track) setInterval(() => moveSlide(1), 10000);
+        
+        // Pasa las imágenes solas cada 10 segundos, siempre y cuando haya más de 1 imagen
+        if(track && totalSlides > 1) setInterval(() => moveSlide(1), 10000);
+
 
         /* --- 2. LISTADO DE SERVICIOS --- */
         const servicios = [
@@ -351,7 +375,6 @@
                 grid.insertAdjacentHTML('beforeend', cardHtml);
             });
 
-            // Animación escalonada al cargar la página
             const cards = document.querySelectorAll('.card');
             cards.forEach((card, index) => {
                 setTimeout(() => {
@@ -366,12 +389,11 @@
             const q = e.target.value.toLowerCase();
             document.querySelectorAll('.card').forEach(c => c.style.display = c.querySelector('.service-name').innerText.toLowerCase().includes(q) ? 'flex' : 'none');
             
-            // Cuando el usuario teclea algo, la página baja automáticamente
             if (q.length > 0) {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => {
                     document.getElementById('seccion-tienda').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 400); // Pequeña espera para no marear al usuario mientras teclea rápido
+                }, 400);
             }
         });
 
