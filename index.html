@@ -9,6 +9,11 @@
 <!-- Iconos (Font Awesome). No borrar esta línea o desaparecen los iconos. -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+<!-- Tipografía moderna. Si no tienes internet, la web usa una letra de respaldo. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+
 <style>
 /* =======================================================================
    PALETA DE COLORES
@@ -21,11 +26,12 @@
   --bar-bg:         #0b1220;  /* Barra superior y pie de página */
   --box-bg:         #ffffff;  /* Recuadro blanco donde van los productos */
   --card-bg:        #131c2b;  /* Fondo de cada tarjeta */
+  --card-bg-rgb:    19,28,43; /* MISMO color de arriba pero en números (para el difuminado) */
   --green:          #22c55e;  /* Verde (WhatsApp) */
   --red:            #ef4444;  /* Rojo (agotado / cerrar) */
   --text-dark:      #0f172a;
   --text-soft:      #94a3b8;
-  --radius:         16px;     /* Qué tan redondeadas son las esquinas */
+  --radius:         18px;     /* Qué tan redondeadas son las esquinas */
 }
 
 /* ---------- BASE ---------- */
@@ -33,31 +39,46 @@
 html{ scroll-behavior: smooth; }
 body{
   margin:0;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family:'Plus Jakarta Sans','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background:var(--bg-page);
   color:var(--text-dark);
   display:flex; flex-direction:column; min-height:100vh;
+  -webkit-font-smoothing:antialiased;
 }
 img{ border:0; }
 a{ text-decoration:none; }
+button{ font-family:inherit; }
+:focus-visible{ outline:3px solid var(--primary); outline-offset:2px; }
+
+/* Si el usuario pidió "menos animaciones" en su sistema, se reducen solas. */
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
+  html{ scroll-behavior:auto; }
+}
 
 /* =======================================================================
    1. BARRA SUPERIOR (NAVBAR)
    ======================================================================= */
 .navbar{
-  background:rgba(11,18,32,.92);
-  backdrop-filter:blur(10px);
-  height:68px; display:flex; align-items:center; gap:14px;
+  background:rgba(11,18,32,.85);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);
+  backdrop-filter:blur(14px) saturate(160%);
+  height:74px; display:flex; align-items:center; gap:14px;
   padding:0 25px; position:sticky; top:0; z-index:1000;
   border-bottom:1px solid rgba(255,255,255,.07);
-  box-shadow:0 6px 24px rgba(0,0,0,.35);
+  box-shadow:0 6px 24px rgba(0,0,0,.28);
+  transition:height .3s ease, background .3s ease;
 }
+/* Cuando bajas, la barra se hace más delgada (se ve más profesional) */
+.navbar.compacta{ height:60px; background:rgba(11,18,32,.96); }
+
 .nav-left{ display:flex; align-items:center; gap:14px; }
-.main-icon{ height:42px; width:auto; display:block; }
+.main-icon{ height:42px; width:auto; display:block; transition:height .3s ease; }
+.navbar.compacta .main-icon{ height:34px; }
 .v-separator{ color:#334155; font-size:1.4rem; }
-.tab-item{ color:#fff; font-weight:700; font-size:.95rem; position:relative; padding:22px 2px; }
+.tab-item{ color:#fff; font-weight:700; font-size:.95rem; position:relative; padding:10px 2px; }
 .tab-item::after{
-  content:""; position:absolute; bottom:14px; left:0;
+  content:""; position:absolute; bottom:0; left:0;
   width:100%; height:3px; border-radius:3px;
   background:linear-gradient(90deg,var(--primary),var(--green));
 }
@@ -67,9 +88,10 @@ a{ text-decoration:none; }
 .social-links{ display:flex; gap:10px; }
 .social-circle{
   width:38px; height:38px; background:#18202f; border-radius:50%;
-  display:flex; align-items:center; justify-content:center; color:#fff; transition:.25s;
+  display:flex; align-items:center; justify-content:center; color:#fff;
+  transition:transform .25s ease, background .25s ease, box-shadow .25s ease;
 }
-.social-circle:hover{ background:var(--primary); transform:translateY(-3px); }
+.social-circle:hover{ background:var(--primary); transform:translateY(-3px); box-shadow:0 8px 18px rgba(37,150,190,.45); }
 
 /* Buscador */
 .search-box{ position:relative; width:300px; }
@@ -89,10 +111,10 @@ a{ text-decoration:none; }
 
 .currency-selector{
   background:#fff; color:#000; display:flex; align-items:center;
-  padding:6px 12px; border-radius:8px; font-weight:800; font-size:.8rem; gap:8px;
+  padding:6px 12px; border-radius:10px; font-weight:800; font-size:.8rem; gap:8px;
 }
 .flag{
-  width:20px; height:14px; border:1px solid #ccc;
+  width:20px; height:14px; border:1px solid #ccc; border-radius:2px;
   background:linear-gradient(90deg,#d91023 33%,#fff 33%,#fff 66%,#d91023 66%);
 }
 
@@ -106,51 +128,61 @@ a{ text-decoration:none; }
 .promo-track{ display:flex; height:100%; transition:transform .7s cubic-bezier(.4,0,.2,1); }
 .promo-slide{ flex:0 0 100%; height:100%; position:relative; }
 .promo-img{ width:100%; height:100%; object-fit:cover; display:block; }
+/* Sombra inferior para que el botón del banner se lea siempre bien */
+.promo-slide::after{
+  content:""; position:absolute; inset:auto 0 0 0; height:45%; pointer-events:none;
+  background:linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0));
+}
 
 .slider-arrow{
   position:absolute; top:50%; transform:translateY(-50%);
   background:rgba(0,0,0,.45); color:#fff; border:1px solid rgba(255,255,255,.2);
   width:46px; height:46px; border-radius:50%; cursor:pointer; z-index:10; transition:.25s;
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
 }
 .slider-arrow:hover{ background:var(--primary); }
 .arrow-prev{ left:16px; } .arrow-next{ right:16px; }
 
 .slider-dots{ position:absolute; bottom:14px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:12; }
-.dot{ width:10px; height:10px; border-radius:50%; border:none; cursor:pointer; background:rgba(255,255,255,.45); transition:.25s; }
+.dot{ width:10px; height:10px; border-radius:50%; border:none; cursor:pointer; background:rgba(255,255,255,.45); transition:.25s; padding:0; }
 .dot.active{ background:#fff; width:26px; border-radius:6px; }
 
 .info-btn-promo{
   position:absolute; bottom:52px; left:50%; transform:translateX(-50%);
   background:linear-gradient(135deg,var(--green),#16a34a);
-  color:#fff; padding:13px 26px; border-radius:10px;
+  color:#fff; padding:13px 26px; border-radius:12px;
   font-size:.85rem; font-weight:900; cursor:pointer; border:none;
-  text-transform:uppercase; z-index:11; box-shadow:0 8px 22px rgba(34,197,94,.4); transition:.25s;
+  text-transform:uppercase; z-index:11; letter-spacing:.5px;
+  box-shadow:0 8px 22px rgba(34,197,94,.4); transition:.25s;
 }
-.info-btn-promo:hover{ transform:translateX(-50%) translateY(-3px); }
+.info-btn-promo:hover{ transform:translateX(-50%) translateY(-3px); box-shadow:0 14px 30px rgba(34,197,94,.5); }
 .promo-slider.vacio{ display:none; }
 
 /* =======================================================================
    3. VENTANA DE VIDEO (MODAL)
    ======================================================================= */
 .overlay{
-  position:fixed; inset:0; background:rgba(0,0,0,.93);
+  position:fixed; inset:0; background:rgba(0,0,0,.9);
   display:none; justify-content:center; align-items:center; z-index:3000;
-  backdrop-filter:blur(4px); padding:20px;
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); padding:20px;
 }
-.overlay.abierto{ display:flex; }
+.overlay.abierto{ display:flex; animation:aparecer .25s ease; }
+@keyframes aparecer{ from{ opacity:0 } to{ opacity:1 } }
 .modal-container{
-  position:relative; width:100%; max-width:340px; background:#131c2b;
-  padding:22px 16px; border-radius:20px; text-align:center;
+  position:relative; width:100%; max-width:340px; background:var(--card-bg);
+  padding:22px 16px; border-radius:22px; text-align:center;
   border:1px solid rgba(255,255,255,.12); box-shadow:0 25px 60px rgba(0,0,0,.6);
+  animation:subir .35s cubic-bezier(.2,.8,.2,1);
 }
-.modal-video{ width:100%; border-radius:12px; display:block; margin-bottom:18px; background:#000; }
+@keyframes subir{ from{ transform:translateY(24px) scale(.97); opacity:0 } to{ transform:none; opacity:1 } }
+.modal-video{ width:100%; border-radius:14px; display:block; margin-bottom:18px; background:#000; }
 .modal-buttons{ display:flex; flex-direction:column; gap:10px; }
 .btn-modal{
   display:flex; align-items:center; justify-content:center; gap:10px;
-  color:#fff; padding:13px; border-radius:10px; font-weight:800;
+  color:#fff; padding:13px; border-radius:12px; font-weight:800;
   border:none; text-transform:uppercase; font-size:.8rem; cursor:pointer; transition:.2s;
 }
-.btn-modal:hover{ filter:brightness(1.12); }
+.btn-modal:hover{ filter:brightness(1.12); transform:translateY(-2px); }
 .btn-blue{ background:var(--primary); }
 .btn-green{ background:var(--green); }
 .btn-red{ background:var(--red); }
@@ -159,101 +191,200 @@ a{ text-decoration:none; }
    4. ZONA DE PRODUCTOS
    ======================================================================= */
 .main-container{ max-width:1300px; margin:34px auto; width:95%; }
-.services-box{ background:var(--box-bg); border-radius:22px; padding:30px; box-shadow:0 10px 40px rgba(15,23,42,.08); }
-.section-title{ font-size:1.5rem; font-weight:900; text-transform:uppercase; display:block; letter-spacing:.5px; }
+.services-box{
+  background:var(--box-bg); border-radius:26px; padding:30px;
+  box-shadow:0 18px 50px rgba(15,23,42,.09);
+  border:1px solid rgba(15,23,42,.05);
+}
+.section-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.section-title{
+  font-family:'Outfit','Segoe UI',sans-serif;
+  font-size:1.6rem; font-weight:900; text-transform:uppercase; display:block; letter-spacing:.5px;
+}
 .section-sub{ color:#64748b; font-size:.9rem; margin:6px 0 0; }
+.section-badge{
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff; font-size:.7rem; font-weight:900; letter-spacing:1px;
+  padding:8px 14px; border-radius:30px; text-transform:uppercase;
+  box-shadow:0 8px 20px rgba(37,150,190,.35);
+}
 .section-divider{ border:none; height:3px; border-radius:3px; margin:16px 0 22px; background:linear-gradient(90deg,var(--primary),transparent); }
 
-.filters{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+/* Los filtros se quedan pegados arriba al hacer scroll */
+.filters{
+  display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;
+  position:sticky; top:78px; z-index:5;
+  background:var(--box-bg); padding:8px 0;
+}
 .chip{
   border:1px solid #d7dfea; background:#f4f7fb; color:#334155;
-  padding:8px 16px; border-radius:30px; font-size:.8rem; font-weight:800;
-  cursor:pointer; text-transform:uppercase; transition:.2s;
+  padding:9px 17px; border-radius:30px; font-size:.78rem; font-weight:800;
+  cursor:pointer; text-transform:uppercase; letter-spacing:.4px; transition:.2s;
 }
-.chip:hover{ border-color:var(--primary); color:var(--primary); }
-.chip.active{ background:var(--primary); border-color:var(--primary); color:#fff; }
+.chip:hover{ border-color:var(--primary); color:var(--primary); transform:translateY(-2px); }
+.chip.active{
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  border-color:transparent; color:#fff; box-shadow:0 8px 18px rgba(37,150,190,.35);
+}
 
-.result-info{ font-size:.85rem; color:#64748b; margin-bottom:16px; font-weight:600; }
+.result-info{ font-size:.85rem; color:#64748b; margin:0 0 16px; font-weight:700; }
 .no-results{ display:none; text-align:center; padding:45px 20px; color:#64748b; }
 .no-results i{ font-size:2.4rem; color:#cbd5e1; margin-bottom:12px; display:block; }
+.no-results .btn-wsp-inline{
+  display:inline-flex; align-items:center; gap:8px; margin-top:12px;
+  background:var(--green); color:#fff; font-weight:800; font-size:.8rem;
+  padding:11px 20px; border-radius:10px; text-transform:uppercase;
+}
 
-.products-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:22px; }
+.products-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:22px; }
 
 /* =======================================================================
-   5. TARJETA DE PRODUCTO  (estilo de la imagen de referencia)
+   5. TARJETA DE PRODUCTO  (una sola caja, sin costuras)
    -----------------------------------------------------------------------
-   La imagen ocupa toda la tarjeta y abajo se DIFUMINA hacia el color
-   oscuro; encima de ese difuminado va el precio.
+   IMPORTANTE (esto arregla tus 2 problemas):
+   ➤ ANTES la tarjeta eran DOS cajas pegadas (imagen arriba + pie oscuro
+     abajo). Al pasar el cursor se movía y se veía una LÍNEA en la unión.
+     AHORA es UNA sola caja: el nombre y el precio van FLOTANDO encima de
+     la imagen, así que no existe ninguna unión que se pueda ver.
+   ➤ La imagen ya NO se estira para llenar la caja (object-fit:contain),
+     por eso conserva sus proporciones reales. Para que no queden bordes
+     negros, detrás se coloca la MISMA imagen borrosa y ampliada.
    ======================================================================= */
 .card{
-  position:relative; background:var(--card-bg); border-radius:20px; overflow:hidden;
-  border:1px solid #24334a; cursor:pointer; display:flex; flex-direction:column;
+  position:relative; background:var(--card-bg); border-radius:22px; overflow:hidden;
+  border:1px solid #24334a; cursor:pointer; display:block;
   opacity:0; transform:translateY(26px);
-  transition:opacity .5s ease, transform .45s ease, border-color .3s ease, box-shadow .3s ease;
+  /* Estas 3 líneas evitan parpadeos y líneas finas al animar. No borrar. */
+  -webkit-backface-visibility:hidden; backface-visibility:hidden;
+  transform-style:preserve-3d; will-change:transform;
+  transition:opacity .5s ease, transform .45s cubic-bezier(.2,.8,.2,1),
+             border-color .3s ease, box-shadow .3s ease;
 }
 .card.is-visible{ opacity:1; transform:translateY(0); }
+
 @media (hover:hover){
-  .card:hover{ transform:translateY(-8px); border-color:var(--primary); box-shadow:0 18px 36px rgba(15,23,42,.30); }
-  .card:hover .card-img{ transform:scale(1.05); }
+  .card:hover{
+    transform:translateY(-8px);
+    border-color:var(--primary);
+    box-shadow:0 22px 44px rgba(15,23,42,.32), 0 0 0 1px rgba(37,150,190,.35);
+  }
+  /* Zoom MUY suave: la imagen crece apenas y nunca se deforma */
+  .card:hover .card-img{ transform:scale(1.04); }
+  .card:hover .card-blur{ transform:scale(1.14); opacity:.95; }
+  .card:hover .buy-icon{ background:var(--primary); color:#fff; box-shadow:0 8px 18px rgba(37,150,190,.5); }
+  .card:hover .card-shine{ transform:translateX(140%); }
 }
-.card.agotado{ opacity:.62; cursor:not-allowed; }
-.card.agotado:hover{ transform:none; }
+
+.card.agotado{ cursor:not-allowed; }
+.card.agotado .card-img,
+.card.agotado .card-blur{ filter:grayscale(.85) brightness(.75); }
+.card.agotado:hover{ transform:translateY(0); border-color:#3a4a63; box-shadow:none; }
 
 /* --- Zona de la imagen ---
-   ➤ aspect-ratio 3/4 = alto un poco mayor que el ancho (como la referencia).
+   ➤ aspect-ratio 3/4 = alto un poco mayor que el ancho (como los pósters).
      Si quieres tarjetas cuadradas cambia 3/4 por 1/1.
-   ➤ object-fit:cover hace que la imagen SIEMPRE llene la caja completa,
-     recortando lo que sobre. Así nunca aparecen bordes negros aunque la
-     imagen no tenga el tamaño exacto.                                      */
-.card-media{ position:relative; width:100%; aspect-ratio:3/4; overflow:hidden; background:var(--card-bg); }
+     Si quieres pósters más altos usa 2/3.                                */
+.card-media{
+  position:relative; width:100%; aspect-ratio:3/4; overflow:hidden;
+  background:var(--card-bg);
+}
+
+/* Fondo borroso (es la misma imagen ampliada y desenfocada). Rellena la
+   tarjeta para que NUNCA se vean bordes vacíos. */
+.card-blur{
+  position:absolute; inset:-12%;
+  background-size:cover; background-position:center;
+  filter:blur(26px) saturate(140%) brightness(.6);
+  transform:scale(1.08); opacity:.85;
+  transition:transform .6s ease, opacity .4s ease;
+}
+
+/* La imagen real: SIEMPRE completa y con sus proporciones correctas. */
 .card-img{
-  width:100%; height:100%; display:block;
-  object-fit:cover;            /* <-- adapta la imagen a la caja, sin bordes negros */
-  object-position:center top;  /* Si te corta la parte de arriba, cambia a "center" */
-  transition:transform .5s ease;
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:contain;           /* <-- respeta la proporción, no recorta */
+  object-position:top center;   /* <-- pegada arriba */
+  display:block; z-index:2;
+  transition:transform .55s cubic-bezier(.2,.8,.2,1), opacity .4s ease;
+  opacity:0;                    /* aparece cuando termina de cargar */
+
+  /* Difuminado hacia transparente en la parte de abajo de la imagen: */
+  -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 75%);
+  mask-image: linear-gradient(to bottom, black 65%, transparent 75%);
+}
+.card-img.cargada{ opacity:1; }
+
+/* Efecto "brillo" que barre la tarjeta al pasar el cursor */
+.card-shine{
+  position:absolute; top:0; left:0; width:60%; height:100%; z-index:4;
+  pointer-events:none; transform:translateX(-140%);
+  background:linear-gradient(105deg, rgba(255,255,255,0), rgba(255,255,255,.16), rgba(255,255,255,0));
+  transition:transform .85s ease;
 }
 
 /* --- EL DIFUMINADO (degradado) sobre la imagen --- */
 .card-fade{
-  position:absolute; left:0; right:0; bottom:0; height:58%; pointer-events:none;
+  position:absolute; left:0; right:0; bottom:0; height:62%; pointer-events:none; z-index:3;
   background:linear-gradient(to top,
-      var(--card-bg) 0%,               /* Abajo: color sólido de la tarjeta */
-      rgba(19,28,43,.96) 22%,
-      rgba(19,28,43,.72) 48%,
-      rgba(19,28,43,0)   100%);        /* Arriba: totalmente transparente */
+              rgba(var(--card-bg-rgb),1)   0%,   /* Abajo: color sólido */
+              rgba(var(--card-bg-rgb),.97) 26%,
+              rgba(var(--card-bg-rgb),.72) 55%,
+              rgba(var(--card-bg-rgb),0)   100%);/* Arriba: transparente */
 }
-/* ➤ ¿Quieres MÁS difuminado? sube el 58% a 70%.
-   ➤ ¿MENOS difuminado? bájalo a 45%.
-   ➤ Si cambias --card-bg, cambia también el rgba(19,28,43,...) por ese color. */
+/* ➤ ¿Quieres MÁS difuminado? sube el 62% a 72%.
+   ➤ ¿MENOS difuminado? bájalo a 48%.
+   ➤ Si cambias --card-bg, cambia también --card-bg-rgb por ese mismo color
+     en números (busca "hex a rgb" en Google).                            */
 
-/* --- Precio encima del difuminado --- */
-.price-block{ position:absolute; left:0; right:0; bottom:12px; text-align:center; z-index:3; padding:0 10px; }
+/* --- Información (precio + nombre + carrito) encima del difuminado --- */
+.card-info{
+  position:absolute; left:0; right:0; bottom:0; z-index:5;
+  padding:0 14px 14px; text-align:center;
+}
 .price-label{
-  display:block; color:#cbd5e1; font-size:.6rem; font-weight:700;
+  display:block; color:#cbd5e1; font-size:.6rem; font-weight:800;
   letter-spacing:3px; text-transform:uppercase; margin-bottom:2px;
 }
-.price-value{ color:#fff; font-weight:900; font-size:1.75rem; line-height:1; text-shadow:0 2px 12px rgba(0,0,0,.6); }
+.price-label:empty{ display:none; }   /* si textoPrecio está vacío, no ocupa espacio */
+.price-value{
+  font-family:'Outfit','Segoe UI',sans-serif;
+  display:block; color:#fff; font-weight:900; font-size:1.8rem; line-height:1.05;
+  text-shadow:0 2px 14px rgba(0,0,0,.65);
+}
+.card-bottom{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  margin-top:10px; padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.10);   /* separador fino y elegante */
+}
+.service-name{
+  color:var(--primary); font-weight:800; font-size:.95rem;
+  text-transform:uppercase; letter-spacing:.3px; text-align:left;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.buy-icon{
+  width:34px; height:34px; flex:0 0 34px; border-radius:11px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(37,150,190,.18); color:var(--primary); font-size:.85rem;
+  transition:.25s;
+}
 
 /* --- Etiqueta AGOTADO (solo aparece cuando no hay stock) --- */
 .status-badge{
-  position:absolute; top:10px; left:10px; z-index:4;
-  background:var(--red); color:#fff; font-size:.6rem; font-weight:900;
-  padding:5px 10px; border-radius:6px; text-transform:uppercase; letter-spacing:.5px;
-  box-shadow:0 4px 12px rgba(0,0,0,.4);
+  position:absolute; top:11px; left:11px; z-index:6;
+  background:rgba(239,68,68,.92); color:#fff; font-size:.6rem; font-weight:900;
+  padding:6px 11px; border-radius:8px; text-transform:uppercase; letter-spacing:.8px;
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+  box-shadow:0 6px 16px rgba(0,0,0,.45);
 }
 
-/* --- Pie de la tarjeta: nombre + icono de compra --- */
-.card-body{
-  background:var(--card-bg); padding:10px 14px 14px;
-  display:flex; align-items:center; justify-content:space-between; gap:8px;
+/* Animación de carga (skeleton) mientras la imagen llega */
+.card-media::before{
+  content:""; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(100deg,#1a2536 30%,#243146 50%,#1a2536 70%);
+  background-size:200% 100%; animation:brillo 1.4s infinite linear;
 }
-.service-name{ color:var(--primary); font-weight:800; font-size:.95rem; text-transform:uppercase; letter-spacing:.3px; }
-.buy-icon{
-  width:32px; height:32px; flex:0 0 32px; border-radius:9px;
-  display:flex; align-items:center; justify-content:center;
-  background:rgba(37,150,190,.15); color:var(--primary); font-size:.85rem; transition:.25s;
-}
-.card:hover .buy-icon{ background:var(--primary); color:#fff; }
+.card.listo .card-media::before{ animation:none; opacity:0; transition:opacity .4s ease; }
+@keyframes brillo{ from{ background-position:150% 0 } to{ background-position:-50% 0 } }
 
 /* =======================================================================
    6. WHATSAPP, SUBIR Y PIE DE PÁGINA
@@ -262,23 +393,39 @@ a{ text-decoration:none; }
 .wsp-tooltip{
   background:#0b1220; color:#fff; padding:9px 15px; border-radius:10px;
   font-size:.85rem; font-weight:600; margin-right:14px;
-  opacity:0; visibility:hidden; transition:.3s; white-space:nowrap;
+  opacity:0; visibility:hidden; transform:translateX(8px); transition:.3s; white-space:nowrap;
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
 }
-.wsp-container:hover .wsp-tooltip{ opacity:1; visibility:visible; }
-.wsp-btn{ width:60px; height:60px; display:block; transition:.3s; }
-.wsp-btn:hover{ transform:scale(1.08); }
+.wsp-container:hover .wsp-tooltip{ opacity:1; visibility:visible; transform:none; }
+.wsp-btn{ width:60px; height:60px; display:block; transition:.3s; border-radius:50%; }
+.wsp-btn:hover{ transform:scale(1.08) rotate(-4deg); }
 .wsp-btn img{ width:100%; height:100%; display:block; }
+/* Anillo animado para llamar la atención */
+.wsp-btn::after{
+  content:""; position:absolute; inset:0; border-radius:50%;
+  box-shadow:0 0 0 0 rgba(34,197,94,.55); animation:pulso 2.4s infinite;
+}
+@keyframes pulso{ 70%{ box-shadow:0 0 0 18px rgba(34,197,94,0) } 100%{ box-shadow:0 0 0 0 rgba(34,197,94,0) } }
+.wsp-btn{ position:relative; }
 
 .top-btn{
   position:fixed; bottom:100px; right:34px; z-index:1999;
   width:46px; height:46px; border-radius:50%; border:none; cursor:pointer;
-  background:var(--bar-bg); color:#fff; opacity:0; pointer-events:none; transition:.3s;
+  background:var(--bar-bg); color:#fff; opacity:0; pointer-events:none;
+  transform:translateY(10px); transition:.3s; box-shadow:0 10px 24px rgba(0,0,0,.3);
 }
-.top-btn.visible{ opacity:.9; pointer-events:auto; }
+.top-btn.visible{ opacity:.95; pointer-events:auto; transform:none; }
+.top-btn:hover{ background:var(--primary); }
 
 footer{ background:var(--bar-bg); padding:42px 20px; text-align:center; border-top:3px solid var(--primary); margin-top:auto; }
 .footer-socials-mobile{ display:none; gap:20px; justify-content:center; margin-bottom:24px; flex-wrap:wrap; }
 .footer-socials-mobile a{ color:#fff; font-size:1.7rem; }
+.footer-trust{
+  display:flex; flex-wrap:wrap; justify-content:center; gap:22px; margin-bottom:26px;
+  color:#cbd5e1; font-size:.82rem; font-weight:700;
+}
+.footer-trust span{ display:flex; align-items:center; gap:8px; }
+.footer-trust i{ color:var(--primary); }
 .payment-container{ display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:14px; }
 .payment-label{ color:var(--text-soft); font-weight:700; font-size:.85rem; }
 .payment-img{ height:32px; width:auto; display:block; }
@@ -289,22 +436,29 @@ footer{ background:var(--bar-bg); padding:42px 20px; text-align:center; border-t
    ======================================================================= */
 @media (max-width:768px){
   .navbar{ height:62px; padding:0 14px; gap:10px; }
+  .navbar.compacta{ height:56px; }
   .v-separator,.tab-item,.nav-spacer,.social-links,.currency-selector{ display:none !important; }
   .nav-right{ flex:1; justify-content:flex-end; }
   .search-box{ width:100%; max-width:260px; }
   .promo-slider{ height:300px; }
   .main-container{ margin:16px auto; width:96%; }
-  .services-box{ padding:16px; border-radius:16px; }
+  .services-box{ padding:16px; border-radius:18px; }
   .section-title{ font-size:1.15rem; }
+  .section-badge{ font-size:.62rem; padding:6px 11px; }
+  .filters{ top:60px; overflow-x:auto; flex-wrap:nowrap; -webkit-overflow-scrolling:touch; }
+  .filters::-webkit-scrollbar{ display:none; }
+  .chip{ flex:0 0 auto; }
   .products-grid{ grid-template-columns:repeat(2,1fr); gap:12px; }
   .card{ border-radius:16px; }
   .price-value{ font-size:1.3rem; }
   .price-label{ font-size:.52rem; letter-spacing:2px; }
-  .card-body{ padding:8px 10px 12px; }
+  .card-info{ padding:0 10px 11px; }
+  .card-bottom{ margin-top:8px; padding-top:8px; }
   .service-name{ font-size:.75rem; }
-  .buy-icon{ width:27px; height:27px; flex:0 0 27px; font-size:.72rem; }
+  .buy-icon{ width:28px; height:28px; flex:0 0 28px; font-size:.72rem; border-radius:9px; }
   .info-btn-promo{ padding:10px 16px; font-size:.7rem; bottom:44px; }
   .footer-socials-mobile{ display:flex; }
+  .footer-trust{ gap:14px; font-size:.75rem; }
   .wsp-btn{ width:52px; height:52px; }
   .wsp-container{ bottom:18px; right:18px; }
   .top-btn{ bottom:84px; right:22px; width:40px; height:40px; }
@@ -314,7 +468,7 @@ footer{ background:var(--bar-bg); padding:42px 20px; text-align:center; border-t
 <body>
 
 <!-- ============================ BARRA SUPERIOR ============================ -->
-<nav class="navbar">
+<nav class="navbar" id="navbar">
   <div class="nav-left">
     <img src="icono.png" alt="MistiPlay" class="main-icon">
     <span class="v-separator">|</span>
@@ -324,9 +478,9 @@ footer{ background:var(--bar-bg); padding:42px 20px; text-align:center; border-t
   <div class="nav-right">
     <div class="social-links" id="redes-pc"></div>
     <div class="search-box">
-      <input id="search" type="text" class="search-input" placeholder="Buscar plataforma..." autocomplete="off">
-      <button class="clear-btn" id="clear-search" title="Borrar"><i class="fas fa-times"></i></button>
-      <button class="search-btn" title="Buscar"><i class="fa fa-search"></i></button>
+      <input id="search" type="text" class="search-input" placeholder="Buscar plataforma..." autocomplete="off" aria-label="Buscar plataforma">
+      <button class="clear-btn" id="clear-search" title="Borrar" aria-label="Borrar búsqueda"><i class="fas fa-times"></i></button>
+      <button class="search-btn" title="Buscar" aria-label="Buscar"><i class="fa fa-search"></i></button>
     </div>
     <span class="v-separator">|</span>
     <div class="currency-selector">
@@ -344,7 +498,7 @@ footer{ background:var(--bar-bg); padding:42px 20px; text-align:center; border-t
 <!-- ==================== CARRUSEL DE BANNERS ====================
      No escribas nada aquí: las imágenes se crean solas desde la
      lista "BANNERS" del bloque de configuración (más abajo).
-================================================================= -->
+     ================================================================= -->
 <div class="promo-slider" id="promo-slider">
   <button class="slider-arrow arrow-prev" id="btn-prev" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
   <button class="slider-arrow arrow-next" id="btn-next" aria-label="Siguiente"><i class="fas fa-chevron-right"></i></button>
@@ -371,8 +525,13 @@ footer{ background:var(--bar-bg); padding:42px 20px; text-align:center; border-t
 <!-- ============================ PRODUCTOS ============================ -->
 <div class="main-container" id="productos">
   <div class="services-box">
-    <span class="section-title">Plataformas y servicios</span>
-    <p class="section-sub">Entrega inmediata · Garantía durante todo el periodo · Soporte por WhatsApp</p>
+    <div class="section-head">
+      <div>
+        <span class="section-title">Plataformas y servicios</span>
+        <p class="section-sub">Entrega inmediata · Garantía durante todo el periodo · Soporte por WhatsApp</p>
+      </div>
+      <span class="section-badge"><i class="fas fa-bolt"></i> Activación en minutos</span>
+    </div>
     <hr class="section-divider">
 
     <div class="filters" id="filtros"></div>
@@ -384,16 +543,17 @@ footer{ background:var(--bar-bg); padding:42px 20px; text-align:center; border-t
       <i class="fas fa-magnifying-glass"></i>
       <strong>No encontramos esa plataforma.</strong>
       <p>Escríbenos por WhatsApp y la conseguimos para ti.</p>
+      <a class="btn-wsp-inline" id="wspPedido" href="#" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Pedir por WhatsApp</a>
     </div>
   </div>
 </div>
 
 <!-- ============================ BOTONES FLOTANTES ============================ -->
-<button class="top-btn" id="top-btn" title="Subir"><i class="fas fa-chevron-up"></i></button>
+<button class="top-btn" id="top-btn" title="Subir" aria-label="Subir"><i class="fas fa-chevron-up"></i></button>
 
 <div class="wsp-container">
   <div class="wsp-tooltip">Chatea con nosotros</div>
-  <a id="wspFlotante" href="#" target="_blank" rel="noopener" class="wsp-btn">
+  <a id="wspFlotante" href="#" target="_blank" rel="noopener" class="wsp-btn" aria-label="WhatsApp">
     <img src="wsp.png" alt="WhatsApp">
   </a>
 </div>
@@ -403,6 +563,14 @@ footer{ background:var(--bar-bg); padding:42px 20px; text-align:center; border-t
   <div class="footer-socials-mobile" id="redes-movil">
     <p style="color:#fff;font-weight:700;width:100%;margin:0 0 10px;font-size:1.05rem;">Síguenos en:</p>
   </div>
+
+  <!-- Sellos de confianza. Cambia los textos si quieres. -->
+  <div class="footer-trust">
+    <span><i class="fas fa-bolt"></i> Entrega inmediata</span>
+    <span><i class="fas fa-shield-halved"></i> Garantía todo el periodo</span>
+    <span><i class="fas fa-headset"></i> Soporte por WhatsApp</span>
+  </div>
+
   <div class="payment-container">
     <span class="payment-label">Métodos de pago:</span>
     <img src="metodosdepago.png" class="payment-img" alt="Métodos de pago">
@@ -429,17 +597,16 @@ const CONFIG = {
     instagram: "https://instagram.com/mistiplaygo",
     tiktok:    "https://tiktok.com/@mistiplay"
   },
-  textoPrecio: "Desde"              // Palabra pequeña encima del precio ("Desde")
+  textoPrecio: ""                    // Palabra pequeña encima del precio (ej: "Desde")
 };
 
 /* -------- 2) BANNERS DEL CARRUSEL --------
-   ➤ Ya se quitaron "promo.jpg" y "promo_m.jpg".
    ➤ PARA AGREGAR OTRO: copia la línea de abajo, pégala debajo y cambia los nombres.
-        pc    = imagen para computadora (1920x600 px aprox.)
-        movil = imagen para celular (si no tienes, repite la de "pc")
-        boton = "modal" abre el video · una URL abre ese enlace · "" no muestra botón
-        texto = lo que dice el botón
-     EJEMPLO:  { pc:"promo3.jpg", movil:"promo3_m.jpg", boton:"", texto:"" },
+     pc    = imagen para computadora (1920x600 px aprox.)
+     movil = imagen para celular (si no tienes, repite la de "pc")
+     boton = "modal" abre el video · una URL abre ese enlace · "" no muestra botón
+     texto = lo que dice el botón
+   EJEMPLO:  { pc:"promo3.jpg", movil:"promo3_m.jpg", boton:"", texto:"" },
    ➤ Si dejas la lista vacía [ ] el carrusel desaparece solo.               */
 const BANNERS = [
   { pc:"promo2.jpg", movil:"promo2_m.jpg", boton:"modal", texto:"Más información" }
@@ -453,14 +620,14 @@ const MENSAJE_MODAL = "Deseo más información de MaxPlayer";
    s = stock: escribe "agotado" para marcarlo agotado; vacío "" = disponible
 
    ➤ PARA AGREGAR: copia una línea completa, pégala al final y cambia los datos.
-       EJEMPLO: { n:"Duolingo Plus", p:"12.00", i:"Duolingo.jpg", c:"ia", s:"" },
+     EJEMPLO: { n:"Duolingo Plus", p:"12.00", i:"Duolingo.jpg", c:"ia", s:"" },
    ➤ PARA OCULTAR: borra su línea.
    ➤ NOTA: la etiqueta "DISPONIBLE" ya no se muestra; solo aparece "AGOTADO". */
 const SERVICIOS = [
   { n:"Netflix",         p:"16.00", i:"Netflix.jpg",     c:"streaming", s:"" },
   { n:"Disney+",         p:"14.00", i:"Disney.jpg",      c:"streaming", s:"" },
-  { n:"HBO Max",         p:"10.00",  i:"Max.jpg",         c:"streaming", s:"" },
-  { n:"Paramount+",      p:"10.00",  i:"Paramount.jpg",   c:"streaming", s:"" },
+  { n:"HBO Max",         p:"10.00", i:"Max.jpg",         c:"streaming", s:"" },
+  { n:"Paramount+",      p:"10.00", i:"Paramount.jpg",   c:"streaming", s:"" },
   { n:"Prime Video",     p:"10.00", i:"Primevideo.jpg",  c:"streaming", s:"" },
   { n:"Vix Premium",     p:"10.00", i:"Vix.jpg",         c:"streaming", s:"" },
   { n:"Crunchyroll",     p:"7.00",  i:"Crunchyroll.jpg", c:"streaming", s:"" },
@@ -475,7 +642,7 @@ const SERVICIOS = [
   { n:"ChatGPT Plus",    p:"15.00", i:"Chat.jpg",        c:"ia",        s:"" },
   { n:"Gemini Pro",      p:"15.00", i:"Gemini.jpg",      c:"ia",        s:"" },
   { n:"Spotify",         p:"13.00", i:"Spotify.jpg",     c:"musica",    s:"" },
-  { n:"Deezer",          p:"8.00", i:"Deezer.jpg",       c:"musica",    s:"" },
+  { n:"Deezer",          p:"8.00",  i:"Deezer.jpg",      c:"musica",    s:"" },
   { n:"Youtube Premium", p:"15.00", i:"Youtube.jpg",     c:"musica",    s:"agotado" }
 ];
 
@@ -491,20 +658,22 @@ const NOMBRES_CATEGORIAS = {
 
 const $ = (id) => document.getElementById(id);
 const linkWsp = (t) => "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(t);
-const normalizar = (t) => (t||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+const normalizar = (t) => (t || "").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 $("wspFlotante").href = linkWsp(CONFIG.saludo);
 $("modalWsp").href    = linkWsp(MENSAJE_MODAL);
+$("wspPedido").href   = linkWsp("Hola MistiPlay, busco una plataforma que no vi en la web");
 $("anio").textContent = new Date().getFullYear();
 
+/* ---------------- REDES SOCIALES ---------------- */
 (function pintarRedes(){
   const iconos = { facebook:"fab fa-facebook-f", instagram:"fab fa-instagram", tiktok:"fab fa-tiktok" };
   const pc = $("redes-pc"), movil = $("redes-movil");
   Object.keys(CONFIG.redes).forEach(red => {
     const url = CONFIG.redes[red];
     if(!url) return;
-    pc.insertAdjacentHTML("beforeend", `<a href="${url}" target="_blank" rel="noopener" class="social-circle" aria-label="${red}"><i class="${iconos[red]}"></i></a>`);
-    movil.insertAdjacentHTML("beforeend", `<a href="${url}" target="_blank" rel="noopener" aria-label="${red}"><i class="${iconos[red]}"></i></a>`);
+    pc.insertAdjacentHTML("beforeend", '<a href="' + url + '" target="_blank" rel="noopener" class="social-circle" aria-label="' + red + '"><i class="' + iconos[red] + '"></i></a>');
+    movil.insertAdjacentHTML("beforeend", '<a href="' + url + '" target="_blank" rel="noopener" aria-label="' + red + '"><i class="' + iconos[red] + '"></i></a>');
   });
 })();
 
@@ -512,23 +681,31 @@ $("anio").textContent = new Date().getFullYear();
 const slider = $("promo-slider"), track = $("promo-track"), dotsBox = $("slider-dots");
 let slideActual = 0, autoPlay = null;
 
+const iniciarAuto   = () => { autoPlay = setInterval(() => mover(1), 8000); };
+const reiniciarAuto = () => { clearInterval(autoPlay); if(BANNERS.length > 1) iniciarAuto(); };
+
 function crearBanners(){
   if(BANNERS.length === 0){ slider.classList.add("vacio"); return; }
+
   BANNERS.forEach((b, idx) => {
-    const boton = b.boton
-      ? (b.boton === "modal"
-          ? `<button class="info-btn-promo" data-accion="modal">${b.texto || "Más información"}</button>`
-          : `<a class="info-btn-promo" href="${b.boton}" target="_blank" rel="noopener">${b.texto || "Más información"}</a>`)
-      : "";
-    track.insertAdjacentHTML("beforeend", `
-      <div class="promo-slide">
-        <picture>
-          <source media="(max-width: 768px)" srcset="${b.movil || b.pc}">
-          <img src="${b.pc}" class="promo-img" alt="Promoción ${idx+1}" loading="lazy">
-        </picture>
-        ${boton}
-      </div>`);
-    dotsBox.insertAdjacentHTML("beforeend", `<button class="dot ${idx===0?"active":""}" data-i="${idx}" aria-label="Banner ${idx+1}"></button>`);
+    const texto = b.texto || "Más información";
+    let boton = "";
+    if(b.boton === "modal"){
+      boton = '<button class="info-btn-promo" data-accion="modal">' + texto + '</button>';
+    } else if(b.boton){
+      boton = '<a class="info-btn-promo" href="' + b.boton + '" target="_blank" rel="noopener">' + texto + '</a>';
+    }
+
+    track.insertAdjacentHTML("beforeend",
+      '<div class="promo-slide">' +
+        '<picture>' +
+          '<source media="(max-width: 768px)" srcset="' + (b.movil || b.pc) + '">' +
+          '<img src="' + b.pc + '" class="promo-img" alt="Promoción ' + (idx+1) + '" loading="lazy">' +
+        '</picture>' + boton +
+      '</div>');
+
+    dotsBox.insertAdjacentHTML("beforeend",
+      '<button class="dot ' + (idx === 0 ? "active" : "") + '" data-i="' + idx + '" aria-label="Banner ' + (idx+1) + '"></button>');
   });
 
   const solo = BANNERS.length < 2;
@@ -540,18 +717,19 @@ function crearBanners(){
   dotsBox.addEventListener("click", e => { const d = e.target.closest(".dot"); if(d) irA(Number(d.dataset.i)); });
   if(!solo) iniciarAuto();
 }
+
 function irA(i){
   slideActual = (i + BANNERS.length) % BANNERS.length;
-  track.style.transform = `translateX(-${slideActual * 100}%)`;
-  dotsBox.querySelectorAll(".dot").forEach((d,k)=>d.classList.toggle("active", k===slideActual));
+  track.style.transform = "translateX(-" + (slideActual * 100) + "%)";
+  dotsBox.querySelectorAll(".dot").forEach((d,k) => d.classList.toggle("active", k === slideActual));
 }
 const mover = (dir) => irA(slideActual + dir);
+
 $("btn-prev").addEventListener("click", () => { mover(-1); reiniciarAuto(); });
 $("btn-next").addEventListener("click", () => { mover(1);  reiniciarAuto(); });
-const iniciarAuto   = () => { autoPlay = setInterval(() => mover(1), 8000); };
-const reiniciarAuto = () => { clearInterval(autoPlay); if(BANNERS.length > 1) iniciarAuto(); };
 slider.addEventListener("mouseenter", () => clearInterval(autoPlay));
 slider.addEventListener("mouseleave", reiniciarAuto);
+
 let x0 = null;
 slider.addEventListener("touchstart", e => x0 = e.touches[0].clientX, { passive:true });
 slider.addEventListener("touchend", e => {
@@ -564,8 +742,8 @@ crearBanners();
 
 /* ---------------- VENTANA DE VIDEO ---------------- */
 const modal = $("videoModal"), video = $("modalVideo"), muteIcon = $("muteIcon");
-function abrirModal(){ modal.classList.add("abierto"); video.play().catch(()=>{}); }
-function cerrarModal(){ modal.classList.remove("abierto"); video.pause(); video.currentTime = 0; }
+function abrirModal(){ modal.classList.add("abierto"); document.body.style.overflow = "hidden"; video.play().catch(()=>{}); }
+function cerrarModal(){ modal.classList.remove("abierto"); document.body.style.overflow = ""; video.pause(); video.currentTime = 0; }
 $("closeModalBtn").addEventListener("click", cerrarModal);
 modal.addEventListener("click", e => { if(e.target === modal) cerrarModal(); });
 document.addEventListener("keydown", e => { if(e.key === "Escape") cerrarModal(); });
@@ -587,7 +765,9 @@ function estadoDe(s){
 (function crearFiltros(){
   const cats = ["todos", ...new Set(SERVICIOS.map(s => s.c || "otros"))];
   $("filtros").innerHTML = cats.map(c =>
-    `<button class="chip ${c==="todos"?"active":""}" data-cat="${c}">${NOMBRES_CATEGORIAS[c] || c}</button>`).join("");
+    '<button class="chip ' + (c === "todos" ? "active" : "") + '" data-cat="' + c + '">' + (NOMBRES_CATEGORIAS[c] || c) + '</button>'
+  ).join("");
+
   $("filtros").addEventListener("click", e => {
     const chip = e.target.closest(".chip");
     if(!chip) return;
@@ -608,34 +788,54 @@ function render(){
 
   grid.innerHTML = lista.map(s => {
     const agotado = estadoDe(s) === "agotado";
-    return `
-      <article class="card ${agotado ? "agotado" : ""}" data-nombre="${s.n}" data-agotado="${agotado}">
-        <div class="card-media">
-          <img src="${s.i}" class="card-img" alt="${s.n}" loading="lazy">
-          <div class="card-fade"></div>
-          ${agotado ? '<span class="status-badge">Agotado</span>' : ''}
-          <div class="price-block">
-            <span class="price-label">${CONFIG.textoPrecio}</span>
-            <span class="price-value">S/ ${s.p}</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <span class="service-name">${s.n}</span>
-          <span class="buy-icon"><i class="fas ${agotado ? "fa-bell" : "fa-cart-shopping"}"></i></span>
-        </div>
-      </article>`;
+    return '' +
+      '<article class="card ' + (agotado ? "agotado" : "") + '" data-nombre="' + s.n + '" data-agotado="' + agotado + '"' +
+              ' tabindex="0" role="button" aria-label="' + s.n + ' S/ ' + s.p + (agotado ? " (agotado)" : "") + '">' +
+        '<div class="card-media">' +
+          '<div class="card-blur" style="background-image:url(&quot;' + s.i + '&quot;)"></div>' +
+          '<img src="' + s.i + '" class="card-img" alt="' + s.n + '" loading="lazy" decoding="async">' +
+          '<div class="card-fade"></div>' +
+          '<div class="card-shine"></div>' +
+          (agotado ? '<span class="status-badge">Agotado</span>' : '') +
+          '<div class="card-info">' +
+            '<span class="price-label">' + CONFIG.textoPrecio + '</span>' +
+            '<span class="price-value">S/ ' + s.p + '</span>' +
+            '<div class="card-bottom">' +
+              '<span class="service-name">' + s.n + '</span>' +
+              '<span class="buy-icon"><i class="fas ' + (agotado ? "fa-bell" : "fa-cart-shopping") + '"></i></span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
   }).join("");
 
   sinRes.style.display = lista.length ? "none" : "block";
-  infoRes.textContent  = busqueda ? `${lista.length} resultado(s) para "${busqueda}"` : `${lista.length} servicios disponibles`;
+  infoRes.textContent  = busqueda
+    ? lista.length + ' resultado(s) para "' + busqueda + '"'
+    : lista.length + " servicios disponibles";
+
+  prepararImagenes();
   animarTarjetas();
 }
 
+/* Cada imagen aparece con un suave fundido cuando termina de cargar.
+   Si una imagen no existe, la tarjeta igual se ve bien (queda el fondo). */
+function prepararImagenes(){
+  grid.querySelectorAll(".card-img").forEach(img => {
+    const listo = () => { img.classList.add("cargada"); img.closest(".card").classList.add("listo"); };
+    if(img.complete && img.naturalWidth > 0) listo();
+    else {
+      img.addEventListener("load", listo, { once:true });
+      img.addEventListener("error", () => { img.style.display = "none"; img.closest(".card").classList.add("listo"); }, { once:true });
+    }
+  });
+}
+
 function animarTarjetas(){
-  const obs = new IntersectionObserver((entradas,o) => {
-    entradas.forEach((en,i) => {
+  const obs = new IntersectionObserver((entradas, o) => {
+    entradas.forEach((en, i) => {
       if(en.isIntersecting){
-        setTimeout(() => en.target.classList.add("is-visible"), i * 60);
+        setTimeout(() => en.target.classList.add("is-visible"), i * 55);
         o.unobserve(en.target);
       }
     });
@@ -643,19 +843,32 @@ function animarTarjetas(){
   grid.querySelectorAll(".card").forEach(c => obs.observe(c));
 }
 
-grid.addEventListener("click", e => {
-  const card = e.target.closest(".card");
-  if(!card) return;
+/* Al hacer clic (o Enter) en una tarjeta se abre WhatsApp */
+function abrirWspTarjeta(card){
   const nombre = card.dataset.nombre;
   const texto = card.dataset.agotado === "true"
-    ? `Hola MistiPlay, ¿cuándo tendrán stock de ${nombre}?`
-    : `Hola MistiPlay, deseo ${nombre}`;
+    ? "Hola MistiPlay, ¿cuándo tendrán stock de " + nombre + "?"
+    : "Hola MistiPlay, deseo " + nombre;
   window.open(linkWsp(texto), "_blank");
+}
+grid.addEventListener("click", e => {
+  const card = e.target.closest(".card");
+  if(card) abrirWspTarjeta(card);
+});
+grid.addEventListener("keydown", e => {
+  if(e.key !== "Enter" && e.key !== " ") return;
+  const card = e.target.closest(".card");
+  if(card){ e.preventDefault(); abrirWspTarjeta(card); }
 });
 
 /* ---- BUSCADOR: baja solo hasta los resultados ---- */
 const inputBusqueda = $("search");
 let temporizador = null, yaBajo = false;
+
+function irAProductos(){
+  const y = $("productos").getBoundingClientRect().top + window.scrollY - 80;
+  window.scrollTo({ top:y, behavior:"smooth" });
+}
 
 inputBusqueda.addEventListener("input", e => {
   busqueda = e.target.value.trim();
@@ -663,20 +876,12 @@ inputBusqueda.addEventListener("input", e => {
   clearTimeout(temporizador);
   temporizador = setTimeout(() => {
     render();
-    if(busqueda.length >= 1 && !yaBajo){
-      const y = $("productos").getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top:y, behavior:"smooth" });
-      yaBajo = true;
-    }
+    if(busqueda.length >= 1 && !yaBajo){ irAProductos(); yaBajo = true; }
     if(busqueda.length === 0) yaBajo = false;
   }, 180);
 });
 inputBusqueda.addEventListener("keydown", e => {
-  if(e.key === "Enter"){
-    e.preventDefault();
-    const y = $("productos").getBoundingClientRect().top + window.scrollY - 80;
-    window.scrollTo({ top:y, behavior:"smooth" });
-  }
+  if(e.key === "Enter"){ e.preventDefault(); irAProductos(); }
 });
 $("clear-search").addEventListener("click", () => {
   inputBusqueda.value = ""; busqueda = ""; yaBajo = false;
@@ -684,7 +889,11 @@ $("clear-search").addEventListener("click", () => {
   render(); inputBusqueda.focus();
 });
 
-window.addEventListener("scroll", () => $("top-btn").classList.toggle("visible", window.scrollY > 500));
+/* ---- BARRA QUE SE COMPACTA + BOTÓN SUBIR ---- */
+window.addEventListener("scroll", () => {
+  $("top-btn").classList.toggle("visible", window.scrollY > 500);
+  $("navbar").classList.toggle("compacta", window.scrollY > 60);
+}, { passive:true });
 $("top-btn").addEventListener("click", () => window.scrollTo({ top:0, behavior:"smooth" }));
 
 render();
